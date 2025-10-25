@@ -1,0 +1,23 @@
+{
+  "name": "Verbroken-Verbinding-Test Dev Container",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "streamlit",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "VisualStudioExptTeam.vscodeintellicode"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.autoSearchPaths": true,
+        "python.analysis.useLibraryCodeForTypes": true
+      }
+    }
+  },
+  "postCreateCommand": "pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt",
+  "shutdownAction": "stopCompose",
+  "remoteUser": "root"
+}
