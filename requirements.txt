@@ -1,4 +1,6 @@
 streamlit>=1.22
 transformers>=4.35
-huggingface-hub>=0.16
-torch>=2.0     # needed for transformers; remove if using only HF Inference API
+accelerate>=0.24
+torch>=2.0
+sentencepiece
+safetensors

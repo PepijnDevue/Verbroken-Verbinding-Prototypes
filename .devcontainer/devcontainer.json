@@ -1,23 +1,21 @@
 {
-  "name": "Verbroken-Verbinding-Test Dev Container",
-  "dockerComposeFile": ["../docker-compose.yml"],
-  "service": "streamlit",
-  "workspaceFolder": "/app",
+  "name": "HF Streamlit Devcontainer",
+  "image": "pytorch/pytorch:2.2.0-cuda11.8-cudnn8-runtime",
+  "runArgs": ["--gpus", "all"],
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
   "customizations": {
     "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
       "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylance",
-        "VisualStudioExptTeam.vscodeintellicode"
-      ],
-      "settings": {
-        "python.defaultInterpreterPath": "/usr/local/bin/python",
-        "python.analysis.autoSearchPaths": true,
-        "python.analysis.useLibraryCodeForTypes": true
-      }
+        "eamodio.gitlens"
+      ]
     }
   },
-  "postCreateCommand": "pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt",
-  "shutdownAction": "stopCompose",
+  "postCreateCommand": "pip install --no-cache-dir -r /workspace/requirements.txt || true",
+  "forwardPorts": [8501],
   "remoteUser": "root"
 }

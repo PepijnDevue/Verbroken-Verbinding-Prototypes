@@ -1,24 +1,30 @@
-# Dockerfile (simple)
-FROM python:3.11-slim
+FROM pytorch/pytorch:2.2.0-cuda11.8-cudnn8-runtime
 
-# avoid interactive prompts
-ENV DEBIAN_FRONTEND=noninteractive
-
-# install system deps for transformers + wheel build (kept minimal)
+# Keep layers small and simple
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+	git \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# copy only requirements first to leverage docker cache
+COPY requirements.txt /app/requirements.txt
 
-COPY streamlit_app.py .
+# Install Python dependencies (use pip from the base image)
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# copy project files
+COPY . /app
+
+# Environment defaults
+ENV STREAMLIT_SERVER_HEADLESS=true \
+	STREAMLIT_SERVER_ENABLECORS=false \
+	PORT=8501 \
+	NVIDIA_VISIBLE_DEVICES=all \
+	PYTHONUNBUFFERED=1
 
 EXPOSE 8501
 
-# Streamlit expects to run on 8501 by default
-CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Run the Streamlit app
+CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false"]
+
