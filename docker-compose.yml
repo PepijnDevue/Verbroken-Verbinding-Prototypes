@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  streamlit-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: verbroken-verbinding-test:latest
+    container_name: vv-test-app
+    ports:
+      - "8501:8501"
+    volumes:
+      # Mount for model cache (optional - speeds up repeated loads)
+      - huggingface-cache:/root/.cache/huggingface
+    environment:
+      # Optional: Add Hugging Face token if using private models
+      # - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+    shm_size: '2gb'  # Shared memory for PyTorch
+
+volumes:
+  huggingface-cache:
+    driver: local
