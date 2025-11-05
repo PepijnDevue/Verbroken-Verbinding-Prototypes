@@ -2,19 +2,27 @@ import streamlit as st
 from transformers import pipeline
 import torch
 
+# Modelpath validation
+from huggingface_hub import model_info
+from huggingface_hub.utils import HfHubHTTPError
+
+# Gathering system info
+import platform
+import multiprocessing
+import psutil
+
 def main():
     setup_header()
-
     setup_sidebar()
-    
     setup_body()
 
-
-# ==== SETUP FUNCTIONS ====
+# ==== DISPLAY FUNCTIONS ====
 def setup_header():
     st.title("Test Pagina VV")
     st.write("""
-        Testing a prototype using streamlit + transformers + docker
+        Deze webapp wordt gebruikt om te leren hoe je eenvoudig een webapp kunt maken met Streamlit
+        , een taalmodel kunt laden met Hugging Face Transformers, en dit op een server kunt hosten
+        via Docker zodanig dat er optimaal gebruik wordt gemaakt van beschikbare GPU resources.
     """)
 
 def setup_sidebar():
@@ -23,50 +31,16 @@ def setup_sidebar():
     model_name = st.sidebar.text_input(
         "Model path",
         value="google/flan-t5-small",
-        help="Hugging Face model name or path (e.g., google/flan-t5-small, gpt2, etc.)"
+        help="Hugging Face model name or path (e.g., google/flan-t5-small, etc.)"
     )
 
-    task = st.sidebar.selectbox(
-        "Task",
-        options=["text-generation", "text2text-generation"],
-        index=0,
-        help="Pick the pipeline task appropriate for your model. T5/FLAN use text2text-generation; GPT-style use text-generation."
-    )
-
-    precision = st.sidebar.selectbox(
-        "Precision (dtype)",
-        options=["auto", "float16", "bfloat16", "float32"],
-        index=0,
-        help="Use lower precision on GPU for speed/memory savings. 'auto' picks float16 on CUDA, float32 otherwise."
-    )
-
-    if not st.sidebar.button("Load Model"):
-        return
+    if st.sidebar.button("Load Model"):
+        if validate_huggingface_model(model_name):
+            st.session_state.pipe = load_model(model_name=model_name)
+        else:
+            st.sidebar.error(f"Model '{model_name}' not found on HuggingFace. Please check the model name.")
     
-    if (torch is None or not torch.cuda.is_available()):
-        st.sidebar.warning("CUDA GPU not detected. Falling back to CPU.")
-
-    st.session_state.pipe = load_model(
-        model_name=model_name,
-        task=task,
-        precision=precision,
-    )
-
-    # Show a quick summary of placement/precision
-    with st.sidebar.expander("Runtime details", expanded=False):
-        try:
-            model = st.session_state.pipe.model
-            device_map = getattr(model, "hf_device_map", None)
-            dtype = getattr(model, "dtype", None)
-            if device_map:
-                st.write("device_map detected (Accelerate):")
-                st.json(device_map)
-            else:
-                st.write("device:", getattr(next(model.parameters()).device, "type", "unknown"))
-            if dtype is not None:
-                st.write("dtype:", str(dtype))
-        except Exception:
-            st.write("Unable to gather runtime details.")
+    display_runtime_info()
 
 def setup_body():
     if "pipe" not in st.session_state:
@@ -88,42 +62,64 @@ def setup_body():
             f"""**Output:**<br>{output}""",
             unsafe_allow_html=True)
 
+def display_runtime_info():
+    with st.sidebar.expander("Runtime info", expanded=False):
+        info = {"device_info": {}}
+        if torch is not None and torch.cuda.is_available():
+            props = torch.cuda.get_device_properties(0)
+            info["device_info"]["device"] = props.name
+            info["device_info"]["compute"] = f"{props.major}.{props.minor}"
+            info["device_info"]["ram"] = f"{props.total_memory / 1e9:.2f}GB"
+            info["device_info"]["cores"] = props.multi_processor_count
+        else: # CPU fallback
+            info["device_info"]["device"] = platform.processor()
+            info["device_info"]["ram"] = f"{psutil.virtual_memory().total / 1e9:.2f}GB"
+            info["device_info"]["cores"] = multiprocessing.cpu_count()
+
+        if "pipe" in st.session_state:
+            info["runtime_info"] = {}
+
+            model = st.session_state.pipe.model
+            device_map = getattr(model, "hf_device_map", None)
+            dtype = getattr(model, "dtype", None)
+
+            if device_map:
+                info["runtime_info"]["accelerate"] = True
+                info["runtime_info"]["device_map"] = device_map
+
+            info["runtime_info"]["dtype"] = dtype or "Unknown"
+            info["runtime_info"]["model_params"] = f"{model.num_parameters()/1e6:.2f}M"
+
+        st.json(info)
+
 
 # ==== MODEL FUNCTIONS ====
+def validate_huggingface_model(model_name: str) -> bool:
+    if not model_name or not model_name.strip():
+        return False
+    
+    try:
+        model_info(model_name)
+        return True
+    except HfHubHTTPError:
+        # Handle HTTP errors (404 for not found, 401 for unauthorized, etc.)
+        return False
+    except Exception as e:
+        # Catch other potential errors (network issues, etc.)
+        st.sidebar.warning(f"Error validating model: {e}")
+        return False
+
 @st.cache_resource
-def load_model(
-    model_name: str,
-    task: str,
-    precision: str = "auto",
-) -> pipeline:
-    """Load a Transformers pipeline with Accelerate-aware device placement.
-
-    - Uses device_map="auto" when GPU is preferred and available.
-    - Sets dtype to selected precision. 'auto' = float16 on CUDA, float32 otherwise.
-    - Avoids passing an explicit device when using device_map (per Transformers docs).
-    """
-    # Resolve dtype
-    dtype_value = "auto"
-    if precision == "auto":
-        if torch is not None and torch.cuda.is_available():
-            dtype_value = torch.float16
-        else:
-            dtype_value = "auto"  # let Transformers decide (typically float32 on CPU)
-    elif precision == "float16" and torch is not None:
-        dtype_value = torch.float16
-    elif precision == "bfloat16" and torch is not None:
-        dtype_value = torch.bfloat16
-    elif precision == "float32" and torch is not None:
-        dtype_value = torch.float32
-
+def load_model(model_name: str) -> pipeline:
     # Resolve device_map
-    device_map = "auto" if (torch is not None and torch.cuda.is_available()) else None
+    has_cuda = (torch is not None) and torch.cuda.is_available()
+    device_map = "auto" if has_cuda else None
 
     return pipeline(
-        task,
+        "text-generation",
         model=model_name,
         device_map=device_map,  # handled by Accelerate if available
-        dtype=dtype_value,
+        dtype="auto",
     )
 
 def generate(user_input: str) -> str:
@@ -136,6 +132,8 @@ def generate(user_input: str) -> str:
 
     return output
 
+
+# ==== MAIN ENTRY POINT ====
 
 if __name__ == "__main__":
     main()
