@@ -1,4 +1,4 @@
 TODO
-- Test device-map auto vs device=0.
+- Add page_config (title, icon, layout).
 - Fix pyproject.toml - missing dependencies.
 - Add docker
