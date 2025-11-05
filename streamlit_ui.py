@@ -9,7 +9,11 @@ from utils import get_runtime_info
 
 
 def setup_header():
-    st.title("Test Pagina VV")
+    st.set_page_config(
+        page_title="Verbroken Verbinding Test",
+        page_icon="⛓️‍💥",
+    )
+    st.title("Verbroken Verbinding Test")
     st.write("""
         Deze webapp wordt gebruikt om te leren hoe je eenvoudig een webapp kunt maken met Streamlit
         , een taalmodel kunt laden met Hugging Face Transformers, en dit op een server kunt hosten
