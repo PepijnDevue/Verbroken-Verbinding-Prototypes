@@ -1,6 +1,6 @@
 import streamlit as st
-import huggingface_utils as hf_utils
-from utils import get_runtime_info
+import src.huggingface_utils as hf_utils
+from src.utils import get_runtime_info
 
 def main():
     setup_header()
@@ -19,14 +19,6 @@ def setup_header():
 
 def setup_sidebar():
     st.sidebar.title("Model Configuration")
-    
-    # Show authentication status
-    import os
-    token = os.getenv("HUGGINGFACE_TOKEN") or os.getenv("HF_TOKEN")
-    if token:
-        st.sidebar.success("🔑 HuggingFace authenticated")
-    else:
-        st.sidebar.warning("⚠️ No HuggingFace token found (gated models unavailable)")
     
     model_name = st.sidebar.text_input(
         "Model path",

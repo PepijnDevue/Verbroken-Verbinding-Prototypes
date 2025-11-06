@@ -1,0 +1,3 @@
+- Test hf login, meta-llama/Llama-3.2-1B-Instruct
+- Check for server access
+- Start on one of the prototypes
