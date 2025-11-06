@@ -8,8 +8,15 @@ from transformers import pipeline
 from huggingface_hub import model_info
 from huggingface_hub.utils import HfHubHTTPError
 
+def load_model(model_name: str, accelerate: bool):
+    if not _validate_huggingface_model(model_name):
+        st.sidebar.error("Please enter a valid Hugging Face model name or path.")
+        return
+    
+    st.session_state.pipe = _load_model(model_name=model_name, accelerate=accelerate)
 
-def validate_huggingface_model(model_name: str) -> bool:
+
+def _validate_huggingface_model(model_name: str) -> bool:
     if not model_name or not model_name.strip():
         return False
     
@@ -26,7 +33,7 @@ def validate_huggingface_model(model_name: str) -> bool:
 
 
 @st.cache_resource
-def load_model(model_name: str, accelerate: bool) -> pipeline:
+def _load_model(model_name: str, accelerate: bool) -> pipeline:
     # Resolve device_map
     device_map = "auto" if accelerate else None
 
