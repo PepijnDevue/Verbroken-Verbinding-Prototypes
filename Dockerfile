@@ -28,7 +28,13 @@ RUN python3.12 -m ensurepip --upgrade \
     && python3.12 -m pip install --upgrade pip setuptools wheel \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 \
     && ln -sf /usr/bin/python3 /usr/bin/python \
-    && python3 -m pip --version
+    && python3 -m pip --version \
+    && python3.12 -m venv /opt/venv \
+    && /opt/venv/bin/python -m pip install --upgrade pip setuptools wheel
+
+# Use isolated virtual environment for Python packages
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Set working directory
 WORKDIR /app
@@ -36,9 +42,9 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies with the correct interpreter
+# Install Python dependencies inside the virtual environment
 # Install PyTorch with CUDA support from the PyTorch index
-RUN python3 -m pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY *.py .
