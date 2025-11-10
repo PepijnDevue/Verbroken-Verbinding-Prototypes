@@ -1,0 +1,23 @@
+# Caddy reverse proxy for Streamlit app with automatic HTTPS
+# Domain: vvgputest.src-verbroken-v.src.surf-hosted.nl
+
+vvgputest.src-verbroken-v.src.surf-hosted.nl {
+	encode zstd gzip
+	# Increase timeouts for long model inferences if needed
+	#timeouts {
+	#	read_body  1m
+	#	read       5m
+	#	write      5m
+	#}
+
+	# Proxy to the Streamlit app inside Docker (listening on 8501)
+	reverse_proxy vv-test-app:8501
+
+	# Optional: add security headers
+	#header {
+	#	X-Frame-Options "SAMEORIGIN"
+	#	X-Content-Type-Options "nosniff"
+	#	Referrer-Policy "no-referrer-when-downgrade"
+	#	Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://*.streamlit.app"
+	#}
+}
