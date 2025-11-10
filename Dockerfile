@@ -22,11 +22,13 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create symlinks for python and pip
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 \
-    && update-alternatives --set python3 /usr/bin/python3.12 \
+# Set up pip for Python 3.12 and symlinks
+# Note: Use ensurepip with Python 3.12 to avoid Debian's system pip (which may rely on distutils)
+RUN python3.12 -m ensurepip --upgrade \
+    && python3.12 -m pip install --upgrade pip setuptools wheel \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 \
     && ln -sf /usr/bin/python3 /usr/bin/python \
-    && python3 -m pip install --upgrade pip setuptools wheel
+    && python3 -m pip --version
 
 # Set working directory
 WORKDIR /app
@@ -34,9 +36,9 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install Python dependencies with the correct interpreter
 # Install PyTorch with CUDA support from the PyTorch index
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY *.py .
