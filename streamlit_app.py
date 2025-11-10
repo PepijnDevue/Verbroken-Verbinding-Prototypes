@@ -1,11 +1,15 @@
 import streamlit as st
+from pathlib import Path
 
 def main():
-    welkom = st.Page("src/pages/welkom.py", title="Welkom", icon="👋")
-    gewichtjes = st.Page("src/pages/gewichtjes.py", title="Gewichtjes", icon="⚓")
-    dif = st.Page("src/pages/data_geïnformeerde_feedback.py", title="Data Geïnformeerde Feedback", icon="💬")
-    aisv = st.Page("src/pages/artikelen_in_simpele_versies.py", title="Artikelen in Simpele Versies", icon="📰")
-    test = st.Page("src/pages/test_pagina.py", title="Test Pagina", icon="🧪")
+    base_dir = Path(__file__).parent.resolve()
+    pages_dir = base_dir / "src" / "pages"
+
+    welkom = st.Page(str(pages_dir / "welkom.py"), title="Welkom", icon="👋")
+    gewichtjes = st.Page(str(pages_dir / "gewichtjes.py"), title="Gewichtjes", icon="⚓")
+    dif = st.Page(str(pages_dir / "data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="💬")
+    aisv = st.Page(str(pages_dir / "artikelen_in_simpele_versies.py"), title="Artikelen in Simpele Versies", icon="📰")
+    test = st.Page(str(pages_dir / "test_pagina.py"), title="Test Pagina", icon="🧪")
 
     pg = st.navigation(
         pages = {

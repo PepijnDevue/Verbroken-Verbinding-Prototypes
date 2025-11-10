@@ -48,6 +48,7 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY *.py .
+COPY src ./src
 COPY pyproject.toml .
 COPY README.md .
 
