@@ -1,6 +1,6 @@
 # Use NVIDIA CUDA base image with Ubuntu 22.04
 # This image will use the CUDA runtime that matches the server (CUDA 12.x)
-FROM nvidia/cuda:12.8.0-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:12.9.0-cudnn8-runtime-ubuntu22.04
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
