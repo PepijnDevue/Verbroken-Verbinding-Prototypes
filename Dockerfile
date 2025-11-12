@@ -1,5 +1,4 @@
-# Use NVIDIA CUDA base image with Ubuntu 22.04
-# This image will use the CUDA runtime that matches the server (CUDA 12.x)
+# Use NVIDIA CUDA 12.6 base image with Ubuntu 22.04
 FROM nvidia/cuda:12.6.2-cudnn-runtime-ubuntu22.04
 
 # Set environment variables
@@ -43,7 +42,6 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install Python dependencies inside the virtual environment
-# Install PyTorch with CUDA support from the PyTorch index
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
 # Copy application code

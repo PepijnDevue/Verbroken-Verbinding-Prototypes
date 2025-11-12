@@ -4,10 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile
     image: verbroken-verbinding-test:latest
-    container_name: vv-test-app
+    container_name: vv-prototype-app
     # No public port mapping; Caddy will reverse proxy to this container
     volumes:
-      # Mount for model cache (optional - speeds up repeated loads)
+      # Mount for model cache (speeds up repeated loads)
       - huggingface-cache:/root/.cache/huggingface
     environment:
       # Optional: Add Hugging Face token if using private models
