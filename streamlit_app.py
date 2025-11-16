@@ -6,7 +6,7 @@ def main():
     pages_dir = base_dir / "src" / "pages"
 
     welkom = st.Page(str(pages_dir / "welkom.py"), title="Welkom", icon="👋")
-    gewichtjes = st.Page(str(pages_dir / "gewichtjes.py"), title="Gewichtjes", icon="⚓")
+    ankertjes = st.Page(str(pages_dir / "ankertjes.py"), title="Ankertjes", icon="⚓")
     dif = st.Page(str(pages_dir / "data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="💬")
     aisv = st.Page(str(pages_dir / "artikelen_in_simpele_versies.py"), title="Artikelen in Simpele Versies", icon="📰")
     test = st.Page(str(pages_dir / "test_pagina.py"), title="Test Pagina", icon="🧪")
@@ -14,7 +14,7 @@ def main():
     pg = st.navigation(
         pages = {
             "Paginas": [welkom],
-            "Concepten": [gewichtjes, dif, aisv],
+            "Concepten": [ankertjes, dif, aisv],
             "Test": [test]
         }, 
         expanded=True)
