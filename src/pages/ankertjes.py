@@ -7,8 +7,8 @@ with open("src/articles.json", "r", encoding="utf-8") as f:
     ARTICLES = json.load(f)
 
 # ---------- Session State Keys ----------
-ARTICLE_KEY = "aiv_selected_article"
-RATING_KEY = "aiv_difficulty_rating"
+ARTICLE_KEY = "a_selected_article"
+RATING_KEY = "a_difficulty_rating"
 
 
 # ---------- Main Page Logic ----------

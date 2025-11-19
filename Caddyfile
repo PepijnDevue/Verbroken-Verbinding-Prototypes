@@ -5,5 +5,5 @@ vvgputest.src-verbroken-v.src.surf-hosted.nl {
 	encode zstd gzip
 
 	# Proxy to the Streamlit app inside Docker (listening on 8501)
-	reverse_proxy vv-test-app:8501
+	reverse_proxy streamlit-app:8501
 }
