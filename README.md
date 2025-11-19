@@ -17,13 +17,29 @@ The Streamlit app is now accessible at `http://localhost` or `http://<your-serve
 
 - **Github Repository**: Have access to [this repository](https://github.com/PepijnDevue/Verbroken-Verbinding-Test).
 - **Server with GPU**: An Ubuntu server with an NVIDIA GPU.
-- **Hugging Face Account**: (Optional) For accessing private models. TODO - Weghalen/Updaten?
+- **Hugging Face Account**: (Optional) For accessing private models or gated models. Get your token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
 
 ## Configuration
 
 ### Server Setup
 
-Read [server_setup.md](docs/server_setup.mdserver_setup.md) for detailed server setup instructions, including CUDA and Docker installation.
+Read [server_setup.md](docs/server_setup.md) for detailed server setup instructions, including CUDA and Docker installation.
+
+### Hugging Face Token Setup
+
+To access private models or avoid rate limits, configure your Hugging Face token:
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Add your Hugging Face token to `.env`:
+   ```
+   HF_TOKEN=your_huggingface_token_here
+   ```
+
+For detailed instructions, see [Hugging Face Token Setup Guide](docs/huggingface_token_setup.md).
 
 ### Repository Setup
 
@@ -38,10 +54,6 @@ Read [server_setup.md](docs/server_setup.mdserver_setup.md) for detailed server 
 2. Caddy Configuration:
 
    - Update the `Caddyfile` with your domain name and any necessary security headers.
-
-3. Hugging Face Authentication (Optional): TODO - Weghalen/Updaten?
-
-   - If you plan to use private models from Hugging Face, set the `HUGGINGFACE_TOKEN` environment variable in the `docker-compose.yml` file.
 
 
 ## Development Setup (Without Docker)

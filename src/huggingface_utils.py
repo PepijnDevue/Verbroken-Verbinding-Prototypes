@@ -4,10 +4,18 @@ Contains functions for model validation, loading, and text generation.
 """
 
 import os
+from pathlib import Path
 import streamlit as st
 from transformers import pipeline
 from huggingface_hub import model_info
 from huggingface_hub.utils import HfHubHTTPError
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+# This will work in development (with uv) and in Docker if .env is copied
+env_path = Path(__file__).parent.parent / ".env"
+if env_path.exists():
+    load_dotenv(dotenv_path=env_path)
 
 
 def load_model(model_name: str, accelerate: bool):

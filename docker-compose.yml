@@ -10,8 +10,8 @@ services:
       # Mount for model cache (speeds up repeated loads)
       - huggingface-cache:/root/.cache/huggingface
     environment:
-      # Optional: Add Hugging Face token if using private models
-      # - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
+      # Hugging Face token for model access (loaded from .env file)
+      - HF_TOKEN=${HF_TOKEN}
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     deploy:

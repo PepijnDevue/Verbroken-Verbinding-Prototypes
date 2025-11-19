@@ -50,6 +50,10 @@ COPY src ./src
 COPY pyproject.toml .
 COPY README.md .
 
+# Copy .env file if it exists (optional, can also use environment variables from docker-compose)
+COPY .env* ./
+RUN if [ ! -f .env ]; then echo "Warning: .env file not found. HF_TOKEN will need to be set via environment variables." && touch .env; fi
+
 # Expose Streamlit port
 EXPOSE 8501
 
