@@ -18,9 +18,13 @@ if env_path.exists():
     load_dotenv(dotenv_path=env_path)
 
 
+def _get_token() -> str | None:
+    """Return Hugging Face token from env if present."""
+    return os.getenv("HF_TOKEN") or None
+
+
 def load_model(model_name: str, accelerate: bool):
     if not _validate_huggingface_model(model_name):
-        st.sidebar.error("Please enter a valid Hugging Face model name or path.")
         return
     
     st.session_state.pipe = _load_model(model_name=model_name, accelerate=accelerate)
@@ -29,15 +33,25 @@ def load_model(model_name: str, accelerate: bool):
 def _validate_huggingface_model(model_name: str) -> bool:
     if not model_name or not model_name.strip():
         return False
-    
+
+    token = _get_token()
+
     try:
-        model_info(model_name)
+        info = model_info(model_name, token=token)
+        # If the model is private and we have no token, fail explicitly
+        if getattr(info, "private", False) and not token:
+            st.sidebar.error("Model is private. Add HF_TOKEN to .env.")
+            return False
         return True
-    except HfHubHTTPError:
-        # Handle HTTP errors (404 for not found, 401 for unauthorized, etc.)
+    except HfHubHTTPError as e:
+        if e.response is not None and e.response.status_code == 401:
+            st.sidebar.error("Unauthorized. Provide a valid HF_TOKEN for this private model.")
+        elif e.response is not None and e.response.status_code == 404:
+            st.sidebar.error("Model not found on Hugging Face.")
+        else:
+            st.sidebar.error(f"Hugging Face error: {e}")
         return False
     except Exception as e:
-        # Catch other potential errors (network issues, etc.)
         st.sidebar.warning(f"Error validating model: {e}")
         return False
 
@@ -47,14 +61,11 @@ def _load_model(model_name: str, accelerate: bool) -> pipeline:
     # Resolve device_map
     device_map = "auto" if accelerate else None
 
-    # Use token if available
-    token = os.getenv("HF_TOKEN")
-
     return pipeline(
         "text-generation",
         model=model_name,
         device_map=device_map,
-        token=token,
+        token=_get_token(),
     )
 
 
