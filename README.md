@@ -29,17 +29,15 @@ Read [server_setup.md](docs/server_setup.md) for detailed server setup instructi
 
 To access private models or avoid rate limits, configure your Hugging Face token:
 
-1. Copy the example environment file:
+1. Create an environment file:
    ```bash
-   cp .env.example .env
+   touch .env
    ```
 
 2. Add your Hugging Face token to `.env`:
    ```
    HF_TOKEN=your_huggingface_token_here
    ```
-
-For detailed instructions, see [Hugging Face Token Setup Guide](docs/huggingface_token_setup.md).
 
 ### Repository Setup
 
