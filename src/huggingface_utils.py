@@ -16,6 +16,8 @@ try:
 except ImportError:
     torch = None
 
+MODEL_DEFAULT = "CohereLabs/aya-expanse-8b"
+
 # Load environment variables from .env file
 # This will work in development (with uv) and in Docker if .env is copied
 env_path = Path(__file__).parent.parent / ".env"
@@ -42,7 +44,9 @@ def _unload_model():
         torch.cuda.empty_cache()
 
 
-def load_model(model_name: str, accelerate: bool) -> None:
+def load_model(model_name: str = MODEL_DEFAULT, 
+               accelerate: bool = True
+               ) -> None:
     if not _validate_huggingface_model(model_name):
         return
     

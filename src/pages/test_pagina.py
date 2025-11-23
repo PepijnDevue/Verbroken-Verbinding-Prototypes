@@ -4,7 +4,7 @@ import src.streamlit_utils as st_utils
 
 def main():
     setup_header()
-    st_utils.render_sidebar()
+    st_utils.render_diagnostics()
     setup_body()
 
 
@@ -17,25 +17,23 @@ def setup_header():
     """)
 
 def setup_body():
-    if "pipe" not in st.session_state:
-        st.warning("Please load a model from the sidebar.")
-        return
-
     user_input = st.text_area("**Input:**")
 
     if not st.button("Generate"):
         return
-    
+
     if not user_input.strip():
         st.warning("Please enter some input text.")
         return
-    
-    with st.spinner("Generating..."):
+
+    if "pipe" not in st.session_state or st.session_state.pipe is None:
+        st.error("Model kon niet geladen worden bij sessiestart.")
+        return
+
+    with st.spinner("Genereren..."):
         pipe = st.session_state.pipe
         output = hf_utils.generate(user_input, pipe)
-        st.markdown(
-            f"""**Output:**<br>{output}""",
-            unsafe_allow_html=True)
+        st.markdown(f"""**Output:**<br>{output}""", unsafe_allow_html=True)
 
 
 if __name__ == "__main__":

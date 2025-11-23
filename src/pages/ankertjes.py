@@ -1,5 +1,4 @@
 import streamlit as st
-import src.streamlit_utils as st_utils
 import json
 
 # ---------- Constants & Data ----------
@@ -15,8 +14,6 @@ RATING_KEY = "a_difficulty_rating"
 def main() -> None:
     st.title("Ankertjes")
 	
-    st_utils.render_sidebar()
-
     _init_session_defaults()
 
     _render_article_selector()
