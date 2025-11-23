@@ -11,6 +11,11 @@ from huggingface_hub import model_info
 from huggingface_hub.utils import HfHubHTTPError
 from dotenv import load_dotenv
 
+try:
+    import torch
+except ImportError:
+    torch = None
+
 # Load environment variables from .env file
 # This will work in development (with uv) and in Docker if .env is copied
 env_path = Path(__file__).parent.parent / ".env"
@@ -23,11 +28,28 @@ def _get_token() -> str | None:
     return os.getenv("HF_TOKEN") or None
 
 
-def load_model(model_name: str, accelerate: bool):
+def _unload_model():
+    """Unload the current model and free GPU memory."""
+    if "pipe" not in st.session_state or st.session_state.pipe is None:
+        return
+    
+    # Delete the pipeline
+    del st.session_state.pipe
+    st.session_state.pipe = None
+    
+    # Clear CUDA cache to free GPU memory
+    if torch is not None and torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+
+def load_model(model_name: str, accelerate: bool, use_cache: bool = True):
     if not _validate_huggingface_model(model_name):
         return
     
-    st.session_state.pipe = _load_model(model_name=model_name, accelerate=accelerate)
+    # Unload existing model to free memory
+    _unload_model()
+    
+    st.session_state.pipe = _load_model(model_name=model_name, accelerate=accelerate, use_cache=use_cache)
 
 
 def _validate_huggingface_model(model_name: str) -> bool:
