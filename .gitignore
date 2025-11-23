@@ -3,3 +3,6 @@
 
 # Environment variables (secrets)
 .env
+
+# .vscode settings
+.vscode/

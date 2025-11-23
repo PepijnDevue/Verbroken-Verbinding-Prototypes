@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: verbroken-verbinding-test:latest
+    image: verbroken-verbinding-prototypes:latest
     container_name: vv-prototype-app
     # No public port mapping; Caddy will reverse proxy to this container
     volumes:

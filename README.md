@@ -15,7 +15,7 @@ The Streamlit app is now accessible at `http://localhost` or `http://<your-serve
 
 ## Prerequisites
 
-- **Github Repository**: Have access to [this repository](https://github.com/PepijnDevue/Verbroken-Verbinding-Test).
+- **Github Repository**: Have access to [this repository](https://github.com/PepijnDevue/Verbroken-Verbinding-Prototypes).
 - **Server with GPU**: An Ubuntu server with an NVIDIA GPU.
 - **Hugging Face Account**: (Optional) For accessing private models or gated models. Get your token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
 
@@ -46,9 +46,9 @@ For detailed instructions, see [Hugging Face Token Setup Guide](docs/huggingface
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/PepijnDevue/Verbroken-Verbinding-Test.git
+   git clone https://github.com/PepijnDevue/Verbroken-Verbinding-Prototypes.git
    git checkout main
-   cd Verbroken-Verbinding-Test
+   cd Verbroken-Verbinding-Prototypes
    ```
 
 2. Caddy Configuration:

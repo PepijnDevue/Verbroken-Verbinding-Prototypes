@@ -1,6 +1,6 @@
 # Server Setup Documentation
 
-This document outlines all definitive changes made to set up the Ubuntu 22.04 GPU server for the Verbroken-Verbinding-Test Streamlit application.
+This document outlines all definitive changes made to set up the Ubuntu 22.04 GPU server for the Verbroken-Verbinding-Prototypes Streamlit application.
 
 ## Server Specifications
 - **OS**: Ubuntu 22.04 LTS
@@ -55,7 +55,7 @@ sudo docker run --rm --gpus all nvidia/cuda:12.6.2-cudnn-runtime-ubuntu22.04 nvi
 
 Cloned the private GitHub repository to the server:
 
-**Location**: `/home/pdevue2/Verbroken-Verbinding-Test`
+**Location**: `/home/pdevue2/Verbroken-Verbinding-Prototypes`
 
 **Authentication**: SSH deploy key configured for GitHub repository access.
 
@@ -65,7 +65,7 @@ ssh-keygen -t ed25519 -C "deploy-key-$(hostname)-$(date +%F)" -f ~/.ssh/github_d
 
 # Added public key to GitHub repository settings (Deploy keys)
 # Cloned repository
-git clone git@github.com:PepijnDevue/Verbroken-Verbinding-Test.git
+git clone git@github.com:PepijnDevue/Verbroken-Verbinding-Prototypes.git
 ```
 
 ---
@@ -75,7 +75,7 @@ git clone git@github.com:PepijnDevue/Verbroken-Verbinding-Test.git
 Built and started the containerized application:
 
 ```bash
-cd ~/Verbroken-Verbinding-Test
+cd ~/Verbroken-Verbinding-Prototypes
 
 # Built Docker image
 docker compose build
