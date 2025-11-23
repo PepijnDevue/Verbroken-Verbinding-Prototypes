@@ -42,14 +42,14 @@ def _unload_model():
         torch.cuda.empty_cache()
 
 
-def load_model(model_name: str, accelerate: bool, use_cache: bool = True):
+def load_model(model_name: str, accelerate: bool) -> None:
     if not _validate_huggingface_model(model_name):
         return
     
     # Unload existing model to free memory
     _unload_model()
     
-    st.session_state.pipe = _load_model(model_name=model_name, accelerate=accelerate, use_cache=use_cache)
+    st.session_state.pipe = _load_model(model_name=model_name, accelerate=accelerate)
 
 
 def _validate_huggingface_model(model_name: str) -> bool:
