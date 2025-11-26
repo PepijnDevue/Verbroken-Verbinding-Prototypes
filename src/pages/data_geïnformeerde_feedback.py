@@ -92,7 +92,7 @@ def extract_json_from_response(response: str) -> dict:
 
 def process_comment_thread(comment: dict, pipe) -> dict:
     """Process a single comment thread and extract editorial feedback."""
-    prompt = NOTE_PROMPT.replace("{{PLAATS_HIER_DE_THREAD}}", comment)
+    prompt = NOTE_PROMPT.replace("{{PLAATS_HIER_DE_THREAD}}", json.dumps(comment))
     
     response = hf_utils.generate(prompt, pipe)
     return extract_json_from_response(response)
@@ -110,7 +110,7 @@ def aggregate_feedback(results: list[dict], pipe) -> dict:
             "feedback_rapport": "Er is geen constructieve feedback voor de redactie geïdentificeerd in de reacties."
         }
     
-    results_json = json.dumps(results, ensure_ascii=False, indent=2)
+    results_json = json.dumps(results)
     prompt = AGGREGATION_PROMPT.replace("{{PLAATS_HIER_DE_RESULTATEN}}", results_json)
     
     response = hf_utils.generate(prompt, pipe)
@@ -164,6 +164,15 @@ def main() -> None:
                 json.dump(output_data, f, ensure_ascii=False, indent=2)
             
             st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
+
+            # Download file
+            with open(OUTPUT_FILE, "rb") as f:
+                st.download_button(
+                    label="Download Resultaten JSON",
+                    data=f,
+                    file_name=OUTPUT_FILE.name,
+                    mime="application/json"
+                )
             
             # Display aggregated feedback
             st.subheader("Feedback Rapport voor de Redactie")
