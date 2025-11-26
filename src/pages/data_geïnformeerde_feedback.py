@@ -175,58 +175,61 @@ def main() -> None:
         st.error("Language model not loaded. Please return to the main page to load the model.")
         return
     
-    # Process comments
-    with st.spinner("Verwerken van reacties..."):
-        try:
-            # Process each comment thread
-            all_results = []
-            progress_bar = st.progress(0)
-            
-            for idx, comment in enumerate(comments):
-                result = process_comment_thread(comment, article_text)
-                all_results.append(result)
-                progress_bar.progress((idx + 1) / len(comments))
-            
-            # Aggregate feedback
-            st.text("Aggregeren van feedback...")
-            aggregated = aggregate_feedback(all_results, article_text)
-            
-            # Save results
-            output_data = {
-                "individual_results": all_results,
-                "aggregated_feedback": aggregated
-            }
-            
-            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                json.dump(output_data, f, ensure_ascii=False, indent=2)
-            
-            st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
-
-            # Download file
-            with open(OUTPUT_FILE, "rb") as f:
-                st.download_button(
-                    label="Download Resultaten JSON",
-                    data=f,
-                    file_name=OUTPUT_FILE.name,
-                    mime="application/json"
-                )
-            
-            # Display aggregated feedback
-            st.subheader("Feedback Rapport voor de Redactie")
-            st.markdown(aggregated.get("feedback_rapport", "Geen feedback beschikbaar."))
-            
-            with st.expander("Geïdentificeerde categorieën"):
-                st.write(aggregated.get("categorieën", []))
-            
-            with st.expander("Redenering"):
-                st.write(aggregated.get("beredeneer", ""))
-            
-            with st.expander("Alle individuele resultaten"):
-                st.json(all_results)
+    # Process comments button
+    if st.button("Verwerk reacties en genereer feedbackrapport"):
+        with st.spinner("Verwerken van reacties..."):
+            try:
+                # Process each comment thread
+                all_results = []
+                progress_bar = st.progress(0)
                 
-        except Exception as e:
-            st.error(f"Fout bij verwerken: {str(e)}")
-            st.exception(e)
+                for idx, comment in enumerate(comments):
+                    result = process_comment_thread(comment, article_text)
+                    all_results.append(result)
+                    progress_bar.progress((idx + 1) / len(comments))
+                
+                extracted_feedbacks = [r.get("resultaat", "") for r in all_results if r.get("resultaat", "").strip()]
+
+                # Aggregate feedback
+                st.text("Aggregeren van feedback...")
+                aggregated = aggregate_feedback(extracted_feedbacks, article_text)
+                
+                # Save results
+                output_data = {
+                    "individual_results": all_results,
+                    "aggregated_feedback": aggregated
+                }
+                
+                with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                    json.dump(output_data, f, ensure_ascii=False, indent=2)
+                
+                st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
+
+                # Display aggregated feedback
+                st.subheader("Feedback Rapport voor de Redactie")
+                st.markdown(aggregated.get("feedback_rapport", "Geen feedback beschikbaar."))
+                
+                with st.expander("Geïdentificeerde categorieën"):
+                    st.write(aggregated.get("categorieën", []))
+                
+                with st.expander("Redenering"):
+                    st.write(aggregated.get("beredeneer", ""))
+                
+                with st.expander("Alle individuele resultaten"):
+                    st.json(all_results)
+                    
+            except Exception as e:
+                st.error(f"Fout bij verwerken: {str(e)}")
+                st.exception(e)
+
+    # Download file
+    with open(OUTPUT_FILE, "rb") as f:
+        st.download_button(
+            label="Download Resultaten JSON",
+            data=f,
+            file_name=OUTPUT_FILE.name,
+            mime="application/json"
+        )
     
     # todo : load file if exists, otherwise process and save
 
