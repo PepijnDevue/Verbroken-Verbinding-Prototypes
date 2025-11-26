@@ -75,8 +75,15 @@ OUTPUT
 
 
 # ---------- Helper Functions ----------
-def extract_json_from_response(response: str) -> dict:
+def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dict:
     """Extract JSON from model response, handling potential markdown formatting."""
+    # Remove any leading text before the keyword (incl)
+    keyword_idx = response.find(keyword)
+    if keyword_idx != -1:
+        response = response[keyword_idx + len(keyword):]
+    else:
+        raise ValueError(f"Keyword '{repr(keyword)}' not found in response.")
+
     # Try to find JSON in code blocks
     json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', response, re.DOTALL)
     if json_match:
@@ -97,7 +104,7 @@ def process_comment_thread(comment: dict, pipe) -> dict:
     response = hf_utils.generate(prompt, pipe)
 
     st.write(response)
-    
+
     return extract_json_from_response(response)
 
 
