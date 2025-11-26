@@ -21,55 +21,72 @@ Je analyseert één thread uit de reacties onder een nieuwsbericht. Een thread b
 - alle reacties daaronder
 Je taak: identificeer of er bruikbare lezersfeedback voor de redactie in deze thread staat. Zo ja: vat dit kort, feitelijk en constructief samen.
 BELANGRIJK
+- Gebruik de artikeltekst hieronder als context voor het begrijpen van de feedback.
 - Negeer alle andere inhoud (discussies, meningen, politiek, off-topic).
 - Focus alleen op concrete signalen die waardevol zijn voor een redactie (bijv. onduidelijkheden, fouten, gewenste verdieping, ontbrekende bronnen, toon, misleidende titels, etc.).
-- Als er geen redactie-relevante feedback in de volledige thread staat, rapporteer een lege string.
+- Als er geen redactie-relevante feedback in de thread staat, rapporteer een lege string.
 WERKWIJZE
-1. Lees de volledige thread.
-2. Bepaal of er expliciet of impliciet feedback voor de redactie in voorkomt.
-3. Als feedback aanwezig is: bundel het tot een kernachtige, constructieve samenvatting.
-4. Als er geen feedback is: geef dat aan.
-5. Denk eerst stap voor stap in een interne beredeneer-sectie.
-6. Geef daarna alleen de JSON-output.
-OUTPUT-FORMAT
+1. Lees eerst de artikeltekst.
+2. Lees daarna de volledige thread.
+3. Bepaal of er expliciet of impliciet feedback voor de redactie in voorkomt.
+4. Als feedback aanwezig is: bundel het tot een kernachtige, constructieve samenvatting.
+5. Als er geen feedback is: geef dat aan.
+6. Denk eerst stap voor stap in een interne beredeneer-sectie.
+7. Geef daarna alleen de JSON-output.
+OUTPUT
 Geef uitsluitend de volgende JSON-structuur:
 {
     "beredeneer": "Korte, stap-voor-stap uitleg van je interne gedachten over hoe je tot het resultaat kwam.",
     "resultaat": "Constructieve samenvatting van de feedback, of: '' (lege string) als er geen feedback is."
 }
+ARTICLE
+<article>
+{{PLAATS_HIER_HET_ARTIKEL}}
+</article>
 INPUT
 Hieronder staat één thread:
-<thread>{{PLAATS_HIER_DE_THREAD}}</thread>
+<thread>
+{{PLAATS_HIER_DE_THREAD}}
+</thread>
 OUTPUT
 """
 
 AGGREGATION_PROMPT = """
 DOEL
-Je ontvangt een lijst met individuele rauwe stukken feedback voor de nieuwsredactie.
-Je taak is om alle aanwezige feedbackpunten te combineren tot één samenhangend, constructief redactierapport.
+Je ontvangt een lijst met JSON-objecten die per thread samengevatte feedback bevatten.
+Je taak is om alle aanwezige feedbackpunten te combineren tot één samenhangend, constructief en professioneel redactierapport.
 INHOUDSRICHTLIJNEN
-Cluster gelijkaardige punten (bijv. titelproblemen, feitencontrole, ontbrekende context, toon, bronvermelding).
-Vat dubbelingen samen.
-Formuleer neutraal, professioneel, respectvol en zonder verwijtende toon.
-Geef alleen punten die daadwerkelijk relevant zijn.
-Geef geen namen, quotes of individuele commenters weer.
-Geen verzinsels: alleen aggregatie van wat aanwezig is.
+- Lees de artikeltekst als context voor interpretatie.
+- Gebruik alle feedback die niet leeg is.
+- Cluster gelijkaardige punten (bijv. titelproblemen, feitencontrole, ontbrekende context, bronnen, toon).
+- Vermijd herhaling en bundel dubbele signalen.
+- Formuleer neutraal, professioneel en agressieloos.
+- Geen namen, geen quotes, geen verzonnen punten.
 WERKWIJZE
-Lees alle stukken feedback aandachtig door.
-Groepeer en synthetiseer de feedback in hoofdcategorieën.
-Formuleer de uiteindelijke samenvatting: helder, gestructureerd en kort.
-Denk eerst stap-voor-stap in een beredeneer-sectie.
-Geef daarna enkel de JSON-output.
-OUTPUT-FORMAT
+1. Lees eerst de artikeltekst.
+2. Lees alle JSON-items.
+3. Extraheer alle niet-lege 'resultaat'-velden.
+4. Groepeer en synthetiseer alle feedback in logische categorieën.
+5. Formuleer een geordende, constructieve eindrapportage.
+6. Denk eerst stap voor stap in een 'beredeneer'-sectie.
+7. Geef daarna alleen de JSON-output.
+OUTPUT
 Geef uitsluitend dit JSON-schema:
 {
-    "beredeneer": "Korte, stap-voor-stap beschrijving hoe je de lijst hebt geanalyseerd en geherstructureerd.",
-    "categorieën": "Lijst van de hoofdcategorieën van feedback die je hebt geïdentificeerd.",
-    "feedback_rapport": "De uiteindelijke, geaggregeerde feedbacksamenvatting voor de redactie."
+  "beredeneer": "Korte, stap-voor-stap beschrijving hoe je de lijst hebt geanalyseerd en geherstructureerd.",
+  "resultaat": {
+    "samenvatting": "Geclusterde en geordende feedback in neutrale, professionele toon."
+  }
 }
+ARTICLE
+<article>
+{{PLAATS_HIER_HET_ARTIKEL}}
+</article>
 INPUT
 Hieronder staat de lijst met JSON-resultaten:
-<results>{{PLAATS_HIER_DE_RESULTATEN}}</results>
+<results>
+{{PLAATS_HIER_DE_RESULTATEN}}
+</results>
 OUTPUT
 """
 
@@ -83,6 +100,8 @@ def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dic
         response = response[keyword_idx + len(keyword):]
     else:
         raise ValueError(f"Keyword '{repr(keyword)}' not found in response.")
+    
+    st.write(response)
 
     # Try to find JSON in code blocks
     json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', response, re.DOTALL)
@@ -97,18 +116,20 @@ def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dic
     raise ValueError("No valid JSON found in response")
 
 
-def process_comment_thread(comment: dict, pipe) -> dict:
+def process_comment_thread(comment: dict, article: str) -> dict:
     """Process a single comment thread and extract editorial feedback."""
-    prompt = NOTE_PROMPT.replace("{{PLAATS_HIER_DE_THREAD}}", json.dumps(comment))
+    prompt = (
+        NOTE_PROMPT
+        .replace("{{PLAATS_HIER_DE_THREAD}}", json.dumps(comment))
+        .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
+    )
     
-    response = hf_utils.generate(prompt, pipe)
-
-    st.write(response)
+    response = hf_utils.generate(prompt)
 
     return extract_json_from_response(response)
 
 
-def aggregate_feedback(results: list[dict], pipe) -> dict:
+def aggregate_feedback(results: list[dict], article: str) -> dict:
     """Aggregate all feedback results into a final report."""
     # Filter out empty results
     feedback_items = [r["resultaat"] for r in results if r.get("resultaat", "").strip()]
@@ -120,10 +141,13 @@ def aggregate_feedback(results: list[dict], pipe) -> dict:
             "feedback_rapport": "Er is geen constructieve feedback voor de redactie geïdentificeerd in de reacties."
         }
     
-    results_json = json.dumps(results)
-    prompt = AGGREGATION_PROMPT.replace("{{PLAATS_HIER_DE_RESULTATEN}}", results_json)
+    prompt = (
+        AGGREGATION_PROMPT
+        .replace("{{PLAATS_HIER_DE_RESULTATEN}}", json.dumps(results))
+        .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
+    )
     
-    response = hf_utils.generate(prompt, pipe)
+    response = hf_utils.generate(prompt)
     return extract_json_from_response(response)
 
 
@@ -155,13 +179,13 @@ def main() -> None:
             progress_bar = st.progress(0)
             
             for idx, comment in enumerate(comments):
-                result = process_comment_thread(comment, st.session_state.pipe)
+                result = process_comment_thread(comment, article_text)
                 all_results.append(result)
                 progress_bar.progress((idx + 1) / len(comments))
             
             # Aggregate feedback
             st.text("Aggregeren van feedback...")
-            aggregated = aggregate_feedback(all_results, st.session_state.pipe)
+            aggregated = aggregate_feedback(all_results, article_text)
             
             # Save results
             output_data = {

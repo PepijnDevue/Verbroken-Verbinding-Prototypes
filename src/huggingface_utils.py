@@ -95,8 +95,9 @@ def _load_model(model_name: str, accelerate: bool) -> pipeline:
     )
 
 
-def generate(user_input: str, pipe: pipeline) -> str:
-    outputs = pipe(user_input)
+def generate(user_input: str) -> str:
+    """Generate text using the loaded model pipeline."""
+    outputs = st.session_state.pipe(user_input)
 
     # Format outputs
     output = outputs[0]["generated_text"]
