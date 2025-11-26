@@ -103,15 +103,23 @@ def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dic
     
     st.write(response)
 
-    # Try to find JSON in code blocks
-    json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', response, re.DOTALL)
-    if json_match:
-        return json.loads(json_match.group(1))
-    
-    # Try to find raw JSON
-    json_match = re.search(r'\{.*\}', response, re.DOTALL)
-    if json_match:
-        return json.loads(json_match.group(0))
+    try:
+        # Try to find JSON in code blocks
+        json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', response, re.DOTALL)
+        if json_match:
+            print("JSON in code block found:")
+            print(json_match.group(1))
+            return json.loads(json_match.group(1))
+        
+        # Try to find raw JSON
+        json_match = re.search(r'\{.*\}', response, re.DOTALL)
+        if json_match:
+            print("Raw JSON found:")
+            print(json_match.group(0))
+            return json.loads(json_match.group(0))
+    except json.JSONDecodeError as e:
+        print(f"JSON decode error: {e}")
+        print(f"Response content: {response}")
     
     raise ValueError("No valid JSON found in response")
 
