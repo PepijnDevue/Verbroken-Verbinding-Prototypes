@@ -95,6 +95,9 @@ def process_comment_thread(comment: dict, pipe) -> dict:
     prompt = NOTE_PROMPT.replace("{{PLAATS_HIER_DE_THREAD}}", json.dumps(comment))
     
     response = hf_utils.generate(prompt, pipe)
+
+    st.write(response)
+    
     return extract_json_from_response(response)
 
 
@@ -145,7 +148,6 @@ def main() -> None:
             progress_bar = st.progress(0)
             
             for idx, comment in enumerate(comments):
-                st.text(f"Verwerken van reactie {idx + 1}/{len(comments)}...")
                 result = process_comment_thread(comment, st.session_state.pipe)
                 all_results.append(result)
                 progress_bar.progress((idx + 1) / len(comments))
