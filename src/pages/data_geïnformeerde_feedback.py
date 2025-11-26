@@ -96,33 +96,29 @@ def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dic
     """Extract JSON from model response, handling potential markdown formatting."""
     # Remove any leading text before the keyword (incl)
     keyword_idx = response.find(keyword)
-    if keyword_idx != -1:
-        response = response[keyword_idx + len(keyword):]
-    else:
-        raise ValueError(f"Keyword '{repr(keyword)}' not found in response.")
-    
-    st.write(response)
+    output = response[keyword_idx + len(keyword):]
 
     try:
         # Try to find JSON in code blocks
-        json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', response, re.DOTALL)
+        json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', output, re.DOTALL)
         if json_match:
-            print("JSON in code block found:")
-            print(json_match.group(1))
             return json.loads(json_match.group(1))
         
         # Try to find raw JSON
-        json_match = re.search(r'\{.*\}', response, re.DOTALL)
+        json_match = re.search(r'\{.*\}', output, re.DOTALL)
         if json_match:
-            print("Raw JSON found:")
-            print(json_match.group(0))
             return json.loads(json_match.group(0))
     except json.JSONDecodeError as e:
-        print(f"JSON decode error: {e}")
-        print(f"Response content: {response}")
+        with st.expander("JSON Decode Error Details"):
+            st.write(f"Fout bij het decoderen van JSON: {e}")
+            st.write("Volledige response:")
+            st.write(response)
+        return {}
     
-    raise ValueError("No valid JSON found in response")
-
+    with st.expander("Geen geldige JSON gevonden"):
+        st.write("Volledige response:")
+        st.write(response)
+        return {}
 
 def process_comment_thread(comment: dict, article: str) -> dict:
     """Process a single comment thread and extract editorial feedback."""
