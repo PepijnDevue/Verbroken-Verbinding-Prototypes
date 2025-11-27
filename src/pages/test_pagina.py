@@ -31,8 +31,7 @@ def setup_body():
         return
 
     with st.spinner("Genereren..."):
-        pipe = st.session_state.pipe
-        output = hf_utils.generate(user_input, pipe)
+        output = hf_utils.generate(user_input)
         st.markdown(f"""**Output:**<br>{output}""", unsafe_allow_html=True)
 
 

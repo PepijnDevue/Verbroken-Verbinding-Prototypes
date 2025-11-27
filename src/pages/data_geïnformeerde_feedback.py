@@ -175,8 +175,10 @@ def main() -> None:
         st.error("Language model not loaded. Please return to the main page to load the model.")
         return
     
+    no_file = not OUTPUT_FILE.exists()
+
     # Process comments button
-    if st.button("Verwerk reacties en genereer feedbackrapport"):
+    if no_file or st.button("Verwerk reacties en genereer feedbackrapport"):
         with st.spinner("Verwerken van reacties..."):
             try:
                 # Process each comment thread
@@ -230,9 +232,7 @@ def main() -> None:
             file_name=OUTPUT_FILE.name,
             mime="application/json"
         )
-    
-    # todo : load file if exists, otherwise process and save
-
+        
 
 if __name__ == "__main__":
     main()
