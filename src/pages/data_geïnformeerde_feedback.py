@@ -17,33 +17,27 @@ OUTPUT_FILE = Path("src/dgf_outputs.json")
 
 NOTE_PROMPT = """
 DOEL
-Je analyseert één thread uit de reacties onder een nieuwsbericht. Een thread bestaat uit:
-- één hoofdcomment
-- alle reacties daaronder
-Je taak: identificeer of er bruikbare lezersfeedback voor de redactie in deze thread staat. Zo ja: vat dit kort, feitelijk en constructief samen.
-BELANGRIJK
-- Gebruik de artikeltekst hieronder als context voor het begrijpen van de feedback.
-- Negeer alle andere inhoud (discussies, meningen, politiek, off-topic).
-- Focus alleen op concrete signalen die waardevol zijn voor een redactie (bijv. onduidelijkheden, fouten, gewenste verdieping, ontbrekende bronnen, toon, misleidende titels, etc.).
-- Als er geen redactie-relevante feedback in de thread staat, rapporteer een lege string.
+Je analyseert één thread onder een nieuwsartikel (één hoofdcomment + alle replies). Identificeer of er bruikbare, redactie-gerichte lezersfeedback in de thread staat. Alleen expliciet gegeven feedback moet worden vastgelegd; neem impliciete opmerkingen alleen mee als ze duidelijk en direct als suggestie/klacht aan de redactie zijn geformuleerd.
+BELANGRIJK — richtlijnen
+- Gebruik de artikeltekst als context; negeer alles wat niet direct relevant is (lange discussies, algemene meningen, off-topic).
+- Sla alleen feedback op die de gebruiker expliciet aan de redactie richt (bv. “de titel is misleidend”, “controleer deze bron”, “meer uitleg over X graag”, “fout in regel Y”).
+- Impliciete signalen: neem die alleen op als ze eenduidig actiegericht en concreet zijn (bv. “dit klopt niet” gevolgd door een concreet punt). Vermijd inferenties over intentie of sentiment.
+- Focus op concrete, redactie-bruikbare punten: fouten, onnauwkeurigheden, ontbrekende bronnen, onduidelijkheid, gewenste verdieping, toon/titels, feitelijke correcties, navraag naar bronnen.
 WERKWIJZE
 1. Lees eerst de artikeltekst.
 2. Lees daarna de volledige thread.
-3. Bepaal of er expliciet of impliciet feedback voor de redactie in voorkomt.
-4. Als feedback aanwezig is: bundel het tot een kernachtige, constructieve samenvatting.
-5. Als er geen feedback is: geef dat aan.
-6. Denk eerst stap voor stap in een interne beredeneer-sectie.
-7. Geef daarna alleen de JSON-output.
-OUTPUT
-Geef uitsluitend de volgende JSON-structuur:
+3. Bepaal of er expliciete redactie-feedback aanwezig is. (Als je alleen vage meningen of discussie ziet: geen feedback.)
+4. Als er feedback is: formuleer één korte, feitelijke en constructieve samenvatting.
+5. Als er geen redactie-relevante feedback is: geef een lege string.
+6. Geef een kort beslissingsoverzicht (max. 2 zinnen) waarin je feitelijk beschrijft welke signalen je als feedback hebt gezien en waarom je ze wel/niet meeneemt. Geen interne redenering of chain-of-thought.
+OUTPUT — strikt JSON
+Geef alleen de volgende JSON-structuur (én niets anders):
 {
-    "beredeneer": "Korte, stap-voor-stap uitleg van je interne gedachten over hoe je tot het resultaat kwam.",
-    "resultaat": "Constructieve samenvatting van de feedback, of: '' (lege string) als er geen feedback is."
+"beredeneer": "Kort beslissingsoverzicht (max. 2 zinnen). Geen interne chain-of-thought.",
+"resultaat": "Constructieve samenvatting van de expliciete redactie-feedback, of: "" (lege string) als er geen concrete feedback is."
 }
 ARTICLE
-<article>
-{{PLAATS_HIER_HET_ARTIKEL}}
-</article>
+<article> {{PLAATS_HIER_HET_ARTIKEL}} </article>
 INPUT
 Hieronder staat één thread:
 <thread>
