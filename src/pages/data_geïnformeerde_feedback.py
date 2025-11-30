@@ -217,14 +217,14 @@ def main() -> None:
 
     display_feedback_report()
 
-    # Download file
-    with open(OUTPUT_FILE, "rb") as f:
-        st.download_button(
-            label="Download Resultaten",
-            data=f,
-            file_name=OUTPUT_FILE.name,
-            mime="application/json"
-        )
+    # # Download file
+    # with open(OUTPUT_FILE, "rb") as f:
+    #     st.download_button(
+    #         label="Download Resultaten",
+    #         data=f,
+    #         file_name=OUTPUT_FILE.name,
+    #         mime="application/json"
+    #     )
         
 
 if __name__ == "__main__":
