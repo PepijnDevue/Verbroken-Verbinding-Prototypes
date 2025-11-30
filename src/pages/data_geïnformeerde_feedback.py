@@ -131,7 +131,10 @@ def process_comment_thread(comment: dict, article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
     
-    return generate_with_retries(prompt)
+    st.code(prompt, language="text")
+
+    return {}
+    # return generate_with_retries(prompt)
 
 
 def aggregate_feedback(results: list[str], article: str) -> dict:
