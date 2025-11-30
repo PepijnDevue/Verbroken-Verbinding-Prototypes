@@ -171,8 +171,8 @@ def main() -> None:
     comments: list[dict] = ARTICLE_DATA.get("comments", [])
 
     st.title("Data-geïnformeerde Feedback")
-    st.header(title)
-    st.text(article_text)
+    st.subheader(title)
+    st.write(article_text)
 
     with st.expander("Bekijk alle reacties", expanded=False):
         st.json(comments)
@@ -185,7 +185,7 @@ def main() -> None:
     
     no_file = not OUTPUT_FILE.exists()
 
-    col1, col2 = st.columns([4, 1])
+    col1, col2 = st.columns([5, 1])
 
     # Process comments button
     if no_file or col2.button("Genereer"):

@@ -26,8 +26,7 @@ def setup_body():
         st.warning("Please enter some input text.")
         return
 
-    if "pipe" not in st.session_state or st.session_state.pipe is None:
-        st.error("Model kon niet geladen worden bij sessiestart.")
+    if not st_utils.is_model_loaded():
         return
 
     with st.spinner("Genereren..."):

@@ -1,6 +1,7 @@
 import streamlit as st
 from pathlib import Path
 import src.huggingface_utils as hf_utils
+import src.streamlit_utils as st_utils
 
 def main():
     base_dir = Path(__file__).parent.resolve()
@@ -21,7 +22,7 @@ def main():
         expanded=True)
 
     # Ensure the default model is loaded once per session
-    if "pipe" not in st.session_state or st.session_state.pipe is None:
+    if not st_utils.is_model_loaded(verbose=False):
         hf_utils.load_model()
 
     pg.run()
