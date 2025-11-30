@@ -150,14 +150,14 @@ def aggregate_feedback(results: list[str], article: str) -> dict:
     response = hf_utils.generate(prompt)
     return extract_json_from_response(response)
 
-def display_feedback_report():
+def display_feedback_report(col1) -> None:
     # Read file
     with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
         output_data = json.load(f)
 
     # Main report
-    st.subheader("Feedback Rapport voor de Redactie")
-    st.write(output_data.get("aggregated_feedback", {}).get("samenvatting", "Geen feedback beschikbaar."))
+    col1.subheader("Feedback Rapport voor de Redactie")
+    st.text(output_data.get("aggregated_feedback", {}).get("samenvatting", "Geen feedback beschikbaar."))
 
     # Extra details
     with st.expander("Geänalyseerde Reacties"):
@@ -172,7 +172,7 @@ def main() -> None:
 
     st.title("Data-geïnformeerde Feedback")
     st.header(title)
-    st.markdown(article_text)
+    st.text(article_text)
 
     with st.expander("Bekijk alle reacties", expanded=False):
         st.json(comments)
@@ -185,8 +185,10 @@ def main() -> None:
     
     no_file = not OUTPUT_FILE.exists()
 
+    col1, col2 = st.columns([4, 1])
+
     # Process comments button
-    if no_file or st.button("Verwerk reacties en genereer feedbackrapport"):
+    if no_file or col2.button("Genereer"):
         with st.spinner("Verwerken van reacties..."):
             # Process each comment thread
             all_results = []
@@ -214,7 +216,7 @@ def main() -> None:
             
             st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
 
-    display_feedback_report()
+    display_feedback_report(col1)
 
     # Download file
     with open(OUTPUT_FILE, "rb") as f:
