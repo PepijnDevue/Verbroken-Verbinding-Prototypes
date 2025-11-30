@@ -190,7 +190,7 @@ def main() -> None:
                     all_results.append(result)
                     progress_bar.progress((idx + 1) / len(comments))
                 
-                extracted_feedbacks = [r.get("resultaat", "") for r in all_results if r.get("resultaat", "").strip()]
+                extracted_feedbacks = [r.get("resultaat", "") for r in all_results if isinstance(r, dict) and r.get("resultaat", "").strip()]
 
                 # Aggregate feedback
                 st.text("Aggregeren van feedback...")
