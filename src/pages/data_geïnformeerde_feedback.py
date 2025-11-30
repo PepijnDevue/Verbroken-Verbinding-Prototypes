@@ -13,7 +13,7 @@ import src.streamlit_utils as st_utils
 with open("src/dgf_venlo.json", "r", encoding="utf-8") as f:
     ARTICLE_DATA: dict = json.load(f)
 
-OUTPUT_FILE = Path("src/dgf_outputs.json")
+OUTPUT_FILE = Path("src/dgf_outputs_chatgpt.json")
 
 NOTE_PROMPT = """
 DOEL
@@ -131,10 +131,7 @@ def process_comment_thread(comment: dict, article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
     
-    st.code(prompt, language="text")
-
-    return {}
-    # return generate_with_retries(prompt)
+    return generate_with_retries(prompt)
 
 
 def aggregate_feedback(results: list[str], article: str) -> dict:
@@ -154,13 +151,13 @@ def aggregate_feedback(results: list[str], article: str) -> dict:
 
     return generate_with_retries(prompt, max_retries=10)
 
-def display_feedback_report(col1) -> None:
+def display_feedback_report() -> None:
     # Read file
     with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
         output_data = json.load(f)
 
     # Main report
-    col1.subheader("Feedback Rapport voor de Redactie")
+    st.subheader("Feedback Rapport voor de Redactie")
     st.text(output_data.get("aggregated_feedback", {}).get("samenvatting", "Geen feedback beschikbaar."))
 
     # Extra details
@@ -189,10 +186,8 @@ def main() -> None:
     
     no_file = not OUTPUT_FILE.exists()
 
-    col1, col2 = st.columns([5, 1])
-
-    # Process comments button
-    if no_file or col2.button("Genereer"):
+    # Process comments
+    if no_file: # or col2.button("Genereer"):
         with st.spinner("Verwerken van reacties..."):
             # Process each comment thread
             all_results = []
@@ -220,7 +215,7 @@ def main() -> None:
             
             st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
 
-    display_feedback_report(col1)
+    display_feedback_report()
 
     # Download file
     with open(OUTPUT_FILE, "rb") as f:
