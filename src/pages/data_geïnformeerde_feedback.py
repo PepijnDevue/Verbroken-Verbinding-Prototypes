@@ -3,6 +3,7 @@ import re
 from pathlib import Path
 import streamlit as st
 import src.huggingface_utils as hf_utils
+import src.streamlit_utils as st_utils
 
 # TODO AI:
 # Loop door de reacties, noteer takeaways voor de redactie.
@@ -73,10 +74,8 @@ WERKWIJZE
 OUTPUT
 Geef uitsluitend dit JSON-schema:
 {
-  "beredeneer": "Korte, stap-voor-stap beschrijving hoe je de lijst hebt geanalyseerd en geherstructureerd.",
-  "resultaat": {
+    "beredeneer": "Korte, stap-voor-stap beschrijving hoe je de lijst hebt geanalyseerd en geherstructureerd. En welke onderwerpen je bent tegengekomen.",
     "samenvatting": "Geclusterde en geordende feedback in neutrale, professionele toon."
-  }
 }
 ARTICLE
 <article>
@@ -151,6 +150,19 @@ def aggregate_feedback(results: list[str], article: str) -> dict:
     response = hf_utils.generate(prompt)
     return extract_json_from_response(response)
 
+def display_feedback_report():
+    # Read file
+    with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+        output_data = json.load(f)
+
+    # Main report
+    st.subheader("Feedback Rapport voor de Redactie")
+    st.write(output_data.get("aggregated_feedback", {}).get("samenvatting", "Geen feedback beschikbaar."))
+
+    # Extra details
+    with st.expander("Geänalyseerde Reacties"):
+        st.json(output_data.get("individual_results", []))
+
 
 # ---------- Main Page ----------
 def main() -> None:
@@ -168,8 +180,7 @@ def main() -> None:
     st.divider()
     
     # Check if model is loaded
-    if "pipe" not in st.session_state or st.session_state.pipe is None:
-        st.error("Language model not loaded. Please return to the main page to load the model.")
+    if not st_utils.is_model_loaded():
         return
     
     no_file = not OUTPUT_FILE.exists()
@@ -177,54 +188,38 @@ def main() -> None:
     # Process comments button
     if no_file or st.button("Verwerk reacties en genereer feedbackrapport"):
         with st.spinner("Verwerken van reacties..."):
-            try:
-                # Process each comment thread
-                all_results = []
-                progress_bar = st.progress(0)
-                
-                for idx, comment in enumerate(comments):
-                    result = process_comment_thread(comment, article_text)
-                    all_results.append(result)
-                    progress_bar.progress((idx + 1) / len(comments))
-                
-                extracted_feedbacks = [r.get("resultaat", "") for r in all_results if isinstance(r, dict) and r.get("resultaat", "").strip()]
+            # Process each comment thread
+            all_results = []
+            progress_bar = st.progress(0)
+            
+            for idx, comment in enumerate(comments):
+                result = process_comment_thread(comment, article_text)
+                all_results.append(result)
+                progress_bar.progress((idx + 1) / len(comments))
+            
+            extracted_feedbacks = [r.get("resultaat", "") for r in all_results if isinstance(r, dict) and r.get("resultaat", "").strip()]
 
-                # Aggregate feedback
-                st.text("Aggregeren van feedback...")
-                aggregated = aggregate_feedback(extracted_feedbacks, article_text)
-                
-                # Save results
-                output_data = {
-                    "individual_results": all_results,
-                    "aggregated_feedback": aggregated
-                }
-                
-                with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                    json.dump(output_data, f, ensure_ascii=False, indent=2)
-                
-                st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
+            # Aggregate feedback
+            st.text("Aggregeren van feedback...")
+            aggregated = aggregate_feedback(extracted_feedbacks, article_text)
+            
+            # Save results
+            output_data = {
+                "individual_results": all_results,
+                "aggregated_feedback": aggregated
+            }
+            
+            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                json.dump(output_data, f, ensure_ascii=False, indent=2)
+            
+            st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
 
-                # Display aggregated feedback
-                st.subheader("Feedback Rapport voor de Redactie")
-                st.markdown(aggregated.get("feedback_rapport", "Geen feedback beschikbaar."))
-                
-                with st.expander("Geïdentificeerde categorieën"):
-                    st.write(aggregated.get("categorieën", []))
-                
-                with st.expander("Redenering"):
-                    st.write(aggregated.get("beredeneer", ""))
-                
-                with st.expander("Alle individuele resultaten"):
-                    st.json(all_results)
-                    
-            except Exception as e:
-                st.error(f"Fout bij verwerken: {str(e)}")
-                st.exception(e)
+    display_feedback_report()
 
     # Download file
     with open(OUTPUT_FILE, "rb") as f:
         st.download_button(
-            label="Download Resultaten JSON",
+            label="Download Resultaten",
             data=f,
             file_name=OUTPUT_FILE.name,
             mime="application/json"
