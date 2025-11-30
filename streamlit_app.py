@@ -22,27 +22,11 @@ def main():
     pg = st.navigation(
         pages = {
             "Paginas": [welkom],
-            "Concepten": [ankertjes, dif, lhmu],
+            "Prototypes": [ankertjes, dif, lhmu],
             "Test": [test],
             "Documentatie": [doc_ankertjes, doc_dgf, doc_readme]
         }, 
         expanded=True)
-
-    # CSS to collapse the "Documentatie" section by default
-    st.markdown(
-        """
-        <style>
-        /* Target the last navigation section (Documentatie) */
-        [data-testid="stSidebarNav"] ul:last-child details {
-            open: false;
-        }
-        [data-testid="stSidebarNav"] ul:last-child details[open] {
-            /* Keep it functional when user clicks */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 
     # Ensure the default model is loaded once per session
     if not st_utils.is_model_loaded(verbose=False):
