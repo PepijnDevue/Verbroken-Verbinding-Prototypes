@@ -35,10 +35,8 @@ def _display_selected_article():
     # TODO: AI
     import random
     weight = round(random.uniform(0, 5), 1)
-    whole_weight = round(weight)
-    empty_weight = 5 - whole_weight
 
-    cols = st.columns([4, 1, 1])
+    cols = st.columns([5, 1])
 
     with cols[0]:
         st.space("small")
@@ -49,15 +47,6 @@ def _display_selected_article():
             label="Gewicht", 
             value=f"{weight:.1f}/5",
             help="Het aantal ankertjes geeft aan hoe emotioneel beladen het artikel is."   
-        )
-
-    with cols[2]:
-        badge = f"**{whole_weight*'⚓'}{empty_weight*'⚓︎'}**"
-
-        st.space("small")
-        st.badge(
-            label=badge,
-            color="grey"
         )
     
     st.write(ARTICLES[selected_article])
