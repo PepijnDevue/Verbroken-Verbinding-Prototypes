@@ -20,19 +20,17 @@ DOEL
 Je analyseert één thread onder een nieuwsartikel (één hoofdcomment + alle replies). Je taak is uitsluitend te bepalen of er expliciete feedback aan de redactie over het artikel in staat.
 HARDERE REGELS
 - Alleen feedback opnemen die duidelijk gericht is op het artikel of de redactie.
-- Politieke standpunten, beleidskritiek, ideologische uitspraken, maatschappelijke meningen of discussies zijn nooit feedback.
 - Reacties die een probleem beschrijven zonder het artikel te benoemen zijn geen feedback.
 - Alleen als een gebruiker expliciet verwijst naar het artikel of iets dat de redactie heeft gedaan/nagelaten (titel, feit, bron, uitleg, fout, gemis) mag het meetellen.
 - Geen interpretaties, geen afleidingen, geen pogingen intenties te raden.
-- Als er geen expliciete verwijzing is naar het artikel of redactionele keuzes → resultaat = "".
+- Als er geen expliciete verwijzing is naar het artikel of redactionele keuzes -> resultaat = "".
 WERKWIJZE
 1. Lees het artikel.
 2. Lees de volledige thread.
 3. Beantwoord alleen deze vraag:
-Is er een reactie die expliciet het artikel of de redactie aanspreekt?
+Is er een reactie die expliciet de redactie aanspreekt?
 4. Zo ja: vat dat kort en feitelijk samen.
 5. Zo nee: geef een lege string.
-6. De beredeneer-sectie bevat alleen een korte notitie (“geen expliciete verwijzing naar het artikel → geen feedback”). Geen interne gedachten.
 OUTPUT (strikte JSON)
 {
 "beredeneer": "Korte uitleg waarom er wel/geen expliciete verwijzing naar het artikel of redactie is.",
