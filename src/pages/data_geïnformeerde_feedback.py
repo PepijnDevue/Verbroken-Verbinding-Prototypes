@@ -133,12 +133,9 @@ def process_comment_thread(comment: dict, article: str) -> dict:
     return extract_json_from_response(response)
 
 
-def aggregate_feedback(results: list[dict], article: str) -> dict:
+def aggregate_feedback(results: list[str], article: str) -> dict:
     """Aggregate all feedback results into a final report."""
-    # Filter out empty results
-    feedback_items = [r["resultaat"] for r in results if r.get("resultaat", "").strip()]
-    
-    if not feedback_items:
+    if not results:
         return {
             "beredeneer": "Geen redactie-relevante feedback gevonden in de reacties.",
             "categorieën": [],
@@ -223,6 +220,11 @@ def main() -> None:
             except Exception as e:
                 st.error(f"Fout bij verwerken: {str(e)}")
                 st.exception(e)
+
+    if no_file:
+        # Create empty file placeholder
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            f.write("")
 
     # Download file
     with open(OUTPUT_FILE, "rb") as f:
