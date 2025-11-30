@@ -102,16 +102,26 @@ def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dic
         if json_match:
             return json.loads(json_match.group(0))
     except json.JSONDecodeError as e:
-        with st.expander("JSON Decode Error Details"):
-            st.write(f"Fout bij het decoderen van JSON: {e}")
-            st.write("Volledige response:")
-            st.write(response)
+        return {"error": "json_decode_error", "details": str(e), "response": response}
+
+    return {"error": "no_valid_json_found", "response": response}    
+
+def generate_with_retries(prompt: str, max_retries: int = 5) -> dict:
+    output = {"error": "not_processed_yet"}
+    iterations = 0
+
+    while output.get("error") is not None and iterations < max_retries:
+        response = hf_utils.generate(prompt)
+        output = extract_json_from_response(response)
+        iterations += 1
+
+    if output.get("error") is not None:
+        with st.expander(output.get("error")):
+            st.text(output.get("details", "No details available."))
+            st.text(output.get("response", "No response captured."))
         return {}
-    
-    with st.expander("Geen geldige JSON gevonden"):
-        st.write("Volledige response:")
-        st.write(response)
-        return {}
+
+    return output
 
 def process_comment_thread(comment: dict, article: str) -> dict:
     """Process a single comment thread and extract editorial feedback."""
@@ -121,9 +131,7 @@ def process_comment_thread(comment: dict, article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
     
-    response = hf_utils.generate(prompt)
-
-    return extract_json_from_response(response)
+    return generate_with_retries(prompt)
 
 
 def aggregate_feedback(results: list[str], article: str) -> dict:
@@ -140,9 +148,8 @@ def aggregate_feedback(results: list[str], article: str) -> dict:
         .replace("{{PLAATS_HIER_DE_RESULTATEN}}", json.dumps(results))
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
-    
-    response = hf_utils.generate(prompt)
-    return extract_json_from_response(response)
+
+    return generate_with_retries(prompt, max_retries=10)
 
 def display_feedback_report(col1) -> None:
     # Read file
