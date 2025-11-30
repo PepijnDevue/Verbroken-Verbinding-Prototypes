@@ -2,7 +2,7 @@ import streamlit as st
 import json
 
 # ---------- Constants & Data ----------
-with open("src/articles.json", "r", encoding="utf-8") as f:
+with open("src/data/articles.json", "r", encoding="utf-8") as f:
     ARTICLES = json.load(f)
 
 # ---------- Session State Keys ----------

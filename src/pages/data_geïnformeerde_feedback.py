@@ -10,10 +10,10 @@ import src.streamlit_utils as st_utils
 # Verzamel takeeways in tot een stuk constructieve feedback voor de redactie.
 
 # ---------- Constants & Data ----------
-with open("src/dgf_venlo.json", "r", encoding="utf-8") as f:
+with open("src/data/dgf.json", "r", encoding="utf-8") as f:
     ARTICLE_DATA: dict = json.load(f)
 
-OUTPUT_FILE = Path("src/dgf_outputs_chatgpt.json")
+OUTPUT_FILE = Path("src/data/dgf_outputs_chatgpt.json")
 
 NOTE_PROMPT = """
 DOEL
