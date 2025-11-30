@@ -221,11 +221,6 @@ def main() -> None:
                 st.error(f"Fout bij verwerken: {str(e)}")
                 st.exception(e)
 
-    if no_file:
-        # Create empty file placeholder
-        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-            f.write("")
-
     # Download file
     with open(OUTPUT_FILE, "rb") as f:
         st.download_button(
