@@ -15,9 +15,9 @@ def main():
     test = st.Page(str(pages_dir / "test_pagina.py"), title="Test Pagina", icon="🧪")
     
     # Documentation pages
-    doc_ankertjes = st.Page(str(pages_dir / "doc_ankertjes.py"), title="Ankertjes", icon="📄")
-    doc_dgf = st.Page(str(pages_dir / "doc_data_geinformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="📄")
-    doc_readme = st.Page(str(pages_dir / "doc_readme.py"), title="README", icon="📄")
+    doc_ankertjes = st.Page(str(pages_dir / "docs" / "doc_ankertjes.py"), title="Ankertjes", icon="📄")
+    doc_dgf = st.Page(str(pages_dir / "docs" / "doc_data_geinformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="📄")
+    doc_readme = st.Page(str(pages_dir / "docs" / "doc_readme.py"), title="README", icon="📄")
 
     pg = st.navigation(
         pages = {
