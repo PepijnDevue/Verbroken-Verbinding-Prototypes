@@ -1,5 +1,6 @@
 import streamlit as st
 import json
+import src.streamlit_utils as st_utils
 
 # ---------- Constants & Data ----------
 with open("src/data/lhmu.json", "r", encoding="utf-8") as f:
@@ -8,15 +9,13 @@ with open("src/data/lhmu.json", "r", encoding="utf-8") as f:
 ARTICLE = DATA["article"]
 DOSSIER = DATA["dossier"]
 
+PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
+
 # ---------- Main Page Logic ----------
 def main() -> None:
-    st.title("Leg het me uit knop")
+    st_utils.render_page_header("Leg Het Me Uit Knop", PAGE_EXPLANATION)
 
-    _display_article()
-
-def _display_article() -> None:
-    st.subheader(ARTICLE["title"])
-    st.write(ARTICLE["text"])
+    st_utils.render_article(**ARTICLE)
 
 if __name__ == "__main__":
 	main()

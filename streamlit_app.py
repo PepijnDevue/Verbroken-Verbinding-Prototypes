@@ -29,8 +29,8 @@ def main():
         expanded=True)
 
     # Ensure the default model is loaded once per session
-    if not st_utils.is_model_loaded(verbose=False):
-        hf_utils.load_model()
+    # if not st_utils.is_model_loaded(verbose=False):
+    #     hf_utils.load_model()
 
     pg.run()
 

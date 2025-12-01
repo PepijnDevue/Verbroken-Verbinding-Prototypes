@@ -40,3 +40,33 @@ def render_markdown_page(markdown_file_path: str):
     
     except Exception as e:
         st.error(f"Error reading markdown file: {e}")
+
+def render_page_header(title: str, explanation: str):
+    """
+    Render the page header with title and explanation.
+    
+    Args:
+        title: Title of the page
+        explanation: Explanation text for the page
+    """
+    st.title(title)
+    st.write(explanation)
+
+def render_article(
+        title: str, 
+        text: str, 
+        url: str = "", 
+        owner: str = "Onbekend",
+        **kwargs):
+    # Render within a bordered container for better visual separation
+    with st.container(border=True):
+        st.subheader(title)
+        st.markdown(text, unsafe_allow_html=True)
+
+        if not url:
+            return
+        
+        # Add source link
+        _, col = st.columns([3, 1])
+        with col:
+            st.write(f"[Bron: {owner}]({url})")

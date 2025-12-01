@@ -5,18 +5,14 @@ import streamlit as st
 import src.huggingface_utils as hf_utils
 import src.streamlit_utils as st_utils
 
-# TODO AI:
-# Loop door de reacties, noteer takeaways voor de redactie.
-# Verzamel takeeways in tot een stuk constructieve feedback voor de redactie.
 
 # ---------- Constants & Data ----------
 with open("src/data/dgf.json", "r", encoding="utf-8") as f:
-    ARTICLE_DATA: dict = json.load(f)
+    ARTICLE: dict = json.load(f)
 
 OUTPUT_FILE = Path("src/data/dgf_outputs_chatgpt.json")
 
-NOTE_PROMPT = """
-DOEL
+NOTE_PROMPT = """DOEL
 Je analyseert één thread onder een nieuwsartikel (één hoofdcomment + alle replies). Je taak is uitsluitend te bepalen of er expliciete feedback aan de redactie over het artikel in staat.
 HARDERE REGELS
 - Alleen feedback opnemen die duidelijk gericht is op het artikel of de redactie.
@@ -43,11 +39,9 @@ Hieronder staat één thread:
 <thread>
 {{PLAATS_HIER_DE_THREAD}}
 </thread>
-OUTPUT
-"""
+OUTPUT"""
 
-AGGREGATION_PROMPT = """
-DOEL
+AGGREGATION_PROMPT = """DOEL
 Je ontvangt een lijst met JSON-objecten die per thread samengevatte feedback bevatten.
 Je taak is om alle aanwezige feedbackpunten te combineren tot één samenhangend, constructief en professioneel redactierapport.
 INHOUDSRICHTLIJNEN
@@ -80,9 +74,9 @@ Hieronder staat de lijst met JSON-resultaten:
 <results>
 {{PLAATS_HIER_DE_RESULTATEN}}
 </results>
-OUTPUT
-"""
+OUTPUT"""
 
+PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
 
 # ---------- Helper Functions ----------
 def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dict:
@@ -133,7 +127,6 @@ def process_comment_thread(comment: dict, article: str) -> dict:
     
     return generate_with_retries(prompt)
 
-
 def aggregate_feedback(results: list[str], article: str) -> dict:
     """Aggregate all feedback results into a final report."""
     if not results:
@@ -164,67 +157,62 @@ def display_feedback_report() -> None:
     with st.expander("Geänalyseerde Reacties"):
         st.json(output_data.get("individual_results", []))
 
+def process_article_feedback(article_text, comments):
+    # Check if model is loaded
+    if not st_utils.is_model_loaded():
+        return
+
+    # Skip processing if output already exists
+    if OUTPUT_FILE.exists():
+        return
+
+    # Process comments
+    with st.spinner("Verwerken van reacties..."):
+        # Process each comment thread
+        all_results = []
+        progress_bar = st.progress(0)
+        
+        for idx, comment in enumerate(comments):
+            result = process_comment_thread(comment, article_text)
+            all_results.append(result)
+            progress_bar.progress((idx + 1) / len(comments))
+        
+        extracted_feedbacks = [r.get("resultaat", "") for r in all_results if isinstance(r, dict) and r.get("resultaat", "").strip()]
+
+        # Aggregate feedback
+        st.text("Aggregeren van feedback...")
+        aggregated = aggregate_feedback(extracted_feedbacks, article_text)
+        
+        # Save results
+        output_data = {
+            "individual_results": all_results,
+            "aggregated_feedback": aggregated
+        }
+        
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            json.dump(output_data, f, ensure_ascii=False, indent=2)
+        
+        st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
+
 
 # ---------- Main Page ----------
 def main() -> None:
-    title: str = ARTICLE_DATA.get("title", "Artikel")
-    article_text: str = ARTICLE_DATA.get("text", "")
-    comments: list[dict] = ARTICLE_DATA.get("comments", [])
+    # Separate article data
+    article_text = ARTICLE["text"]
+    comments = ARTICLE["comments"]
 
-    st.title("Data-geïnformeerde Feedback")
-    st.subheader(title)
-    st.write(article_text)
+    st_utils.render_page_header("Data-geïnformeerde Feedback", PAGE_EXPLANATION)
+
+    st_utils.render_article(**ARTICLE)
 
     with st.expander("Bekijk alle reacties", expanded=False):
         st.json(comments)
 
     st.divider()
     
-    # Check if model is loaded
-    if not st_utils.is_model_loaded():
-        return
-    
-    no_file = not OUTPUT_FILE.exists()
-
-    # Process comments
-    if no_file: # or col2.button("Genereer"):
-        with st.spinner("Verwerken van reacties..."):
-            # Process each comment thread
-            all_results = []
-            progress_bar = st.progress(0)
-            
-            for idx, comment in enumerate(comments):
-                result = process_comment_thread(comment, article_text)
-                all_results.append(result)
-                progress_bar.progress((idx + 1) / len(comments))
-            
-            extracted_feedbacks = [r.get("resultaat", "") for r in all_results if isinstance(r, dict) and r.get("resultaat", "").strip()]
-
-            # Aggregate feedback
-            st.text("Aggregeren van feedback...")
-            aggregated = aggregate_feedback(extracted_feedbacks, article_text)
-            
-            # Save results
-            output_data = {
-                "individual_results": all_results,
-                "aggregated_feedback": aggregated
-            }
-            
-            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                json.dump(output_data, f, ensure_ascii=False, indent=2)
-            
-            st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
+    process_article_feedback(article_text, comments)
 
     display_feedback_report()
-
-    # # Download file
-    # with open(OUTPUT_FILE, "rb") as f:
-    #     st.download_button(
-    #         label="Download Resultaten",
-    #         data=f,
-    #         file_name=OUTPUT_FILE.name,
-    #         mime="application/json"
-    #     )
         
 
 if __name__ == "__main__":
