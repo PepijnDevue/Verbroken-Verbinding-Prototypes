@@ -19,10 +19,9 @@ Uitleg over de 'Leg Het Me Uit' knop komt hier. Uitleg over de 'Leg Het Me Uit' 
 Eventueel?"""
 
 
-
 def main():
     st.set_page_config(
-        page_title="Verbroken Verbinding Conceptversies",
+        page_title="Verbroken Verbinding Prototypes",
         page_icon="⛓️‍💥"
     )
 
