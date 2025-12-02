@@ -12,7 +12,7 @@ RATING_KEY = "a_difficulty_rating"
 
 # ---------- Main Page Logic ----------
 def main() -> None:
-    st.title("Ankertjes")
+    st.title("Veertjes")
 	
     _init_session_defaults()
 
@@ -46,7 +46,7 @@ def _display_selected_article():
         st.metric(
             label="Gewicht", 
             value=f"{weight:.1f}/5",
-            help="Het aantal ankertjes geeft aan hoe emotioneel beladen het artikel is."   
+            help="Het aantal veertjes geeft aan hoe emotioneel beladen het artikel is."   
         )
     
     st.write(ARTICLES[selected_article])
