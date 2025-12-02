@@ -205,6 +205,13 @@ def main() -> None:
 
     st_utils.render_article(**ARTICLE)
 
+    """TODO
+    Na artikel eerst het feedbackrapport, daarna een uitklapper van gedachtegang van AI deel2.
+    Als laatste de uitklapper met alle comments
+
+    Headers van de expander zijn vragen: Wat zijn de reacties? Wat is de gedachtengang?
+    """
+
     with st.expander("Bekijk alle reacties", expanded=False):
         st.json(comments)
 

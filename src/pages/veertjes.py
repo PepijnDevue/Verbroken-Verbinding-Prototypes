@@ -13,6 +13,16 @@ RATING_KEY = "a_difficulty_rating"
 # ---------- Main Page Logic ----------
 def main() -> None:
     st.title("Veertjes")
+
+    """TODO
+    Ander stijl hier ook toepassen:
+    - Introductie
+    - Arttkel border
+    
+    Vraagteken info- Verduidelijken
+
+    Onder het artikel expander met AI gedachten - Hoe heeft AI deze score bepaald?
+    """
 	
     _init_session_defaults()
 

@@ -17,5 +17,11 @@ def main() -> None:
 
     st_utils.render_article(**ARTICLE)
 
+    """TODO
+    Onder artikel een knop "Leg Het Me Uit"
+    Daarna verschijnt disclaimertje en AI uitleg
+    Onderaan link naar gebruikte dossier
+    """
+
 if __name__ == "__main__":
 	main()
