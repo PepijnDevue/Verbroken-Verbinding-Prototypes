@@ -158,19 +158,7 @@
     }
   ],
   "aggregated_feedback": {
-    "beredeneer": "
-    1. **Artikelcontext**: Het artikel beschrijft een politievideo van drie verdachten die een man mishandelden. De focus ligt op het vrijgeven van herkenbare beelden en een oproep aan het publiek voor informatie.
-    2. **Input-analyse**: Er is één JSON-item met feedback, gericht op de reacties van lezers en de rol van Omroep Venlo. De feedback signaleert:
-       - Bezwaren tegen discriminerende/ongenanceerde opmerkingen onder het artikel.
-       - Kritiek op redactiekeuzes van Omroep Venlo, zoals het laten staan van slecht geïnformeerde of racistische reacties.
-    3. **Clustering**: De feedback valt onder één thema: **Moderatie en redactiebeleid** (omgang met lezersreacties, discriminatie, en redactiekeuzes).
-    4. **Synthetiseren**: De feedback is samengevat als een signaal over de noodzaak van strikt moderatiebeleid en transparantie in redactiekeuzes, zonder herhaling of toevoeging van niet-gerelateerde punten.
-    ",
-    "samenvatting": "
-    **Moderatie en redactiebeleid**
-    - Er zijn signalen dat lezersreacties onder het artikel discriminerend of ongenuanceerd van aard zijn. Dit roept vragen op over het moderatiebeleid van Omroep Venlo.
-    - De redactiekeuzes om bepaalde reacties (inclusief mogelijk racistische of slecht geïnformeerde opmerkingen) te laten staan, worden door lezers bekritiseerd.
-    - Aanbevolen wordt om actiever te modereren en duidelijk te communiceren over de richtlijnen voor lezersreacties, om een respectvolle en geïnformeerde discussie te waarborgen.
-    "
+    "beredeneer": "1. **Artikelcontext**: Het artikel beschrijft een politievideo van drie verdachten die een man mishandelden. De focus ligt op het vrijgeven van herkenbare beelden en een oproep aan het publiek voor informatie.\n\n2. **Input-analyse**: Er is één JSON-item met feedback, gericht op de reacties van lezers en de rol van Omroep Venlo. De feedback signaleert:\n\n- Bezwaren tegen discriminerende/ongenanceerde opmerkingen onder het artikel.\n\n- Kritiek op redactiekeuzes van Omroep Venlo, zoals het laten staan van slecht geïnformeerde of racistische reacties.\n\n3. **Clustering**: De feedback valt onder één thema: **Moderatie en redactiebeleid** (omgang met lezersreacties, discriminatie, en redactiekeuzes).\n\n4. **Synthetiseren**: De feedback is samengevat als een signaal over de noodzaak van strikt moderatiebeleid en transparantie in redactiekeuzes, zonder herhaling of toevoeging van niet-gerelateerde punten.",
+    "samenvatting": "**Moderatie en redactiebeleid**\n\n- Er zijn signalen dat lezersreacties onder het artikel discriminerend of ongenuanceerd van aard zijn. Dit roept vragen op over het moderatiebeleid van Omroep Venlo.\n\n- De redactiekeuzes om bepaalde reacties (inclusief mogelijk racistische of slecht geïnformeerde opmerkingen) te laten staan, worden door lezers bekritiseerd.\n\n- Aanbevolen wordt om actiever te modereren en duidelijk te communiceren over de richtlijnen voor lezersreacties, om een respectvolle en geïnformeerde discussie te waarborgen."
   }
 }
