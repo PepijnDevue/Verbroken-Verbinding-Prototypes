@@ -142,7 +142,9 @@ def aggregate_feedback(results: list[str], article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
 
-    return generate_with_retries(prompt, max_retries=10)
+    with st.expander("Aggregatie Prompt", expanded=False):
+        st.code(prompt, language="txt")
+    # return generate_with_retries(prompt, max_retries=10)
 
 def display_feedback_report() -> None:
     # Read file
