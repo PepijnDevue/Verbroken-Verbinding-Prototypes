@@ -157,7 +157,7 @@ def display_feedback_report() -> None:
 
     # Main report
     st.subheader("Feedback Rapport voor de Redactie")
-    st.text(aggregated_feedback.get("samenvatting", "Geen feedback beschikbaar."))
+    st.write(aggregated_feedback.get("samenvatting", "Geen feedback beschikbaar."))
     # Extra details
     with st.expander("Wat is de gedachtengang van de AI?"):
         st.write(aggregated_feedback.get("beredeneer", "Geen gedachtengang beschikbaar."))

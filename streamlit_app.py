@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
-import src.huggingface_utils as hf_utils
 import src.streamlit_utils as st_utils
+import src.huggingface_utils as hf_utils
 
 def main():
     base_dir = Path(__file__).parent.resolve()
@@ -28,7 +28,7 @@ def main():
         }, 
         expanded=True)
 
-    # Ensure the default model is loaded once per session
+    # # UNCOMMENT THIS CODE TO RUN WEB APP WITH MODEL LOADED
     if not st_utils.is_model_loaded(verbose=False):
         hf_utils.load_model()
 
