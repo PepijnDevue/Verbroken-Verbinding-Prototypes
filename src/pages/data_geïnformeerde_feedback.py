@@ -168,7 +168,7 @@ def process_article_feedback(article_text, comments):
         return
 
     # Skip processing if output already exists
-    if OUTPUT_FILE.exists() and not st.button("Analiseer reacties"):
+    if OUTPUT_FILE.exists() and not st.button("Analyseer reacties"):
         return
 
     # Process comments
