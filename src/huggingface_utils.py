@@ -92,7 +92,6 @@ def _load_model(model_name: str, accelerate: bool) -> pipeline:
         model=model_name,
         device_map=device_map,
         token=_get_token(),
-        trust_remote_code=True,
     )
 
 
