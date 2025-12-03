@@ -217,13 +217,7 @@ def main() -> None:
 
     st.divider()
 
-    doc = "doc_data_geïnformeerde_feedback.py"
-
-    path = Path(__file__).parent / "docs" / doc
-
-    if st.button("Hoe werkt de AI? 🔗", width="stretch"):
-        st.switch_page(path)
-
+    st_utils.render_page_link("doc_data_geïnformeerde_feedback.py")
 
 if __name__ == "__main__":
     main()
