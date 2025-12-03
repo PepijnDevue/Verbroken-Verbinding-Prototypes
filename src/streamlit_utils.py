@@ -102,6 +102,12 @@ def render_comment_section(title: str,
         for comment in comments:
             _render_comment_thread(comment)
 
+def render_page_link(doc_name: str) -> None:
+    path = Path(__file__).parent / "pages" / "docs" / doc_name
+
+    if st.button("Hoe werkt de AI? 🔗", width="stretch"):
+        st.switch_page(path)
+
 # ==== Helper functions ====
 def is_model_loaded(verbose: bool = True) -> bool:
     loaded = "pipe" in st.session_state and st.session_state.pipe is not None

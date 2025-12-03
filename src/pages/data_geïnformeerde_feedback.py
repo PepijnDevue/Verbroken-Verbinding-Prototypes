@@ -217,12 +217,11 @@ def main() -> None:
 
     st.divider()
 
-    path = Path(__file__).parent / "docs" / "doc_data_geïnformeerde_feedback.py"
+    doc = "doc_data_geïnformeerde_feedback.py"
 
-    # TODO kies 1 van onderstaande opties
-    st.page_link(path, label="Hoe werkt de AI?")
+    path = Path(__file__).parent / "docs" / doc
 
-    if st.button("Hoe werkt de AI?"):
+    if st.button("Hoe werkt de AI? 🔗", width="stretch"):
         st.switch_page(path)
 
 
