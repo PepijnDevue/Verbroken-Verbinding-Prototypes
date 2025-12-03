@@ -125,7 +125,9 @@ def process_comment_thread(comment: dict, article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
     
-    return generate_with_retries(prompt)
+    with st.expander("Thread Prompt", expanded=False):
+        st.code(prompt, language="txt")
+    # return generate_with_retries(prompt)
 
 def aggregate_feedback(results: list[str], article: str) -> dict:
     """Aggregate all feedback results into a final report."""
