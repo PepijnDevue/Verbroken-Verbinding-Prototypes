@@ -16,7 +16,7 @@ def main():
     
     # Documentation pages
     doc_veertjes = st.Page(str(pages_dir / "docs" / "doc_veertjes.py"), title="Veertjes", icon="📄")
-    doc_dgf = st.Page(str(pages_dir / "docs" / "doc_data_geinformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="📄")
+    doc_dgf = st.Page(str(pages_dir / "docs" / "doc_data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="📄")
     doc_readme = st.Page(str(pages_dir / "docs" / "doc_readme.py"), title="README", icon="📄")
 
     pg = st.navigation(

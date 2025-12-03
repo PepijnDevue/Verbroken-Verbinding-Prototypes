@@ -2,20 +2,10 @@ import streamlit as st
 from pathlib import Path
 from src.utils import get_runtime_info
 
-
+# ==== Render functions ====
 def render_diagnostics():
     with st.sidebar.expander("Model & Runtime Diagnostics", expanded=False):
         st.json(get_runtime_info())
-
-
-def is_model_loaded(verbose: bool = True) -> bool:
-    loaded = "pipe" in st.session_state and st.session_state.pipe is not None
-
-    if not loaded and verbose:
-        st.error("Language model not loaded. Please return to the main page to load the model.")
-
-    return loaded
-
 
 def render_markdown_page(markdown_file_path: str):
     """
@@ -52,21 +42,71 @@ def render_page_header(title: str, explanation: str):
     st.title(title)
     st.write(explanation)
 
-def render_article(
-        title: str, 
-        text: str, 
-        url: str = "", 
-        owner: str = "Onbekend",
-        **kwargs):
+def render_hyperlink(url: str,
+                     owner: str = "Onbekend",
+                     align_right: bool = True) -> None:
+    hyperlink = f"[Bron: {owner}]({url})"
+
+    if not align_right:
+        st.write(hyperlink)
+        return
+    
+    # Calculate column ratio based on hyperlink length
+    extracted = hyperlink[hyperlink.find('[')+1:hyperlink.find(']')]
+    ratio = 80//len(extracted)
+
+    _, col = st.columns([ratio-1, 1])
+    with col:
+        st.write(hyperlink)
+    
+def render_article(title: str, 
+                   text: str, 
+                   url: str = "", 
+                   owner: str = "Onbekend",
+                   **kwargs):
     # Render within a bordered container for better visual separation
     with st.container(border=True):
         st.subheader(title)
         st.markdown(text, unsafe_allow_html=True)
 
-        if not url:
-            return
+        if url:
+            render_hyperlink(url, owner)
         
-        # Add source link
-        _, col = st.columns([3, 1])
-        with col:
-            st.write(f"[Bron: {owner}]({url})")
+def _render_comment_thread(comment: dict) -> None:
+    user = comment.get("user", "Onbekend")
+    content = comment.get("content", "")
+
+    with st.expander(user, icon="👤", expanded=True):
+        st.write(content)
+
+        # Render sub-replies recursively
+        if replies := comment.get("replies", []):
+            for reply in replies:
+                _render_comment_thread(reply)
+
+def render_comment_section(title: str,
+                           comments: list[dict],
+                           url: str = "",
+                           owner: str = "Onbekend",
+                           **kwargs) -> None:
+    """
+    Comment dict contains:
+    - user: str
+    - content: str
+    - replies: list[dict] (optional)
+    """
+    with st.expander(title, expanded=False):
+        if url:
+            render_hyperlink(url, owner)
+
+        for comment in comments:
+            _render_comment_thread(comment)
+
+# ==== Helper functions ====
+def is_model_loaded(verbose: bool = True) -> bool:
+    loaded = "pipe" in st.session_state and st.session_state.pipe is not None
+
+    if not loaded and verbose:
+        st.error("Language model not loaded. Please return to the main page to load the model.")
+
+    return loaded

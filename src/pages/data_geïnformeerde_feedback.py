@@ -149,17 +149,18 @@ def display_feedback_report() -> None:
     with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
         output_data = json.load(f)
 
+    aggregated_feedback = output_data.get("aggregated_feedback", {})
+
     # Main report
     st.subheader("Feedback Rapport voor de Redactie")
-    st.text(output_data.get("aggregated_feedback", {}).get("samenvatting", "Geen feedback beschikbaar."))
-
+    st.text(aggregated_feedback.get("samenvatting", "Geen feedback beschikbaar."))
     # Extra details
-    with st.expander("Geänalyseerde Reacties"):
-        st.json(output_data.get("individual_results", []))
+    with st.expander("Wat is de gedachtengang van de AI?"):
+        st.write(aggregated_feedback.get("beredeneer", "Geen gedachtengang beschikbaar."))
 
 def process_article_feedback(article_text, comments):
     # Check if model is loaded
-    if not st_utils.is_model_loaded():
+    if not st_utils.is_model_loaded(verbose=False):
         return
 
     # Skip processing if output already exists
@@ -194,33 +195,32 @@ def process_article_feedback(article_text, comments):
         
         st.success(f"Analyse voltooid! Resultaten opgeslagen in {OUTPUT_FILE}")
 
-
 # ---------- Main Page ----------
 def main() -> None:
     # Separate article data
-    article_text = ARTICLE["text"]
-    comments = ARTICLE["comments"]
+    article_text = ARTICLE.get("text", "")
+    COMMENT_SECTION = ARTICLE.get("comment_section", {})
+    comments = COMMENT_SECTION.get("comments", [])
 
     st_utils.render_page_header("Data-geïnformeerde Feedback", PAGE_EXPLANATION)
 
     st_utils.render_article(**ARTICLE)
 
-    """TODO
-    Na artikel eerst het feedbackrapport, daarna een uitklapper van gedachtegang van AI deel2.
-    Als laatste de uitklapper met alle comments
+    process_article_feedback(article_text, comments)
+    display_feedback_report()
 
-    Headers van de expander zijn vragen: Wat zijn de reacties? Wat is de gedachtengang?
-    """
-
-    with st.expander("Bekijk alle reacties", expanded=False):
-        st.json(comments)
+    st_utils.render_comment_section(title="Wat zijn de reacties?", **COMMENT_SECTION)
 
     st.divider()
-    
-    process_article_feedback(article_text, comments)
 
-    display_feedback_report()
-        
+    path = Path(__file__).parent / "docs" / "doc_data_geïnformeerde_feedback.py"
+
+    # TODO kies 1 van onderstaande opties
+    st.page_link(path, label="Hoe werkt de AI?")
+
+    if st.button("Hoe werkt de AI?"):
+        st.switch_page(path)
+
 
 if __name__ == "__main__":
     main()
