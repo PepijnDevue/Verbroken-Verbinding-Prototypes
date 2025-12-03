@@ -10,7 +10,7 @@ import src.streamlit_utils as st_utils
 with open("src/data/dgf.json", "r", encoding="utf-8") as f:
     ARTICLE: dict = json.load(f)
 
-OUTPUT_FILE = Path("src/data/dgf_outputs_chatgpt.json")
+OUTPUT_FILE = Path("src/data/dgf_outputs.json")
 
 NOTE_PROMPT = """DOEL
 Je analyseert één thread onder een nieuwsartikel (één hoofdcomment + alle replies). Je taak is uitsluitend te bepalen of er expliciete feedback aan de redactie over het artikel in staat.
@@ -164,7 +164,7 @@ def process_article_feedback(article_text, comments):
         return
 
     # Skip processing if output already exists
-    if OUTPUT_FILE.exists():
+    if OUTPUT_FILE.exists() and not st.button("Analiseer reacties"):
         return
 
     # Process comments

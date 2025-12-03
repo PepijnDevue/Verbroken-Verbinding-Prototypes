@@ -16,7 +16,7 @@ try:
 except ImportError:
     torch = None
 
-MODEL_DEFAULT = "CohereLabs/aya-expanse-8b"
+MODEL_DEFAULT = "mistralai/Ministral-3-8B-Instruct-2512-BF16"
 
 # Load environment variables from .env file
 # This will work in development (with uv) and in Docker if .env is copied
