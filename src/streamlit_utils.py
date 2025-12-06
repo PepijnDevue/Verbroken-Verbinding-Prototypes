@@ -63,10 +63,30 @@ def render_article(title: str,
                    text: str, 
                    url: str = "", 
                    owner: str = "Onbekend",
+                   render_score: bool = False,
+                   score: float = -1,
+                   score_label: str = "",
+                   score_help: str = "",
                    **kwargs):
     # Render within a bordered container for better visual separation
     with st.container(border=True):
-        st.subheader(title)
+        # Header with optional score metric
+        if not render_score:
+            # Simple title rendering
+            st.subheader(title)
+        else:
+            # Render title with score metric
+            left, right = st.columns([5, 1])
+            with left:
+                st.subheader(title)
+            with right:
+                st.space("medium")
+                st.metric(
+                    label=score_label, 
+                    value=f"{score:.1f}/5",
+                    help=score_help
+                )
+
         st.markdown(text, unsafe_allow_html=True)
 
         if url:
@@ -107,6 +127,16 @@ def render_page_link(doc_name: str) -> None:
 
     if st.button("Hoe werkt de AI? 🔗", width="stretch"):
         st.switch_page(path)
+
+def render_article_selector(options, key) -> None:    
+    def format_func(option):
+        max_length = 25
+        if len(option) <= max_length:
+            return option
+        
+        return option[:max_length-3] + "..."
+    
+    st.pills("Kies een artikel", options=options, format_func=format_func, key=key)
 
 # ==== Helper functions ====
 def is_model_loaded(verbose: bool = True) -> bool:
