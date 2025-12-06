@@ -125,9 +125,7 @@ def process_comment_thread(comment: dict, article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
     
-    with st.expander("Thread Prompt", expanded=False):
-        st.code(prompt, language="txt")
-    # return generate_with_retries(prompt)
+    return generate_with_retries(prompt)
 
 def aggregate_feedback(results: list[str], article: str) -> dict:
     """Aggregate all feedback results into a final report."""
@@ -144,12 +142,9 @@ def aggregate_feedback(results: list[str], article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
 
-    with st.expander("Aggregatie Prompt", expanded=False):
-        st.code(prompt, language="txt")
-    # return generate_with_retries(prompt, max_retries=10)
+    return generate_with_retries(prompt, max_retries=10)
 
 def display_feedback_report() -> None:
-    # Read file
     with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
         output_data = json.load(f)
 
@@ -158,6 +153,7 @@ def display_feedback_report() -> None:
     # Main report
     st.subheader("Feedback Rapport voor de Redactie")
     st.write(aggregated_feedback.get("samenvatting", "Geen feedback beschikbaar."))
+
     # Extra details
     with st.expander("Wat is de gedachtengang van de AI?"):
         st.write(aggregated_feedback.get("beredeneer", "Geen gedachtengang beschikbaar."))
@@ -182,7 +178,18 @@ def process_article_feedback(article_text, comments):
             all_results.append(result)
             progress_bar.progress((idx + 1) / len(comments))
         
-        extracted_feedbacks = [r.get("resultaat", "") for r in all_results if isinstance(r, dict) and r.get("resultaat", "").strip()]
+        # Extract non-empty feedbacks
+        extracted_feedbacks = []
+        for result in all_results:
+            if not isinstance(result, dict):
+                continue
+
+            feedback = result.get("resultaat", "")
+
+            if not feedback.strip():
+                continue
+
+            extracted_feedbacks.append(feedback)
 
         # Aggregate feedback
         st.text("Aggregeren van feedback...")
