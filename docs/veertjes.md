@@ -1,11 +1,42 @@
 # Veertjes - Documentatie
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lobortis metus in lacus blandit imperdiet. Sed non nisi ut magna cursus mollis non vitae orci. Fusce vel tortor dapibus, vestibulum libero in, volutpat lacus. Ut volutpat varius eros, et rhoncus orci iaculis nec. In hac habitasse platea dictumst. Praesent nec rhoncus nulla. Pellentesque sollicitudin vitae lorem ut imperdiet. Nunc eget tortor quam. Ut a enim scelerisque purus sagittis finibus aliquam vel velit.
+## De formule
 
-Nullam quis erat felis. Curabitur non justo ullamcorper, consectetur ante nec, sollicitudin felis. Curabitur eget ex ac purus ullamcorper sagittis ac lacinia ipsum. Aenean vulputate elit pellentesque eros porta rhoncus. Curabitur fermentum, lacus vitae rutrum efficitur, nulla dolor volutpat neque, eget sodales augue nibh ac enim. Integer id neque sed ipsum tristique elementum. Vestibulum tincidunt ut velit accumsan condimentum. Donec consequat dolor id arcu laoreet, eget sagittis quam tincidunt. Fusce tincidunt lacus eget nibh efficitur, eu auctor nibh finibus. Nullam suscipit eget dolor id suscipit.
+Om de emotionele beladenheid van een nieuwsartikel te meten op een schaal van 0 tot 5 (in stappen van 0.5) wordt de volgende formule gebruikt:
 
-Phasellus non gravida quam. Morbi vel dui quis ipsum ultrices blandit quis sit amet tortor. Maecenas purus ligula, consequat vitae sapien in, dignissim fermentum metus. Donec sit amet dapibus lorem. Nullam vitae elit tristique, laoreet dolor commodo, pulvinar nisi. Donec euismod neque quis maximus laoreet. Morbi porta sodales lectus. Vestibulum id magna et leo molestie porttitor. Ut facilisis, urna id tincidunt blandit, leo tortor congue dolor, non aliquet sapien mi et risus. Vestibulum eget iaculis nisi, vitae dignissim ex. Aenean ornare ornare sem quis varius.
+### Ingrediënten
+- **Sentiment van de kop** (-1 tot 1):
+    - -1 = negatief : *("Ongeluk op A2")*
+    - 0 = neutraal : *("Parijs top van start gegaan")*
+    - 1 = positief : *("Suriname 50 jaar onafhankelijk")*
+- **Sentiment van de tekst** (-1 tot 1):
+    - -1 = negatief : *("De brand verwoestte het huis volledig...")*
+    - 0 = neutraal : *("De koning sprak met de ministers tijdens zijn staatsbezoek")*
+    - 1 = positief : *("De hulpverleners konden het kind op tijd uit het water halen")*
+- **Valentie van de tekst** (0 tot 1):
+    - 0 = laag : *("...dat ... het meisje langere tijd van haar vrijheid hebben beroofd")*
+    - 1 = hoog : *("Ze zat vast in een kooi, aan een ketting, en de klink van haar slaapkamerdeur was weggehaald.")*
 
-Nulla nec lacinia ex. Nam lacinia suscipit nisi, vitae feugiat lacus pretium vel. Suspendisse tempus condimentum arcu, at dapibus leo dignissim non. In accumsan nunc at leo porta, pharetra auctor libero elementum. Mauris non accumsan risus. Proin in porttitor lorem. Cras consequat interdum urna ac suscipit. Mauris tristique, mauris nec ornare egestas, risus sapien dictum ex, sed auctor erat eros sit amet arcu. Maecenas in turpis tincidunt, rutrum sapien a, rhoncus dui. Maecenas semper diam tellus, nec faucibus mauris pretium lacinia.
+### Hoe werkt de formule?
+#### De kerngedachte
+- Een negatief verhaal met hoge valentie = minimale score van 4/5
+- Gevolgend uit de bovenstaande kerngedachte: de kop heeft minder invloed op de score dan de tekst zelf.
+- De tekstvalentie werkt als een versterker van het sentiment, het maakt negatief sentiment nog negatiever en positief sentiment nog positiever.
 
-Donec quis quam ac ipsum gravida tristique. Phasellus facilisis feugiat augue, placerat egestas sem viverra vel. Maecenas in lectus sit amet diam gravida convallis eu et nulla. Donec molestie, dolor vitae eleifend pretium, nisi sem tempus erat, eu ultrices orci urna ultricies eros. In vestibulum nulla sit amet nulla maximus, in luctus elit accumsan. Pellentesque aliquet eros eu interdum laoreet. In aliquet arcu sit amet auctor convallis. Nunc quam justo, suscipit pretium tristique ut, ullamcorper ac eros. Quisque nec rutrum est, vitae finibus odio. Donec porttitor tellus ipsum. In dictum volutpat egestas. Morbi et diam a tellus lacinia faucibus. Praesent lobortis rhoncus massa. Donec porttitor mauris lorem, id pulvinar elit sagittis in. Donec ullamcorper velit eu magna viverra, nec varius dolor consequat.
+#### De berekening
+1. **Bereken de kopscore:**
+    > De kopscore wordt simpelweg berekend als de helft van het sentiment van de kop. Zo houden we de kerngedachte in stand.
+
+    `kopScore = kopSentiment * 0.5`
+2. **Bereken de tekstversterker:**
+    > Deze is nodig voor de tekstscore. Als de valentie laag is (0), dan is de versterker 1 en heeft het sentiment geen effect. Als de valentie hoog is (1), dan is de versterker 2 en wordt het sentiment verdubbeld.
+
+    `versterker = 1 - tekstValentie + tekstValentie * 2`
+3. **Bereken de tekstscore:**
+    > Versterk het sentiment van de tekst met de berekende versterker.
+
+    `tekstScore = tekstSentiment * versterker`
+3. **Bereken de totale score:**
+    > Hier worden de twee scores bij elkaar opgeteld en omgezet naar een schaal van 0 tot 5.
+    
+    `totaleScore = -1 * (tekstScore + kopScore) + 2.5`
