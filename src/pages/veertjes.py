@@ -118,7 +118,7 @@ def rate_articles() -> None:
             text_sentiment = hf_utils.generate_with_retries(text_prompt_filled)
             text_valence = hf_utils.generate_with_retries(valence_prompt_filled)
 
-            title_sentiment_score = title_sentiment.get("resulaat", -1000)
+            title_sentiment_score = title_sentiment.get("resultaat", -1000)
             text_sentiment_score = text_sentiment.get("resultaat", -1000)
             text_valence_score = text_valence.get("resultaat", -1000)
             title_multiplier = 0.5
