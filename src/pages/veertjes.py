@@ -159,7 +159,7 @@ def main() -> None:
     st_utils.render_article(
 		**ARTICLE,
         render_score=True,
-        score=ARTICLE.get("analysis", {}).get("score", "Unk"),
+        score=ARTICLE.get("analysis", {}).get("score", -1234),
         score_label="Beladenheid",
         score_help="Het aantal veertjes geeft aan hoe emotioneel beladen het artikel is."
 	)
