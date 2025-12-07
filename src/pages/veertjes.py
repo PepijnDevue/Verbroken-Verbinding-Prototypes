@@ -154,9 +154,6 @@ def main() -> None:
 
     chosen_title = st.session_state[ARTICLE_KEY]
     ARTICLE = ARTICLES[TITLES.index(chosen_title)]
-
-    # - Onder het artikel expander met AI gedachten 
-    # - Hoe heeft AI deze score bepaald?
     
     st_utils.render_article(
 		**ARTICLE,
@@ -171,14 +168,14 @@ def main() -> None:
 
     with st.expander("Hoe heeft de AI deze score bepaald?"):
         analysis = ARTICLE.get("analysis", {})
-        st.subheader("Nieuwskop Sentiment Analyse")
-        st.json(analysis.get("title_sentiment", {}))
+        st.markdown("**Nieuwskop Sentiment Analyse**:")
+        st.write(analysis.get("title_sentiment", {}).get("beredeneer", "Geen beredenering beschikbaar."))
         
-        st.subheader("Artikel Tekst Sentiment Analyse")
-        st.json(analysis.get("text_sentiment", {}))
+        st.markdown("**Artikel Tekst Sentiment Analyse**:")
+        st.write(analysis.get("text_sentiment", {}).get("beredeneer", "Geen beredenering beschikbaar."))
         
-        st.subheader("Artikel Tekst Valentie Analyse")
-        st.json(analysis.get("valence", {}))
+        st.markdown("**Artikel Tekst Valentie Analyse**:")
+        st.write(analysis.get("valence", {}).get("beredeneer", "Geen beredenering beschikbaar."))
 
     st.divider()
 	
