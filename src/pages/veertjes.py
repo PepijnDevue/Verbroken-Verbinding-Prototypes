@@ -47,6 +47,7 @@ Geef je antwoord als JSON in exact dit formaat:
 "beredeneer": "Werk je gedachtegang uit: wat valt je op in de tekst en hoe kom je tot je conclusie",
 "resultaat": 0
 }
+BELANGRIJK: Schrijf je beredenering als doorlopende tekst zonder markdown opmaak. Gebruik gewone zinnen gescheiden door spaties. Dit waarborgt de JSON-integriteit en voorkomt parsing-fouten.
 TEKST
 <text> {{PLAATS_HIER_DE_TEKST}} </text>
 OUTPUT"""
@@ -87,6 +88,7 @@ Geef je antwoord als JSON in exact dit formaat:
 "beredeneer": "Werk je gedachtegang uit: wat valt je op in de tekst en hoe kom je tot je conclusie",
 "resultaat": 0
 }
+BELANGRIJK: Schrijf je beredenering als doorlopende tekst zonder markdown opmaak. Gebruik gewone zinnen gescheiden door spaties. Dit waarborgt de JSON-integriteit en voorkomt parsing-fouten.
 TEKST
 <text> {{PLAATS_HIER_DE_TEKST}} </text>
 OUTPUT"""
