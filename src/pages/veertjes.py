@@ -44,7 +44,7 @@ WERKWIJZE
 OUTPUT_FORMAT
 Geef je antwoord als JSON in exact dit formaat:
 {
-"beredeneer": "leg hier uit welke aspecten van de tekst je hebt geanalyseerd, belangrijke passages die je sentiment beïnvloeden, en waarom je tot deze score komt",
+"beredeneer": "Werk je gedachtegang uit: wat valt je op in de tekst en hoe kom je tot je conclusie",
 "resultaat": 0
 }
 TEKST
@@ -84,7 +84,7 @@ WERKWIJZE
 OUTPUT_FORMAT
 Geef je antwoord als JSON in exact dit formaat:
 {
-"beredeneer": "beschrijf welke passages je hebt gevonden die aan criterium 1 en/of 2 voldoen, citeer relevante voorbeelden, noteer of het positieve of negatieve valentie betreft, en leg uit waarom dit wel/niet leidt tot hoge valentie",
+"beredeneer": "Werk je gedachtegang uit: wat valt je op in de tekst en hoe kom je tot je conclusie",
 "resultaat": 0
 }
 TEKST
