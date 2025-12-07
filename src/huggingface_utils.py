@@ -4,6 +4,8 @@ Contains functions for model validation, loading, and text generation.
 """
 
 import os
+import re
+import json
 from pathlib import Path
 import streamlit as st
 from transformers import pipeline
@@ -101,5 +103,43 @@ def generate(user_input: str) -> str:
 
     # Format outputs
     output = outputs[0]["generated_text"]
+
+    return output
+
+def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dict:
+    """Extract JSON from model response, handling potential markdown formatting."""
+    # Remove any leading text before the keyword (incl)
+    keyword_idx = response.find(keyword)
+    output = response[keyword_idx + len(keyword):]
+
+    try:
+        # Try to find JSON in code blocks
+        json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', output, re.DOTALL)
+        if json_match:
+            return json.loads(json_match.group(1))
+        
+        # Try to find raw JSON
+        json_match = re.search(r'\{.*\}', output, re.DOTALL)
+        if json_match:
+            return json.loads(json_match.group(0))
+    except json.JSONDecodeError as e:
+        return {"error": "json_decode_error", "details": str(e), "response": response}
+
+    return {"error": "no_valid_json_found", "response": response}    
+
+def generate_with_retries(prompt: str, max_retries: int = 5) -> dict:
+    output = {"error": "not_processed_yet"}
+    iterations = 0
+
+    while output.get("error") is not None and iterations < max_retries:
+        response = generate(prompt)
+        output = extract_json_from_response(response)
+        iterations += 1
+
+    if output.get("error") is not None:
+        with st.expander(output.get("error")):
+            st.text(output.get("details", "No details available."))
+            st.text(output.get("response", "No response captured."))
+        return {}
 
     return output

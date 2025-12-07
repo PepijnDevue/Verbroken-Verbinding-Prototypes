@@ -79,44 +79,6 @@ OUTPUT"""
 PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
 
 # ---------- Helper Functions ----------
-def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dict:
-    """Extract JSON from model response, handling potential markdown formatting."""
-    # Remove any leading text before the keyword (incl)
-    keyword_idx = response.find(keyword)
-    output = response[keyword_idx + len(keyword):]
-
-    try:
-        # Try to find JSON in code blocks
-        json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', output, re.DOTALL)
-        if json_match:
-            return json.loads(json_match.group(1))
-        
-        # Try to find raw JSON
-        json_match = re.search(r'\{.*\}', output, re.DOTALL)
-        if json_match:
-            return json.loads(json_match.group(0))
-    except json.JSONDecodeError as e:
-        return {"error": "json_decode_error", "details": str(e), "response": response}
-
-    return {"error": "no_valid_json_found", "response": response}    
-
-def generate_with_retries(prompt: str, max_retries: int = 5) -> dict:
-    output = {"error": "not_processed_yet"}
-    iterations = 0
-
-    while output.get("error") is not None and iterations < max_retries:
-        response = hf_utils.generate(prompt)
-        output = extract_json_from_response(response)
-        iterations += 1
-
-    if output.get("error") is not None:
-        with st.expander(output.get("error")):
-            st.text(output.get("details", "No details available."))
-            st.text(output.get("response", "No response captured."))
-        return {}
-
-    return output
-
 def process_comment_thread(comment: dict, article: str) -> dict:
     """Process a single comment thread and extract editorial feedback."""
     prompt = (
@@ -125,7 +87,7 @@ def process_comment_thread(comment: dict, article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
     
-    return generate_with_retries(prompt)
+    return hf_utils.generate_with_retries(prompt)
 
 def aggregate_feedback(results: list[str], article: str) -> dict:
     """Aggregate all feedback results into a final report."""
@@ -142,7 +104,7 @@ def aggregate_feedback(results: list[str], article: str) -> dict:
         .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article)
     )
 
-    return generate_with_retries(prompt, max_retries=10)
+    return hf_utils.generate_with_retries(prompt, max_retries=10)
 
 def display_feedback_report() -> None:
     with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
