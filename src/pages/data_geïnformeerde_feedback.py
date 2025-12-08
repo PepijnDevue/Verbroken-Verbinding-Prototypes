@@ -125,6 +125,9 @@ def process_article_feedback(article_text, comments):
     if not st_utils.is_model_loaded(verbose=False):
         return
 
+    # COMMENT THIS CODE TO ENABLE PROCESSING BUTTON
+    return
+
     # Skip processing if output already exists
     if OUTPUT_FILE.exists() and not st.button("Analyseer reacties"):
         return

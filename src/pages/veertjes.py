@@ -203,23 +203,16 @@ def main() -> None:
         score_help="Het aantal veertjes geeft aan hoe emotioneel beladen het artikel is."
 	)
 	
-    if st.button("Beoordeel met AI"):
-        rate_articles()
+    # UNCOMMENT THIS CODE TO ENABLE AI RATING BUTTON
+    # if st.button("Beoordeel met AI"):
+    #     rate_articles()
 
     with st.expander("Hoe heeft de AI deze score bepaald?"):
         analysis = ARTICLE.get("analysis", {})
 
-        with st.expander("Raw output van de AI", expanded=False):
-            st.json(analysis)
-
-        st.markdown("**Nieuwskop Sentiment Analyse**:")
-        st.write(analysis.get("title_sentiment", {}).get("beredeneer", "Geen beredenering beschikbaar."))
-        
-        st.markdown("**Artikel Tekst Sentiment Analyse**:")
-        st.write(analysis.get("text_sentiment", {}).get("beredeneer", "Geen beredenering beschikbaar."))
-        
-        st.markdown("**Artikel Tekst Valentie Analyse**:")
-        st.write(analysis.get("valence", {}).get("beredeneer", "Geen beredenering beschikbaar."))
+        for header, content in analysis.get("beredeneer", {}).items():
+            st.markdown(f"**{header.replace('_', ' ').title()}**:")
+            st.write(content)
 
     st.divider()
 	

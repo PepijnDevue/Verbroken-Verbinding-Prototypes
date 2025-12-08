@@ -25,11 +25,9 @@ def main():
         page_icon="⛓️‍💥"
     )
 
-    """TODO
-    Als je via tekst kan linken naar de prototype pagina's dan deze uitleg behouden, anders is het dubbelop.
-
-    Links en doorverwijzingen voor nu even open houden, misschien later toevoegen. 
-    """
+    # TODO
+    # Als je via tekst kan linken naar de prototype pagina's dan deze uitleg behouden, anders is het dubbelop.
+    # Links en doorverwijzingen voor nu even open houden, misschien later toevoegen. 
 
     st.title("Verbroken Verbinding - Prototypes")
     st.markdown(TEXT)

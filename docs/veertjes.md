@@ -1,5 +1,5 @@
 # Veertjes - Documentatie
-
+<!-- 
 ## De formule
 
 Om de emotionele beladenheid van een nieuwsartikel te meten op een schaal van 0 tot 5 (in stappen van 0.5) wordt de volgende formule gebruikt:
@@ -42,7 +42,7 @@ Om de emotionele beladenheid van een nieuwsartikel te meten op een schaal van 0 
     `totaleScore = -1 * (tekstScore + kopScore) + 2.5`
 
 
-## Schaal 2.0
+## Schaal 2.0 -->
 
 ### 1. Definitie van Emotionele Zwaarte
 Emotionele zwaarte meet de mate waarin een nieuwsartikel emotionele impact heeft op de Nederlandse lezer. Het is een samengestelde meting die rekening houdt met:
