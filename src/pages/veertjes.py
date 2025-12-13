@@ -10,8 +10,8 @@ Je taak is om nieuwsartikelen te analyseren en een score toe te kennen op basis 
 
 INSTRUCTIES
 Lees het volledige artikel en analyseer de emotionele impact.
-Geef je output in strikt JSON-formaat:
-{\"beredeneer\": \"Uitleg van je analyse en score, dek alle aspecten kort\", \"resultaat\": score}
+Geef een uitleg van je analyse en score, dek alle aspecten kort. Schrijf dit onder BEREDENEER.
+Geef daarna alleen de score als een getal tussen 0 en 5 onder SCORE.
 
 SCHAAL
 0-0.5: POSITIEF - Vreugde, trots, inspiratie. Emotionele woorden, succesverhalen, menselijke veerkracht.
@@ -34,31 +34,47 @@ Kinderen altijd +0.5 tot +1 zwaarder.
 Gebruik halve punten voor nuance.
 
 ARTIKEL
-<title> {{PLAATS_HIER_DE_TITEL}} </title>
-<text> {{PLAATS_HIER_HET_ARTIKEL}} </text>
+{{PLAATS_HIER_DE_TITEL}}
+{{PLAATS_HIER_HET_ARTIKEL}}
 
-OUTPUT"""
+BEREDENEER
+"""
+
 
 # ---------- Constants & Data ----------
 with open("src/data/veertjes.json", "r", encoding="utf-8") as f:
     ARTICLES = json.load(f)
 
-# ---------- Session State Keys ----------
-ARTICLE_KEY = "a_selected_article"
+ARTICLE_KEY = "selected_article"
+TITLES = [article.get("title", "Onbekend") for article in ARTICLES]
 
-# ---------- Page Explanation ----------
 PAGE_EXPLANATION = """Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes."""
 
-# ---
+
+# ---------- Helper Functions ----------
+def _init_session_defaults() -> None:
+	"""Initialiseer standaardkeuzes en staat voor artikel."""
+	first_title = ARTICLES[0].get("title", "Onbekend")
+	if ARTICLE_KEY not in st.session_state:
+		st.session_state[ARTICLE_KEY] = first_title
+
+
 def rate_articles() -> None:
+    if not st_utils.is_model_loaded(verbose=False):
+        return
+    
+    if not st.button("Beoordeel artikelen op veertjes"):
+        return
+
     with st.spinner("AI aan het denken..."):
         for article in ARTICLES:
             title = article.get("title", "Onbekend")
             text = article.get("text", "")
             
-            prompt_filled = PROMPT.replace("{{PLAATS_HIER_DE_TITEL}}", title).replace("{{PLAATS_HIER_HET_ARTIKEL}}", text)
+            prompt_filled = PROMPT.replace("{{PLAATS_HIER_DE_TITEL}}", title)
+            prompt_filled = prompt_filled.replace("{{PLAATS_HIER_HET_ARTIKEL}}", text)
 
-            analysis = hf_utils.generate_with_retries(prompt_filled)
+            analysis = hf_utils.generate_with_retries(prompt_filled, result_str="SCORE")
 
             article.update({"analysis": analysis})
 
@@ -66,10 +82,9 @@ def rate_articles() -> None:
         with open("src/data/veertjes.json", "w", encoding="utf-8") as f:
             json.dump(ARTICLES, f, ensure_ascii=False, indent=4)
 
+
 # ---------- Main Page Logic ----------
 def main() -> None:
-    TITLES = [article.get("title", "Onbekend") for article in ARTICLES]
-
     _init_session_defaults()
 
     st_utils.render_page_header("Veertjes", PAGE_EXPLANATION)
@@ -79,6 +94,8 @@ def main() -> None:
     chosen_title = st.session_state[ARTICLE_KEY]
     ARTICLE = ARTICLES[TITLES.index(chosen_title)]
     
+    rate_articles()
+
     st_utils.render_article(
 		**ARTICLE,
         render_score=True,
@@ -86,10 +103,6 @@ def main() -> None:
         score_label="Beladenheid",
         score_help="Het aantal veertjes geeft aan hoe emotioneel beladen het artikel is."
 	)
-	
-    # UNCOMMENT THIS CODE TO ENABLE AI RATING BUTTON
-    # if st.button("Beoordeel met AI"):
-    #     rate_articles()
 
     with st.expander("Hoe heeft de AI deze score bepaald?"):
         analysis = ARTICLE.get("analysis", {})
@@ -101,13 +114,6 @@ def main() -> None:
     st.divider()
 	
     st_utils.render_page_link("doc_veertjes.py")
-	
-# ---------- UI Helpers ----------
-def _init_session_defaults() -> None:
-	"""Initialiseer standaardkeuzes en staat voor artikel."""
-	first_title = ARTICLES[0].get("title", "Onbekend")
-	if ARTICLE_KEY not in st.session_state:
-		st.session_state[ARTICLE_KEY] = first_title
 
 
 if __name__ == "__main__":

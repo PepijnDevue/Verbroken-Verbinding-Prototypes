@@ -138,6 +138,24 @@ def render_article_selector(options, key) -> None:
     
     st.pills("Kies een artikel", options=options, format_func=format_func, key=key)
 
+def render_popup_dialog(title: str,
+                        text: str,
+                        url: str = "",
+                        owner: str = "Onbekend") -> None:
+    @st.dialog(title, dismissible=True, width="medium")
+    def _inner():
+        st.write(text)
+
+        if not url:
+            return
+        
+        render_hyperlink(
+            url=url,
+            owner=owner
+        )
+
+    _inner()
+
 # ==== Helper functions ====
 def is_model_loaded(verbose: bool = True) -> bool:
     loaded = "pipe" in st.session_state and st.session_state.pipe is not None

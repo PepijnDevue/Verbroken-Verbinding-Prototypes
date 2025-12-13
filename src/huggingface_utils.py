@@ -4,8 +4,6 @@ Contains functions for model validation, loading, and text generation.
 """
 
 import os
-import re
-import json
 from pathlib import Path
 import streamlit as st
 from transformers import pipeline
@@ -32,28 +30,11 @@ def _get_token() -> str | None:
     return os.getenv("HF_TOKEN") or None
 
 
-def _unload_model():
-    """Unload the current model and free GPU memory."""
-    if "pipe" not in st.session_state or st.session_state.pipe is None:
-        return
-    
-    # Delete the pipeline
-    del st.session_state.pipe
-    st.session_state.pipe = None
-    
-    # Clear CUDA cache to free GPU memory
-    if torch is not None and torch.cuda.is_available():
-        torch.cuda.empty_cache()
-
-
 def load_model(model_name: str = MODEL_DEFAULT, 
                accelerate: bool = True
                ) -> None:
     if not _validate_huggingface_model(model_name):
         return
-    
-    # Unload existing model to free memory
-    _unload_model()
     
     st.session_state.pipe = _load_model(model_name=model_name, accelerate=accelerate)
 
@@ -106,40 +87,35 @@ def generate(user_input: str) -> str:
 
     return output
 
-def extract_json_from_response(response: str, keyword: str = ">\nOUTPUT") -> dict:
-    """Extract JSON from model response, handling potential markdown formatting."""
-    # Remove any leading text before the keyword (incl)
-    keyword_idx = response.find(keyword)
-    output = response[keyword_idx + len(keyword):]
+def generate_with_retries(prompt: str, 
+                          reason_str: str = "BEREDENEER",
+                          result_str: str = "RESULTAAT",
+                          max_retries: int = 5
+                          ) -> dict:
+    reasoning = None
+    result = None
 
-    try:
-        # Try to find JSON in code blocks
-        json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', output, re.DOTALL)
-        if json_match:
-            return json.loads(json_match.group(1))
-        
-        # Try to find raw JSON
-        json_match = re.search(r'\{.*\}', output, re.DOTALL)
-        if json_match:
-            return json.loads(json_match.group(0))
-    except json.JSONDecodeError as e:
-        return {"error": "json_decode_error", "details": str(e), "response": response}
-
-    return {"error": "no_valid_json_found", "response": response}    
-
-def generate_with_retries(prompt: str, max_retries: int = 5) -> dict:
-    output = {"error": "not_processed_yet"}
-    iterations = 0
-
-    while output.get("error") is not None and iterations < max_retries:
+    while (reasoning is None or result is None) and max_retries > 0:
         response = generate(prompt)
-        output = extract_json_from_response(response)
-        iterations += 1
 
-    if output.get("error") is not None:
-        with st.expander(output.get("error")):
-            st.text(output.get("details", "No details available."))
-            st.text(output.get("response", "No response captured."))
-        return {}
+        # Search for reasoning and result sections
+        reason_identifier = "\n" + reason_str
+        result_identifier = "\n" + result_str
+        reason_idx = response.find(reason_identifier)
+        result_idx = response.find(result_identifier)
 
-    return output
+        # Try again if not found
+        if reason_idx == -1 or result_idx == -1:
+            max_retries -= 1
+            continue
+
+        # Extract reasoning and result
+        reasoning = response[reason_idx + len(reason_identifier):result_idx].strip()
+        result = response[result_idx + len(result_identifier):].strip()
+
+        max_retries -= 1
+
+    return {
+        reason_str.lower(): reasoning, 
+        result_str.lower(): result
+    }

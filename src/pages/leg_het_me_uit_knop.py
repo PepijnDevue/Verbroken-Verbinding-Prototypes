@@ -3,16 +3,8 @@ import json
 import src.streamlit_utils as st_utils
 import src.huggingface_utils as hf_utils
 
-# ---------- Constants & Data ----------
-with open("src/data/lhmu.json", "r", encoding="utf-8") as f:
-    DATA: dict = json.load(f)
 
-ARTICLE = DATA["article"]
-DOSSIER = DATA["dossier"]
-
-PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
-
-# ---------- Prompt Template ----------
+# ---------- Prompt ----------
 PROMPT = """Je bent een expert in het uitleggen van nieuwsartikelen en de grotere context daaromheen.
 Je taak is om een begrijpelijke uitleg te geven van het gegeven artikel, zodat een gemiddelde lezer de inhoud en context beter kan begrijpen.
 Meestal is er een nieuw artikel toegevoegd aan een bestaand dossier. Dan vernieuw je de huidige uitleg met de nieuwe informatie.
@@ -39,26 +31,65 @@ NIEUWE ARTIKEL
 BEREDENEER
 """
 
-def generate_with_retries(prompt: str, max_retries: int = 5) -> dict:
-    beredeneer = None
-    uitleg = None
 
-    while (beredeneer is None or uitleg is None) and max_retries > 0:
-        response = hf_utils.generate(prompt)
-        
-        beredeneer_idx = response.find("\nBEREDENEER")
-        uitleg_idx = response.find("\nUITLEG")
+# ---------- Constants & Data ----------
+with open("src/data/lhmu.json", "r", encoding="utf-8") as f:
+    DATA: dict = json.load(f)
 
-        if beredeneer_idx == -1 or uitleg_idx == -1:
-            max_retries -= 1
-            continue
+ARTICLE = DATA["article"]
+DOSSIER = DATA["dossier"]
 
-        beredeneer = response[beredeneer_idx + len("\nBEREDENEER"):uitleg_idx].strip()
-        uitleg = response[uitleg_idx + len("\nUITLEG"):].strip()
+PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
 
-        max_retries -= 1
 
-    return {"beredeneer": beredeneer, "uitleg": uitleg}
+# ---------- Helper Functions ----------
+def process_article_explanation() -> None:
+    if not st_utils.is_model_loaded(verbose=False):
+        return
+    
+    if not st.button("Leg Het Me Uit"):
+        return
+
+    ARTICLES = DOSSIER["articles"]
+
+    # Add the main article at the end of the list
+    all_articles = ARTICLES + [{"content": ARTICLE["title"] + ARTICLE["text"]}]
+
+    explanation_data = []
+    current_explanation = "Nog geen uitleg beschikbaar."
+    for article in all_articles:
+        prompt = (
+            PROMPT
+            .replace("{{PLAATS_HIER_DE_UITLEG}}", current_explanation)
+            .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article["content"])
+        )
+        response = hf_utils.generate_with_retries(prompt)
+        current_explanation = response["uitleg"]
+        explanation_data.append(response)
+
+    # Save explanation data
+    DATA["article"]["explanation"] = explanation_data
+    with open("src/data/lhmu.json", "w", encoding="utf-8") as f:
+        json.dump(DATA, f, ensure_ascii=False, indent=4)
+
+
+def display_explanation() -> None:
+    if st.button("Leg Het Me Uit"):
+        with open("src/data/lhmu.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+            explanations = data.get("article", {}).get("explanation", [{}])
+
+        text = explanations[-1].get("uitleg", "Geen uitleg gevonden.")
+        url = DOSSIER.get("url", None)
+        owner = ARTICLE.get("owner", "Onbekend")
+
+        st_utils.render_popup_dialog(
+            title="Hoe zit het nou?",
+            text=text,
+            url=url,
+            owner=owner
+        )
+
 
 # ---------- Main Page Logic ----------
 def main() -> None:
@@ -66,38 +97,14 @@ def main() -> None:
 
     st_utils.render_article(**ARTICLE)
 
-    if st.button("Leg Het Me Uit"):
-        ARTICLES = DOSSIER["articles"]
-        explanation_data = []
-        current_explanation = "Nog geen uitleg beschikbaar."
+    process_article_explanation()
 
-        for article in ARTICLES[::-1] + [{"content": ARTICLE["title"] + ARTICLE["text"]}]: # Start with the oldest article
-            prompt = (
-                PROMPT
-                .replace("{{PLAATS_HIER_DE_UITLEG}}", current_explanation)
-                .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article["content"])
-            )
-            response = generate_with_retries(prompt)
-            with st.expander(f"Artikel: {article['content'][:30]}..."):
-                st.json(response)
-            current_explanation = response["uitleg"]
-            explanation_data.append(response)
+    display_explanation()
 
-        # Display final explanation
-        st.subheader("Uitleg van het artikel")
-        st.markdown(current_explanation)
+    st.divider()
 
-        # Save explanation data
-        DATA["article"]["explanation"] = explanation_data
-        with open("src/data/lhmu.json", "w", encoding="utf-8") as f:
-            json.dump(DATA, f, ensure_ascii=False, indent=4)
-        
+    st_utils.render_page_link("doc_leg_het_me_uit_knop.py")
 
-    """TODO
-    Onder artikel een knop "Leg Het Me Uit"
-    Daarna verschijnt disclaimertje en AI uitleg
-    Onderaan link naar gebruikte dossier
-    """
 
 if __name__ == "__main__":
 	main()
