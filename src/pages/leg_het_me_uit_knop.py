@@ -21,29 +21,44 @@ Je verwerkt alleen de korte noddige informatie uit de artikelen, geen quotes of 
 INSTRUCTIES
 1. Lees eerst de HUIDIGE UITLEG goed door.
 2. Lees daarna het NIEUWE ARTIKEL aandachtig.
-3. Bedenk welke nieuwe informatie uit het NIEUWE ARTIKEL belangrijk is voor de lezer om te weten, beredeneer dit goed.
-4. Werk de HUIDIGE UITLEG bij met deze nieuwe informatie, zodat de lezer een compleet beeld krijgt.
-5. Geef je output in strikt JSON-formaat:
-{\"beredeneer\": \"Korte uitleg van je aanpak en welke nieuwe informatie je hebt toegevoegd.\", \"uitleg\": \"De bijgewerkte uitleg voor de lezer.\"}
+3. Bedenk welke nieuwe informatie uit het NIEUWE ARTIKEL belangrijk is voor de lezer om te weten, beredeneer dit goed en schrijf het onder BEREDENEER.
+4. Werk de HUIDIGE UITLEG bij met deze nieuwe informatie, zodat de lezer een compleet beeld krijgt, schrijf dit onder UITLEG.
 
 REGELS
 - Gebruik een heldere, toegankelijke taal.
 - Houd de uitleg beknopt en to the point.
 - Vermijd jargon en ingewikkelde termen.
 - Focus op de kerninformatie en context.
-- BELANGRIJK: Gebruik GEEN markdown formatting (geen ###, **, -, etc.) in de JSON output, dit om de leesbaarheid en verwerkbaarheid te waarborgen.
-- Gebruik gewone tekst zonder newlines of \"\\n\".
-- Voor hoofdstukken: gebruik hoofdletters.
-- Voor lijstjes: gebruik simpele getallen (1., 2., 3.) of schrijf het uit in lopende tekst.
-
 
 HUIDIGE UITLEG
-<uitleg> {{PLAATS_HIER_DE_UITLEG}} </uitleg>
+{{PLAATS_HIER_DE_UITLEG}}
 
 NIEUWE ARTIKEL
-<artikel> {{PLAATS_HIER_HET_ARTIKEL}} </artikel>
+{{PLAATS_HIER_HET_ARTIKEL}}
 
-OUTPUT"""
+BEREDENEER
+"""
+
+def generate_with_retries(prompt: str, max_retries: int = 5) -> dict:
+    beredeneer = None
+    uitleg = None
+
+    while (beredeneer is None or uitleg is None) and max_retries > 0:
+        response = hf_utils.generate(prompt)
+        
+        beredeneer_idx = response.find("\nBEREDENEER")
+        uitleg_idx = response.find("\nUITLEG")
+
+        if beredeneer_idx == -1 or uitleg_idx == -1:
+            max_retries -= 1
+            continue
+
+        beredeneer = response[beredeneer_idx + len("\nBEREDENEER"):uitleg_idx].strip()
+        uitleg = response[uitleg_idx + len("\nUITLEG"):].strip()
+
+        max_retries -= 1
+
+    return {"beredeneer": beredeneer, "uitleg": uitleg}
 
 # ---------- Main Page Logic ----------
 def main() -> None:
@@ -62,7 +77,7 @@ def main() -> None:
                 .replace("{{PLAATS_HIER_DE_UITLEG}}", current_explanation)
                 .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article["content"])
             )
-            response = hf_utils.generate_with_retries(prompt)
+            response = generate_with_retries(prompt)
             with st.expander(f"Artikel: {article['content'][:30]}..."):
                 st.json(response)
             current_explanation = response["uitleg"]
