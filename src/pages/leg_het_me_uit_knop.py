@@ -32,8 +32,8 @@ REGELS
 - Vermijd jargon en ingewikkelde termen.
 - Focus op de kerninformatie en context.
 - BELANGRIJK: Gebruik GEEN markdown formatting (geen ###, **, -, etc.) in de JSON output, dit om de leesbaarheid en verwerkbaarheid te waarborgen.
-- Gebruik gewone tekst met \"\\n\" voor structuur.
-- Voor hoofdstukken: gebruik hoofdletters of duidelijke scheidingen met witregels.
+- Gebruik gewone tekst zonder newlines of \"\\n\".
+- Voor hoofdstukken: gebruik hoofdletters.
 - Voor lijstjes: gebruik simpele getallen (1., 2., 3.) of schrijf het uit in lopende tekst.
 
 
