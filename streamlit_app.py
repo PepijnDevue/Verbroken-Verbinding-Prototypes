@@ -17,12 +17,13 @@ def main():
     doc_veertjes = st.Page(str(pages_dir / "docs" / "doc_veertjes.py"), title="Veertjes", icon="📄")
     doc_dgf = st.Page(str(pages_dir / "docs" / "doc_data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="📄")
     doc_lhmu = st.Page(str(pages_dir / "docs" / "doc_leg_het_me_uit_knop.py"), title="Leg Het Me Uit Knop", icon="📄")
+    doc_vo = st.Page(str(pages_dir / "docs" / "doc_voor_ontwikkelaars.py"), title="Voor Ontwikkelaars", icon="⚙️")
 
     pg = st.navigation(
         pages = {
             "Paginas": [welkom],
             "Prototypes": [veertjes, dgf, lhmu],
-            "Documentatie": [doc_veertjes, doc_dgf, doc_lhmu]
+            "Documentatie": [doc_veertjes, doc_dgf, doc_lhmu, doc_vo],
         }, 
         expanded=True)
 
