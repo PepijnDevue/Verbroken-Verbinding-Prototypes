@@ -1,12 +1,7 @@
 import streamlit as st
 from pathlib import Path
-from src.utils import get_runtime_info
 
 # ==== Render functions ====
-def render_diagnostics():
-    with st.sidebar.expander("Model & Runtime Diagnostics", expanded=False):
-        st.json(get_runtime_info())
-
 def render_markdown_page(markdown_file_path: str):
     """
     Render a markdown file as a Streamlit page.
