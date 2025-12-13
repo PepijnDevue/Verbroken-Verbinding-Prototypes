@@ -26,7 +26,7 @@ INSTRUCTIES
 
 REGELS
 - Gebruik een heldere, toegankelijke taal.
-- Houd de uitleg beknopt en to the point.
+- Houd de uitleg super beknopt en to the point, maximaal 150 woorden.
 - Vermijd jargon en ingewikkelde termen.
 - Focus op de kerninformatie en context.
 
@@ -89,7 +89,7 @@ def main() -> None:
 
         # Save explanation data
         DATA["article"]["explanation"] = explanation_data
-        with open("lhmu.json", "w", encoding="utf-8") as f:
+        with open("src/data/lhmu.json", "w", encoding="utf-8") as f:
             json.dump(DATA, f, ensure_ascii=False, indent=4)
         
 
