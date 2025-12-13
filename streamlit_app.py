@@ -10,21 +10,19 @@ def main():
     # Interactive pages
     welkom = st.Page(str(pages_dir / "welkom.py"), title="Welkom", icon="👋")
     veertjes = st.Page(str(pages_dir / "veertjes.py"), title="Veertjes", icon="🪶")
-    dif = st.Page(str(pages_dir / "data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="💬")
+    dgf = st.Page(str(pages_dir / "data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="💬")
     lhmu = st.Page(str(pages_dir / "leg_het_me_uit_knop.py"), title="Leg Het Me Uit Knop", icon="📰")
-    test = st.Page(str(pages_dir / "test_pagina.py"), title="Test Pagina", icon="🧪")
     
     # Documentation pages
     doc_veertjes = st.Page(str(pages_dir / "docs" / "doc_veertjes.py"), title="Veertjes", icon="📄")
     doc_dgf = st.Page(str(pages_dir / "docs" / "doc_data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="📄")
-    doc_readme = st.Page(str(pages_dir / "docs" / "doc_readme.py"), title="README", icon="📄")
+    doc_lhmu = st.Page(str(pages_dir / "docs" / "doc_leg_het_me_uit_knop.py"), title="Leg Het Me Uit Knop", icon="📄")
 
     pg = st.navigation(
         pages = {
             "Paginas": [welkom],
-            "Prototypes": [veertjes, dif, lhmu],
-            "Test": [test],
-            "Documentatie": [doc_veertjes, doc_dgf, doc_readme]
+            "Prototypes": [veertjes, dgf, lhmu],
+            "Documentatie": [doc_veertjes, doc_dgf, doc_lhmu]
         }, 
         expanded=True)
 
