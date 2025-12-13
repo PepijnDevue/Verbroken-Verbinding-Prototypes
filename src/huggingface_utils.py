@@ -6,15 +6,20 @@ Contains functions for model validation, loading, and text generation.
 import os
 from pathlib import Path
 import streamlit as st
-from transformers import pipeline
-from huggingface_hub import model_info
-from huggingface_hub.utils import HfHubHTTPError
 from dotenv import load_dotenv
 
 try:
     import torch
+    from transformers import pipeline
+    from huggingface_hub import model_info
+    from huggingface_hub.utils import HfHubHTTPError
 except ImportError:
+    # Handle missing dependencies gracefully
+    # This repository is designed to also work on saved data without model loading
     torch = None
+    pipeline = None
+    model_info = None
+    HfHubHTTPError = None
 
 MODEL_DEFAULT = "mistralai/Ministral-3-8B-Instruct-2512-BF16"
 
