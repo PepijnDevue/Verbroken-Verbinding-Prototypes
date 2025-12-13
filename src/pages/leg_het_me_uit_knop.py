@@ -13,8 +13,7 @@ DOSSIER = DATA["dossier"]
 PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
 
 # ---------- Prompt Template ----------
-PROMPT = """
-Je bent een expert in het uitleggen van nieuwsartikelen en de grotere context daaromheen.
+PROMPT = """Je bent een expert in het uitleggen van nieuwsartikelen en de grotere context daaromheen.
 Je taak is om een begrijpelijke uitleg te geven van het gegeven artikel, zodat een gemiddelde lezer de inhoud en context beter kan begrijpen.
 Meestal is er een nieuw artikel toegevoegd aan een bestaand dossier. Dan vernieuw je de huidige uitleg met de nieuwe informatie.
 Je verwerkt alleen de korte noddige informatie uit de artikelen, geen quotes of details. Je verwerkt alle nieuwe informatie uit het nieuwe artikel, zo is de lezer helemaal op de hoogte.
@@ -32,6 +31,11 @@ REGELS
 - Houd de uitleg beknopt en to the point.
 - Vermijd jargon en ingewikkelde termen.
 - Focus op de kerninformatie en context.
+- BELANGRIJK: Gebruik GEEN markdown formatting (geen ###, **, -, etc.) in de JSON output, dit om de leesbaarheid en verwerkbaarheid te waarborgen.
+- Gebruik gewone tekst met \"\\n\" voor structuur.
+- Voor hoofdstukken: gebruik hoofdletters of duidelijke scheidingen met witregels.
+- Voor lijstjes: gebruik simpele getallen (1., 2., 3.) of schrijf het uit in lopende tekst.
+
 
 HUIDIGE UITLEG
 <uitleg> {{PLAATS_HIER_DE_UITLEG}} </uitleg>
@@ -58,8 +62,9 @@ def main() -> None:
                 .replace("{{PLAATS_HIER_DE_UITLEG}}", current_explanation)
                 .replace("{{PLAATS_HIER_HET_ARTIKEL}}", article["content"])
             )
-
             response = hf_utils.generate_with_retries(prompt)
+            with st.expander(f"Artikel: {article['content'][:30]}..."):
+                st.json(response)
             current_explanation = response["uitleg"]
             explanation_data.append(response)
 
