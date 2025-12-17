@@ -1,112 +1,97 @@
-# Veertjes - Documentatie
+# Veertjes
 
-### 1. Definitie van Emotionele Zwaarte
-Emotionele zwaarte meet de mate waarin een nieuwsartikel emotionele impact heeft op de Nederlandse lezer. Het is een samengestelde meting die rekening houdt met:
+Veertjes meet hoe emotioneel beladen een nieuwsartikel is voor de lezer. Hoe meer veertjes, hoe zwaarder het artikel.
 
-**A. Inhoudelijke ernst**
-Objectieve zwaarte van de gebeurtenis (schade, slachtoffers, maatschappelijke impact)
+## De schaal
 
-**B. Type gebeurtenis**
-Verschillende soorten gebeurtenissen hebben verschillende emotionele resonantie. Dit komt ook neer op de mate waarin de lezer zich kan inleven en zelf betrokken voelt. Politiek nieuws weegt bijvoorbeeld minder zwaar dan persoonlijk leed.
+| Score | Betekenis | Voorbeeld |
+|-------|-----------|-----------|
+| 0 | Positief/opbeurend | Goed nieuws, succesverhalen, inspirerende verhalen |
+| 1 | Neutraal | Zakelijk nieuws, feitelijke rapportage |
+| 2 | Licht negatief | Beperkte zorgen, weinig details |
+| 3 | Matig zwaar | Duidelijk leed, persoonlijke verhalen |
+| 4 | Zwaar | Ernstige tragedies, schokkende details |
+| 5 | Extreem | Extreme gebeurtenissen, overweldigend leed |
 
-**B. Presentatie en stijl**
-De presentatie van het nieuws beïnvloedt de emotionele impact aanzienlijk. Zo moet er gelet worden op emotionele woordkeuze, persoonlijke beschrijvingen en quotes van betrokkenen, en het detailniveau van de beschrijving van de gebeurtenissen. Hoe meer de lezer de gebeurtenis kan visualiseren en zich kan inleven, hoe zwaarder de emotionele impact.
+De AI kan ook halve punten geven (bijvoorbeeld 2.5 of 3.5) voor artikelen die tussen twee categorieen in vallen. Dit zorgt voor meer precisie wanneer een artikel niet duidelijk in een enkele categorie past.
 
-**C. Nabijheid en herkenbaarheid (Nederlands perspectief)**
-Een andere factor voor inleving is de geografische en culturele nabijheid en herkenbaarheid van de gebeurtenis. Gebeurtenissen in Nederland of met directe Nederlandse betrokkenheid wegen zwaarder dan gebeurtenissen ver weg. Ook culturele herkenbaarheid speelt een rol: hoe meer de lezer zich kan identificeren met de situatie, hoe zwaarder de emotionele impact.
+---
 
-### 2. Belangrijke Nuances
-**Type gebeurtenis - categorische verschillen**
+## 1. Hoe werkt het
 
-- **Kinderen als slachtoffer**: alles met kinderen als slachtoffer weegt zwaarder
-- **Geweld tegen groepen**: Aanslagen en aanvallen op groepen (bijv. scholen, kerken) wegen zwaarder dan individuele misdrijven
-- **Menselijk misbruik**: misbruik, verwaarlozing, en mensenhandel wegen zwaarder dan onopzettelijk leed
-- **Rampen en massa ongelukken**: natuurrampen en grote ongelukken met veel slachtoffers wegen zwaarder dan individuele incidenten
-- **Gericht persoonlijk leed**: moord, ontvoering, en huiselijk geweld wegen zwaarder dan ongevallen
-- **Systemisch falen**: institutioneel falen met menselijke tol (bijv. zorgschandalen) weegt zwaarder dan incidentele fouten
-- **'Allerdaagse' ongelukken**: verkeersongelukken en huisbranden wegen minder zwaar tenzij er bijzondere omstandigheden zijn
-- **Natuurrampen** : Natuurrampen zonder menselijke schuld of leed
-- **Politiek geweld en conflicten**: Politieke conflicten en diplomatieke spanningen zonder directe menselijke tol
-- **Indirecte economische/sociale problemen**: Economische recessies, werkloosheidscijfers, en sociale kwesties zonder directe menselijke impact
+### Input
+De AI krijgt het volledige nieuwsartikel als tekst: de titel en de volledige artikeltekst. Afbeeldingen, video's en andere media worden niet meegenomen in de analyse. De score is dus puur gebaseerd op de geschreven inhoud van het artikel.
 
-**Schaal van impact**
-Het aantal betrokkenen of slachtoffers heeft een niet-lineair effect op de emotionele zwaarte. Een enkele dode kan al zwaar wegen, maar bij grotere aantallen neemt de impact niet evenredig toe.
+### Verwerking
+We gebruiken een taalmodel dat instructies kan volgen. Het model krijgt een prompt met daarin de schaal, de factoren, en het artikel. Het model analyseert het artikel op vier factoren:
 
-**Presentatie-paradox**
-We meten emotionele impact, niet alleen objectieve ernst. Daarom kan een zeer ernstige gebeurtenis die zakelijk wordt beschreven even zwaar scoren als een minder ernstige gebeurtenis die emotioneel wordt gepresenteerd.
+- **Inhoud**: Hoe ernstig is de gebeurtenis objectief gezien?
+- **Type**: Kinderen, geweld tegen groepen, en misbruik wegen zwaarder. Politiek en economie wegen lichter.
+- **Presentatie**: Emotionele woorden en persoonlijke details maken het zwaarder.
+- **Nabijheid**: Nederlandse context weegt zwaarder dan ver weg.
 
-**Tijdsdimensie**
-Acute crises en "breaking news" wegen zwaarder dan langdurige of chronische problemen. De urgentie en actualiteit van het nieuws beïnvloeden de emotionele impact.
+### Output
+Het model geeft twee outputs:
 
-**Desinteresse en irrelevantie**
-Gebeurtenissen die niet resoneren met Nederlandse lezers zullen meer neutraal scoren, ongeacht het sentiment. Extreem negatief nieuws valt snel niet in dit effect en weegt dan nog steeds zwaar, voornamelijk bij veel details en emotionele presentatie.
+1. **Beredenering**: Een korte analyse waarin het model uitlegt hoe het tot de score is gekomen, gebaseerd op de vier factoren.
+2. **Score**: Een getal tussen 0 en 5 (met halve punten voor nuance).
 
-### 3. Schaal Punten-definities
-#### Score 0 - Positief/Opbeurend
-**Algemene omschrijving:**
-Nieuws dat expliciet positieve emoties oproept: vreugde, trots, inspiratie of hoop. Gebeurtenissen die het menselijk potentieel tonen of succesverhalen vertellen zonder betekenisvolle keerzijde.
+---
 
-**Karakteristieken:**
-Vocabulaire: "triomf", "prachtig", "historisch", "emotioneel moment"
-Focus op menselijke veerkracht en positieve uitkomsten
-Quotes van betrokkenen die blijdschap en dankbaarheid uitdrukken
-Beschrijving van emotionele reacties (tranen van geluk, vreugdedans)
-Hoge nabijheid: Nederlandse betrokkenen of herkenbare contexten
+## 2. Totstandkoming
 
-#### Score 1 - Neutraal
-**Algemene omschrijving:**
-Nieuws zonder significante emotionele lading. Feitelijke rapportage van gebeurtenissen die noch positieve noch negatieve emoties oproepen, of een balans tussen voor- en nadelen bevatten. De lezer kan zich niet sterk inleven of voelt geen directe betrokkenheid.
+### Data
+We hebben tientallen nieuwsartikelen handmatig gescoord om te bepalen wat een goede schaal is. Dit waren artikelen uit verschillende categorieen en bronnen.
 
-**Karakteristieken:**
-Zakelijke, objectieve taal zonder emotionele woordkeuze
-Focus op feiten, cijfers en procedures
-Eventuele quotes zijn technisch of informatief van aard
-Geen persoonlijke verhalen of menselijke gezichten
-Nabijheid irrelevant of ver van Nederlandse ervaring
+### Tests
+De schaal en prompt zijn iteratief verbeterd door:
+- Vergelijking van AI-scores met handmatige scores
+- Aanscherping van onduidelijke gevallen
+- Toevoegen van regels voor specifieke situaties (bijv. kinderen)
 
-#### Score 2 - Licht negatief/Matig beladen
-**Algemene omschrijving:**
-Nieuws met beperkte negatieve lading dat enige bezorgdheid of lichte verontrusting oproept, maar geen diepgaande emotionele impact heeft. Problemen zijn ofwel klein van schaal, abstract van aard, of voldoende ver van de Nederlandse ervaring. De presentatie blijft overwegend zakelijk.
+### De huidige prompt
 
-**Karakteristieken:**
-Grotendeels zakelijke rapportage met occasionele emotionele woorden
-Beperkt detailniveau, geen uitgebreide menselijke verhalen
-Focus op feiten en gevolgen, niet op persoonlijk leed
-Mogelijke zorgen geuit in quotes, maar niet dramatisch
-Lage tot gemiddelde nabijheid
+De prompt bestaat uit de volgende onderdelen:
 
-#### Score 3 - Matig zwaar
-**Algemene omschrijving:**
-Nieuws dat duidelijke emotionele impact heeft door concrete menselijke schade, leed of onrecht. De gebeurtenissen zijn verontrustend en roepen empathie op, maar zijn niet extreem traumatisch. Er is sprake van identificeerbare slachtoffers en herkenbare situaties, of van gebeurtenissen met substantiële maatschappelijke bezorgdheid.
+**DOEL**
+> Je bent een expert in het scoren van nieuwsartikelen op emotionele zwaarte op een schaal van 0 tot 5. Je taak is om nieuwsartikelen te analyseren en een score toe te kennen op basis van hun emotionele impact vanuit een Nederlands perspectief.
 
-**Karakteristieken:**
-Emotionele woordkeuze begint dominant te worden
-Persoonlijke verhalen en quotes van betrokkenen/nabestaanden
-Beschrijving van emotionele impact op slachtoffers en omstanders
-Details die inleving mogelijk maken zonder extreem grafisch te zijn
-Gemiddelde tot hoge nabijheid (in Nederland of met Nederlandse betrokkenheid)
+**INSTRUCTIES**
+> Lees het volledige artikel en analyseer de emotionele impact. Geef een uitleg van je analyse en score, dek alle aspecten kort. Schrijf dit onder BEREDENEER. Geef daarna alleen de score als een getal tussen 0 en 5 onder SCORE.
 
-#### Score 4 - Zwaar
-**Algemene omschrijving:**
-Nieuws dat aanzienlijke emotionele impact heeft door ernstige menselijke tragedies, misdrijven met bijzonder schokkende elementen, of gebeurtenissen die fundamentele waarden schenden. De presentatie is vaak gedetailleerd en emotioneel, waardoor sterke inleving ontstaat. Het gaat om gebeurtenissen die lezers dagen kunnen bijblijven.
+**SCHAAL**
+> - 0-0.5: POSITIEF - Vreugde, trots, inspiratie. Emotionele woorden, succesverhalen, menselijke veerkracht.
+> - 1.0: NEUTRAAL - Zakelijk, feitelijk, geen emotie. Geen persoonlijke verhalen of betrokkenheid.
+> - 2.0: LICHT NEGATIEF - Beperkte zorgen, zakelijke toon, weinig details, lage nabijheid.
+> - 3.0: MATIG ZWAAR - Duidelijk menselijk leed, persoonlijke verhalen, emotionele quotes, identificeerbare slachtoffers.
+> - 4.0: ZWAAR - Ernstige tragedies, schokkende details, sterke emotionele taal, impact op gemeenschappen.
+> - 5.0: EXTREEM - Extreme wreedheid/massa slachtoffers, overweldigend leed, traumatische details.
 
-**Karakteristieken:**
-Sterk emotionele woordkeuze doorheen het artikel
-Uitgebreide persoonlijke verhalen, achtergronden van slachtoffers
-Quotes die wanhoop, verdriet of ongeloof uitdrukken
-Beschrijving van impact op gemeenschappen en families
-Details die sterke visuele voorstelling mogelijk maken
-Hoge nabijheid of zeer emotionele presentatie compenseert voor afstand
+**FACTOREN**
+> - Inhoud: Objectieve ernst (slachtoffers, schade, maatschappelijke impact).
+> - Type gebeurtenis: Zwaarder (kinderen, geweld tegen groepen, misbruik, massa ongelukken, moord, systemisch falen). Lichter (politiek, economie, verkeersongelukken, natuurrampen zonder leed).
+> - Presentatie: Emotionele woorden, persoonlijke details, quotes betrokkenen, visualiseerbare beschrijvingen = zwaarder.
+> - Nabijheid: Nederland/Nederlanders/herkenbaar = zwaarder. Ver weg/vreemd = lichter (tenzij extreem).
 
-#### Score 5 - Extreem zwaar
-**Algemene omschrijving:**
-Nieuws dat de grenzen van het bevattelijke overschrijdt door extreme wreedheid, grote aantallen slachtoffers, of gebeurtenissen die fundamentele menselijke waardigheid en veiligheid op catastrofale wijze schenden. Deze gebeurtenissen zijn diep traumatisch, ook voor lezers die alleen erover lezen. De emotionele impact is overweldigend en langdurig.
+**REGELS**
+> - Emotionele presentatie weegt het zwaarst, ook bij mindere ernst.
+> - Acute crisis is zwaarder dan chronisch probleem.
+> - Kinderen altijd +0.5 tot +1 zwaarder.
+> - Gebruik halve punten voor nuance.
 
-**Karakteristieken:**
-Extreme emotionele lading in woordkeuze
-Zeer gedetailleerde beschrijvingen die sterke mentale beelden creëren
-Focus op menselijk lijden en wanhoop
-Quotes die onvoorstelbaar verdriet en trauma uitdrukken
-Beschrijving van blijvende impact op gemeenschappen en nabestaanden
-Hoge nabijheid óf zodanig extreme gebeurtenis dat afstand irrelevant wordt
-Artikelen die expliciet waarschuwen voor schokkende inhoud
+**ARTIKEL**
+> Hier wordt de titel en tekst van het artikel ingevoegd.
+
+**BEREDENEER**
+> Hier begint het model met zijn analyse.
+
+---
+
+## 3. Zelf maken
+
+1. **Definieer je schaal** - Bepaal wat de scores betekenen voor jouw context.
+2. **Verzamel voorbeelden** - Score handmatig een set artikelen als traindata.
+3. **Train een model** - Train je eigen sentiment-analyse model op basis van je gelabelde data.
+4. **Test en verbeter** - Vergelijk model-output met je handmatige scores en pas aan.
+5. **Integreer** - Koppel het model aan je workflow.
+6. **Verzamel feedback** - Laat gebruikers feedback geven op de scores om meer traindata te verzamelen en het model te blijven verbeteren.
