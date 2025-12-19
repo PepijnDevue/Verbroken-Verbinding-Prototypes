@@ -24,6 +24,6 @@ De repository is zo opgezet dat je de prototypes eenvoudig opnieuw kunt draaien 
 
 ## Contact
 
-Deze website is ontwikkeld door **Pepijn Devue**. Hij heeft als student-assistent meegewerkt aan het project Verbroken Verbinding. Pepijn is niet meer onderdeel van het projectteam, maar uiteraard is bereikbaar voor vragen of interesse in de technische kant van dit project.
+Deze website is ontwikkeld door **Pepijn Devue**. Hij heeft als student-assistent meegewerkt aan het project Verbroken Verbinding. Pepijn is niet meer onderdeel van het projectteam, maar is uiteraard bereikbaar voor vragen of interesse in de technische kant van dit project.
 
 [**LinkedIn**](https://www.linkedin.com/in/pepijn-devue-a01771255/)

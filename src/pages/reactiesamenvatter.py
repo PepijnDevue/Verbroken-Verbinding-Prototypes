@@ -75,8 +75,7 @@ COMMENTS = COMMENT_SECTION.get("comments", [])
 
 OUTPUT_FILE = Path("src/data/reactiesamenvatter_outputs.json")
 
-PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
-
+PAGE_EXPLANATION = """AI helpt redacties snel de kern van lezersreacties te zien: wat is de kritiek, welke vragen en zorgen zijn er? Haat en harde toon worden teruggebracht tot de inhoudelijke kern, zodat redacties veilig en efficiënt luisteren naar hun publiek zonder nuances of belangrijke inzichten te missen."""
 
 # ---------- Helper Functions ----------
 def process_comment_threads(comments: list[dict], article: str) -> list[dict]:
@@ -178,7 +177,7 @@ def process_article_feedback() -> None:
 
 # ---------- Main Page ----------
 def main() -> None:
-    st_utils.render_page_header("Reactiesamenvatter", PAGE_EXPLANATION)
+    st_utils.render_page_header("Reactie Samenvatter", PAGE_EXPLANATION)
 
     st_utils.render_article(**ARTICLE)
 

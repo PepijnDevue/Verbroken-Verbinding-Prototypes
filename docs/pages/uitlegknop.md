@@ -3,6 +3,7 @@
 De Uitlegknop geeft lezers een korte, begrijpelijke uitleg bij een nieuwsartikel. Het vat de context samen op basis van een dossier met eerdere artikelen over hetzelfde onderwerp, zodat de lezer snel op de hoogte is. 
 
 Eén klik, en complexe artikelen worden begrijpelijk en relevant. De Uitlegknop biedt samenvattingen, context en achtergrondinformatie, plaatst het nieuws in een groter verhaal en laat zien waarom het ertoe doet. Zo begrijpen lezers sneller wat er speelt en wat het voor hen betekent. **Zie idee-kaart X**.  
+<!-- TODO: Kaart nummer toevoegen -->
 
 ---
 

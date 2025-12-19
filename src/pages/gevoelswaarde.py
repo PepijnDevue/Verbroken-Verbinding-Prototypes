@@ -48,8 +48,7 @@ with open("src/data/gevoelswaarde.json", "r", encoding="utf-8") as f:
 ARTICLE_KEY = "selected_article"
 TITLES = [article.get("title", "Onbekend") for article in ARTICLES]
 
-PAGE_EXPLANATION = """Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes. Hier komt nog een uitleg over veertjes."""
-
+PAGE_EXPLANATION = """AI beoordeelt hoe emotioneel beladen een artikel is, op basis van tekstkenmerken zoals woordkeuze en de aanwezigheid van emotionele details en ooggetuigenverslagen. Nieuwsgebruikers zien een score die helpt bepalen of ze het nieuwsbericht willen lezen, terwijl redacties inzicht krijgen in de emotionele impact van hun verhalen en contentbewust kunnen publiceren."""
 
 # ---------- Helper Functions ----------
 def _init_session_defaults() -> None:

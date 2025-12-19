@@ -8,7 +8,6 @@ def render_markdown_page(markdown_file_path: str):
     
     Args:
         markdown_file_path: Path to the markdown file to render
-        title: Optional title to display at the top of the page
     """
     markdown_path = Path(markdown_file_path)
     
@@ -87,11 +86,11 @@ def render_score_metric(score: float,
                         score_help: str) -> None:
     integer_score = int(score)
     decimal_component = int((score - integer_score) * 10)
-    
+
     svg_path = f"src/assets/gevoelswaarde_icons/{integer_score}{decimal_component}.png"
 
     # Determine descriptive value
-    s_values = ["Licht", "Neutraal", "Beetje zwaar", "Zwaar", "Erg zwaar"]
+    s_values = ["Positief", "Neutraal", "Beetje zwaar", "Zwaar", "Erg zwaar", "Extreem"]
     s_value = "Onbekend"
     if integer_score in range(len(s_values)):
         s_value = s_values[integer_score]

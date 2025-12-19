@@ -39,8 +39,7 @@ with open("src/data/uitlegknop.json", "r", encoding="utf-8") as f:
 ARTICLE = DATA["article"]
 DOSSIER = DATA["dossier"]
 
-PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
-
+PAGE_EXPLANATION = """Eén klik, en complexe artikelen worden begrijpelijk en relevant. AI biedt samenvattingen, context en achtergrondinformatie, plaatst het nieuws in een groter verhaal en laat zien waarom het ertoe doet. Zo begrijpen lezers sneller wat er speelt en wat het voor hen betekent, zonder te hoeven zoeken."""
 
 # ---------- Helper Functions ----------
 def process_article_explanation() -> None:
@@ -53,7 +52,7 @@ def process_article_explanation() -> None:
     ARTICLES = DOSSIER["articles"]
 
     # Add the main article at the end of the list
-    all_articles = ARTICLES + [{"content": ARTICLE["title"] + ARTICLE["text"]}]
+    all_articles = ARTICLES + [{"content": ARTICLE["title"] + "\n\n" + ARTICLE["text"]}]
 
     explanation_data = []
     current_explanation = "Nog geen uitleg beschikbaar."

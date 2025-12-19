@@ -3,6 +3,7 @@
 De Reactiesamenvatter haalt bruikbare redactionele feedback uit lezersreacties onder een nieuwsartikel. Het filtert ruis en klachten, en bundelt alleen de punten die de redactie kan gebruiken om het artikel te verbeteren. 
 
 De Reactiesamenvatter helpt nieuwsredacties snel de kern van lezersreacties te zien: wat is de kritiek, welke vragen en zorgen zijn er? Haat en harde toon worden teruggebracht tot de inhoudelijke kern, zodat redacties veilig en efficiënt luisteren naar hun publiek zonder nuances of belangrijke inzichten te missen. **Zie ook idee-kaart X**.
+<!-- TODO: Kaart nummer toevoegen -->
 
 ---
 
@@ -33,7 +34,7 @@ Het model geeft twee soorten output:
 ## 2. Totstandkoming
 
 ### Data
-Voor de ontwikkeling van dit prototype hebben we gekozen voor een nieuwsartikel van Omroep Venlo, omdat zij een publieke reactiesectie hebben via Facebook. Dit gaf ons toegang tot echte lezersreacties om te onderzoeker wat wel en geen bruikbare feedback is voor de redactie. 
+Voor de ontwikkeling van dit prototype hebben we gekozen voor een nieuwsartikel van Omroep Venlo, omdat zij een publieke reactiesectie hebben via Facebook. Dit gaf ons toegang tot echte lezersreacties om te onderzoeken wat wel en geen bruikbare feedback is voor de redactie. 
 
 ### Tests
 De prompts zijn iteratief verbeterd door:

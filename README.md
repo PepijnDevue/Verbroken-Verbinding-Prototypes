@@ -59,7 +59,7 @@ To access private models or avoid rate limits, configure your Hugging Face token
 ### Requirements
 
 - Python 3.12+
-- [CUDA 13.0](https://developer.nvidia.com/cuda-downloads)
+- [CUDA 12.6](https://developer.nvidia.com/cuda-downloads)
 - [UV](https://docs.astral.sh/uv/getting-started/installation/#installation-methods)
 
 ### Installation

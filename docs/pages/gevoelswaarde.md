@@ -1,6 +1,7 @@
 # Gevoelswaarde
 
-De gevoelswaarde van een nieuwsbegint is een score die weergeefd in hoeverre een nieuwsartikel emotioneel beladen is. Nieuwsgebruikers zien de score bij het nieuws die helpt bepalen of ze het bericht willen lezen, terwijl redacties inzicht krijgen in de emotionele impact van hun verhalen. **Zie idee-kaart X**.  
+De gevoelswaarde van een nieuwsbericht is een score die weergeeft in hoeverre een nieuwsartikel emotioneel beladen is. Nieuwsgebruikers zien de score bij het nieuws die helpt bepalen of ze het bericht willen lezen, terwijl redacties inzicht krijgen in de emotionele impact van hun verhalen. **Zie idee-kaart X**.
+<!-- TODO: Kaart nummer toevoegen -->
 
 ## De schaal
 
@@ -13,7 +14,7 @@ De gevoelswaarde van een nieuwsbegint is een score die weergeefd in hoeverre een
 | 4 | Zwaar | Ernstige tragedies, schokkende details |
 | 5 | Extreem | Extreme gebeurtenissen, overweldigend leed |
 
-De AI kan ook halve punten geven (bijvoorbeeld 2.5 of 3.5) voor artikelen die tussen twee categorieen in vallen. Dit zorgt voor meer precisie wanneer een artikel niet duidelijk in een enkele categorie past. 
+De AI kan ook halve punten geven (bijvoorbeeld 2.5 of 3.5) voor artikelen die tussen twee categorieën in vallen. Dit zorgt voor meer precisie wanneer een artikel niet duidelijk in een enkele categorie past. 
 
 ---
 
@@ -41,7 +42,7 @@ Het model geeft twee outputs:
 ## 2. Totstandkoming
 
 ### Data
-We hebben tientallen nieuwsartikelen handmatig gescoord om te bepalen wat een goede schaal is. Dit waren artikelen uit verschillende categorieen en bronnen.
+We hebben tientallen nieuwsartikelen handmatig gescoord om te bepalen wat een goede schaal is. Dit waren artikelen uit verschillende categorieën en bronnen.
 
 ### Tests
 De schaal en prompt zijn iteratief verbeterd door:

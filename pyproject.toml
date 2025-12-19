@@ -1,7 +1,7 @@
 [project]
 name = "verbroken-verbinding-prototypes"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI prototypes for the Verbroken Verbinding research project, demonstrating news analysis tools using Streamlit and Hugging Face."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -11,15 +11,15 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "sentencepiece>=0.2.1",
     "streamlit>=1.51.0",
-    "torch==2.9.0+cu130",
-    "torchaudio==2.9.0+cu130",
-    "torchvision==0.24.0+cu130",
+    "torch==2.6.0+cu126",
+    "torchaudio==2.6.0+cu126",
+    "torchvision==0.21.0+cu126",
     "transformers>=4.57.1",
 ]
 
 [[tool.uv.index]]
 name = "pytorch-cuda"
-url = "https://download.pytorch.org/whl/cu130"
+url = "https://download.pytorch.org/whl/cu126"
 explicit = true
 
 [tool.uv.sources]
