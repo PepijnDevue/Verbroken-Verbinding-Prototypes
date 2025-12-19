@@ -1,84 +1,52 @@
-# Verbroken Verbinding Test
+# Verbroken Verbinding Prototypes
 
-A testing and development environment for combining Hugging Face, Streamlit, and Docker an ubuntu base with GPU support. And developing simple prototypes for Verbroken Verbinding.
+AI prototypes for the Verbroken Verbinding research project, demonstrating news analysis tools using Streamlit and Hugging Face.
 
 ## Quick Start with Docker
 
-Running the following command will build and start the Docker container. Caddy will serve the Streamlit app on port 80, the default HTTP port.
-
 ```bash
-# Build and run the Docker container (detached mode)
 docker compose up -d --build
 ```
 
-The Streamlit app is now accessible at `http://localhost` or `http://<your-server-ip>`.
+The Streamlit app will be available at `http://localhost`.
 
 ## Prerequisites
 
-- **Github Repository**: Have access to [this repository](https://github.com/PepijnDevue/Verbroken-Verbinding-Prototypes).
-- **Server with GPU**: An Ubuntu server with an NVIDIA GPU.
-- **Hugging Face Account**: (Optional) For accessing private models or gated models. Get your token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-
-## Configuration
-
-### Server Setup
-
-Read [server_setup.md](docs/server_setup.md) for detailed server setup instructions, including CUDA and Docker installation.
+- Docker with GPU support ([NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html))
+- (Optional) [Hugging Face token](https://huggingface.co/settings/tokens) for accessing gated models
 
 ### Hugging Face Token Setup
 
-To access private models or avoid rate limits, configure your Hugging Face token:
+To access private or gated models, create a `.env` file in the project root:
 
-1. Create an environment file:
-   ```bash
-   touch .env
-   ```
+```
+HF_TOKEN=your_huggingface_token_here
+```
 
-2. Add your Hugging Face token to `.env`:
-   ```
-   HF_TOKEN=your_huggingface_token_here
-   ```
+## Configuration
 
-### Repository Setup
+### Caddy
 
-1. Clone the repository:
+Update the `Caddyfile` with your domain name and any necessary security headers.
 
-   ```bash
-   git clone https://github.com/PepijnDevue/Verbroken-Verbinding-Prototypes.git
-   git checkout main
-   cd Verbroken-Verbinding-Prototypes
-   ```
-
-2. Caddy Configuration:
-
-   - Update the `Caddyfile` with your domain name and any necessary security headers.
-
-
-## Development Setup (Without Docker)
+## Local Development
 
 ### Requirements
 
 - Python 3.12+
 - [CUDA 12.6](https://developer.nvidia.com/cuda-downloads)
-- [UV](https://docs.astral.sh/uv/getting-started/installation/#installation-methods)
+- [UV](https://docs.astral.sh/uv/getting-started/installation/)
 
 ### Installation
 
 ```bash
-# Install with UV
 uv sync
 ```
 
-### Run Locally
+### Run
 
 ```bash
-# Run with UV
-uv run streamlit run
-```
-
-```bash
-# Or run using .venv
-streamlit run
+uv run streamlit run streamlit_app.py
 ```
 
 ## License
