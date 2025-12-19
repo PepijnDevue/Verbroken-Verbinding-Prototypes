@@ -71,16 +71,21 @@ def render_article(title: str,
             st.subheader(title)
         else:
             # Render title with score metric
-            left, right = st.columns([5, 1])
+            left, right = st.columns([2, 1])
             with left:
                 st.subheader(title)
             with right:
+                x = int(score)
+                y = int((score - x) * 10)
+                svg_path = f"src/assets/veertjes_icons/{x}{y}.png"
+                s_value = "neutraal" if score == 1 else "positief" if score < 1 else "negatief"
                 st.space("medium")
-                st.metric(
-                    label=score_label, 
-                    value=f"{score:.1f}/5",
-                    help=score_help
+                st.markdown(
+                    body=f"**{score_label}:**<br>{score:.1f}/5 - {s_value}",
+                    help="Een score die laat zien hoe emotioneel beladen een artikel is.",
+                    unsafe_allow_html=True
                 )
+                st.image(svg_path, width="stretch")
 
         st.markdown(text, unsafe_allow_html=True)
 

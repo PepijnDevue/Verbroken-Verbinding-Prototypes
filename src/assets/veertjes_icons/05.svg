@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329.28 105.76">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #1bad4b;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        stroke: #eaeaea;
+      }
+
+      .cls-3, .cls-4 {
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+
+      .cls-5, .cls-6 {
+        fill: #eaeaea;
+      }
+
+      .cls-5, .cls-7 {
+        font-family: MyriadPro-Bold, 'Myriad Pro';
+        font-size: 34px;
+        font-weight: 700;
+      }
+
+      .cls-8 {
+        letter-spacing: 0em;
+      }
+
+      .cls-7, .cls-9 {
+        fill: #231f20;
+      }
+
+      .cls-10 {
+        fill: #ed2027;
+      }
+
+      .cls-4 {
+        fill: #c5e2b5;
+        stroke: #1bad4b;
+      }
+
+      .cls-11 {
+        letter-spacing: 0em;
+      }
+
+      .cls-9 {
+        font-family: MyriadPro-Regular, 'Myriad Pro';
+        font-size: 22px;
+      }
+    </style>
+  </defs>
+  <text class="cls-9" transform="translate(20.1 98.95)"><tspan x="0" y="0">Lic</tspan><tspan class="cls-11" x="25.39" y="0">h</tspan><tspan x="37.51" y="0">t</tspan></text>
+  <text class="cls-9" transform="translate(268.91 98.95)"><tspan class="cls-8" x="0" y="0">Z</tspan><tspan class="cls-11" x="11.97" y="0">w</tspan><tspan x="28.07" y="0">aar</tspan></text>
+  <polygon class="cls-4" points="61.22 53.3 61.22 19.3 31.78 2.31 2.34 19.3 2.34 53.3 31.78 70.29 61.22 53.3"/>
+  <polygon class="cls-3" points="127.74 53.3 127.74 19.3 98.3 2.31 68.86 19.3 68.86 53.3 98.3 70.29 127.74 53.3"/>
+  <polygon class="cls-3" points="194.26 53.3 194.26 19.3 164.82 2.31 135.38 19.3 135.38 53.3 164.82 70.29 194.26 53.3"/>
+  <polygon class="cls-3" points="260.78 53.3 260.78 19.3 231.34 2.31 201.91 19.3 201.91 53.3 231.34 70.29 260.78 53.3"/>
+  <polygon class="cls-3" points="327.3 53.3 327.3 19.3 297.86 2.31 268.43 19.3 268.43 53.3 297.86 70.29 327.3 53.3"/>
+  <text class="cls-7" transform="translate(22.35 48.37)"><tspan x="0" y="0">0</tspan></text>
+  <text class="cls-5" transform="translate(88.87 48.37)"><tspan x="0" y="0">1</tspan></text>
+  <text class="cls-5" transform="translate(155.39 48.37)"><tspan x="0" y="0">2</tspan></text>
+  <text class="cls-5" transform="translate(221.91 48.37)"><tspan x="0" y="0">3</tspan></text>
+  <text class="cls-5" transform="translate(288.43 48.37)"><tspan x="0" y="0">4</tspan></text>
+  <circle class="cls-1" cx="7.19" cy="91.14" r="7.19"/>
+  <circle class="cls-10" cx="256" cy="91.14" r="7.19"/>
+  <g>
+    <g>
+      <polygon class="cls-2" points="61.23 19.3 61.23 53.3 31.8 70.29 31.78 70.28 31.78 2.32 31.8 2.31 61.23 19.3"/>
+      <path class="cls-6" d="M31.8,0h-.02v4.63h.02s27.43,15.83,27.43,15.83v31.68l-27.43,15.84h-.02s0,4.61,0,4.61h.02s31.43-18.14,31.43-18.14V18.15L31.8,0Z"/>
+    </g>
+    <path class="cls-6" d="M31.88,25.9h-.1v3.91h.03c2.08,0,3.13,2.58,3.13,7.48s-1.09,7.55-3.09,7.55c-.02,0-.05,0-.07-.01v3.91c5.59-.04,8.33-4.72,8.33-11.52,0-6.05-2.31-11.32-8.23-11.32Z"/>
+  </g>
+</svg>

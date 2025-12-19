@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329.28 105.76">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fcf49d;
+        stroke: #fdee1e;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+
+      .cls-4 {
+        fill: #1bad4b;
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke: #eaeaea;
+      }
+
+      .cls-5 {
+        fill: #eaeaea;
+      }
+
+      .cls-5, .cls-6 {
+        font-family: MyriadPro-Bold, 'Myriad Pro';
+        font-size: 34px;
+        font-weight: 700;
+      }
+
+      .cls-7 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6, .cls-8 {
+        fill: #231f20;
+      }
+
+      .cls-9 {
+        fill: #ed2027;
+      }
+
+      .cls-3 {
+        fill: #c5e2b5;
+        stroke: #1bad4b;
+      }
+
+      .cls-10 {
+        letter-spacing: 0em;
+      }
+
+      .cls-8 {
+        font-family: MyriadPro-Regular, 'Myriad Pro';
+        font-size: 22px;
+      }
+    </style>
+  </defs>
+  <text class="cls-8" transform="translate(20.1 98.95)"><tspan x="0" y="0">Lic</tspan><tspan class="cls-10" x="25.39" y="0">h</tspan><tspan x="37.51" y="0">t</tspan></text>
+  <text class="cls-8" transform="translate(268.91 98.95)"><tspan class="cls-7" x="0" y="0">Z</tspan><tspan class="cls-10" x="11.97" y="0">w</tspan><tspan x="28.07" y="0">aar</tspan></text>
+  <polygon class="cls-3" points="61.22 53.3 61.22 19.3 31.78 2.31 2.34 19.3 2.34 53.3 31.78 70.29 61.22 53.3"/>
+  <polygon class="cls-1" points="127.74 53.3 127.74 19.3 98.3 2.31 68.86 19.3 68.86 53.3 98.3 70.29 127.74 53.3"/>
+  <polygon class="cls-2" points="194.26 53.3 194.26 19.3 164.82 2.31 135.38 19.3 135.38 53.3 164.82 70.29 194.26 53.3"/>
+  <polygon class="cls-2" points="260.78 53.3 260.78 19.3 231.34 2.31 201.91 19.3 201.91 53.3 231.34 70.29 260.78 53.3"/>
+  <polygon class="cls-2" points="327.3 53.3 327.3 19.3 297.86 2.31 268.43 19.3 268.43 53.3 297.86 70.29 327.3 53.3"/>
+  <text class="cls-6" transform="translate(22.35 48.37)"><tspan x="0" y="0">0</tspan></text>
+  <text class="cls-6" transform="translate(88.87 48.37)"><tspan x="0" y="0">1</tspan></text>
+  <text class="cls-5" transform="translate(155.39 48.37)"><tspan x="0" y="0">2</tspan></text>
+  <text class="cls-5" transform="translate(221.91 48.37)"><tspan x="0" y="0">3</tspan></text>
+  <text class="cls-5" transform="translate(288.43 48.37)"><tspan x="0" y="0">4</tspan></text>
+  <circle class="cls-4" cx="7.19" cy="91.14" r="7.19"/>
+  <circle class="cls-9" cx="256" cy="91.14" r="7.19"/>
+</svg>
