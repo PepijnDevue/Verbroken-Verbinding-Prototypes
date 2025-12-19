@@ -78,7 +78,19 @@ def render_article(title: str,
                 x = int(score)
                 y = int((score - x) * 10)
                 svg_path = f"src/assets/veertjes_icons/{x}{y}.png"
-                s_value = "neutraal" if score == 1 else "positief" if score < 1 else "negatief"
+                match x:
+                    case 0:
+                        s_value = "Licht"
+                    case 1:
+                        s_value = "Neutraal"
+                    case 2:
+                        s_value = "Beetje zwaar"
+                    case 3:
+                        s_value = "Zwaar"
+                    case 4 | 5:
+                        s_value = "Erg zwaar"
+                    case _:
+                        s_value = "Onbekend"  # Fallback for unexpected values
                 st.space("medium")
                 st.markdown(
                     body=f"**{score_label}:**<br>{score:.1f}/5 - {s_value}",
