@@ -101,7 +101,7 @@ def main() -> None:
         render_score=True,
         score=ARTICLE.get("analysis", {}).get("score", -1234),
         score_label="Beladenheid",
-        score_help="De score geeft aan hoe emotioneel beladen het artikel is."
+        score_help="Een score die laat zien hoe emotioneel beladen een artikel is."
 	)
 
     with st.expander("Hoe heeft de AI deze score bepaald?"):

@@ -75,34 +75,34 @@ def render_article(title: str,
             with left:
                 st.subheader(title)
             with right:
-                x = int(score)
-                y = int((score - x) * 10)
-                svg_path = f"src/assets/gevoelswaarde_icons/{x}{y}.png"
-                match x:
-                    case 0:
-                        s_value = "Licht"
-                    case 1:
-                        s_value = "Neutraal"
-                    case 2:
-                        s_value = "Beetje zwaar"
-                    case 3:
-                        s_value = "Zwaar"
-                    case 4 | 5:
-                        s_value = "Erg zwaar"
-                    case _:
-                        s_value = "Onbekend"  # Fallback for unexpected values
-                st.space("medium")
-                st.markdown(
-                    body=f"**{score_label}:**<br>{score:.1f}/5 - {s_value}",
-                    help="Een score die laat zien hoe emotioneel beladen een artikel is.",
-                    unsafe_allow_html=True
-                )
-                st.image(svg_path, width="stretch")
+                render_score_metric(score, score_label, score_help)
 
         st.markdown(text, unsafe_allow_html=True)
 
         if url:
             render_hyperlink(url, owner)
+
+def render_score_metric(score: float,
+                        score_label: str,
+                        score_help: str) -> None:
+    integer_score = int(score)
+    decimal_component = int((score - integer_score) * 10)
+    
+    svg_path = f"src/assets/gevoelswaarde_icons/{integer_score}{decimal_component}.png"
+
+    # Determine descriptive value
+    s_values = ["Licht", "Neutraal", "Beetje zwaar", "Zwaar", "Erg zwaar"]
+    s_value = "Onbekend"
+    if integer_score in range(len(s_values)):
+        s_value = s_values[integer_score]
+
+    st.space("medium")
+    st.markdown(
+        body=f"**{score_label}:**<br>{score:.1f}/5 - {s_value}",
+        help=score_help,
+        unsafe_allow_html=True
+    )
+    st.image(svg_path, width="stretch")
         
 def _render_comment_thread(comment: dict) -> None:
     user = comment.get("user", "Onbekend")
