@@ -42,7 +42,7 @@ BEREDENEER
 
 
 # ---------- Constants & Data ----------
-with open("src/data/veertjes.json", "r", encoding="utf-8") as f:
+with open("src/data/gevoelswaarde.json", "r", encoding="utf-8") as f:
     ARTICLES = json.load(f)
 
 ARTICLE_KEY = "selected_article"
@@ -63,7 +63,7 @@ def rate_articles() -> None:
     if not st_utils.is_model_loaded(verbose=False):
         return
     
-    if not st.button("Beoordeel artikelen op veertjes"):
+    if not st.button("Beoordeel artikelen op gevoelswaarde"):
         return
 
     with st.spinner("AI aan het denken..."):
@@ -79,7 +79,7 @@ def rate_articles() -> None:
             article.update({"analysis": analysis})
 
         # write back to file
-        with open("src/data/veertjes.json", "w", encoding="utf-8") as f:
+        with open("src/data/gevoelswaarde.json", "w", encoding="utf-8") as f:
             json.dump(ARTICLES, f, ensure_ascii=False, indent=4)
 
 
@@ -87,7 +87,7 @@ def rate_articles() -> None:
 def main() -> None:
     _init_session_defaults()
 
-    st_utils.render_page_header("Veertjes", PAGE_EXPLANATION)
+    st_utils.render_page_header("Gevoelswaarde", PAGE_EXPLANATION)
 
     st_utils.render_article_selector(TITLES, ARTICLE_KEY)
 
@@ -101,7 +101,7 @@ def main() -> None:
         render_score=True,
         score=ARTICLE.get("analysis", {}).get("score", -1234),
         score_label="Beladenheid",
-        score_help="Het aantal veertjes geeft aan hoe emotioneel beladen het artikel is."
+        score_help="De score geeft aan hoe emotioneel beladen het artikel is."
 	)
 
     with st.expander("Hoe heeft de AI deze score bepaald?"):
@@ -113,7 +113,7 @@ def main() -> None:
 
     st.divider()
 	
-    st_utils.render_page_link("doc_veertjes.py")
+    st_utils.render_page_link("doc_gevoelswaarde.py")
 
 
 if __name__ == "__main__":

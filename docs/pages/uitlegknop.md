@@ -1,6 +1,8 @@
-# Leg Het Me Uit Knop
+# Uitlegknop
 
-De Leg Het Me Uit Knop geeft lezers een korte, begrijpelijke uitleg bij een nieuwsartikel. Het vat de context samen op basis van een dossier met eerdere artikelen over hetzelfde onderwerp, zodat de lezer snel op de hoogte is.
+De Uitlegknop geeft lezers een korte, begrijpelijke uitleg bij een nieuwsartikel. Het vat de context samen op basis van een dossier met eerdere artikelen over hetzelfde onderwerp, zodat de lezer snel op de hoogte is. 
+
+Eén klik, en complexe artikelen worden begrijpelijk en relevant. De Uitlegknop biedt samenvattingen, context en achtergrondinformatie, plaatst het nieuws in een groter verhaal en laat zien waarom het ertoe doet. Zo begrijpen lezers sneller wat er speelt en wat het voor hen betekent. **Zie idee-kaart X**.  
 
 ---
 
@@ -8,20 +10,20 @@ De Leg Het Me Uit Knop geeft lezers een korte, begrijpelijke uitleg bij een nieu
 
 ### Input
 De AI krijgt twee dingen:
-1. **Het nieuwsartikel** - De volledige tekst van het nieuwe artikel. Alleen de tekstuele inhoud wordt meegenomen; afbeeldingen, video's en andere media worden niet geanalyseerd.
-2. **Het dossier** - Een verzameling eerdere artikelen over hetzelfde onderwerp, die samen de context vormen.
+1. **Het nieuwsartikel** - De volledige tekst van het nieuwsartikel. Alleen de tekst wordt meegenomen; afbeeldingen, video's en andere media worden niet geanalyseerd.
+2. **Het dossier** - Een verzameling van eerdere nieuwsartikelen over hetzelfde onderwerp, die samen de context vormen.
 
 ### Verwerking
 Het systeem werkt stapsgewijs door het dossier:
 
 1. De AI begint met een lege uitleg.
-2. Voor elk artikel in het dossier (van oud naar nieuw) wordt de uitleg bijgewerkt met de nieuwe informatie uit dat artikel.
+2. Voor elk nieuwsartikel in het dossier (van oud naar nieuw) wordt de uitleg bijgewerkt met de nieuwe informatie uit dat artikel.
 3. Als laatste wordt het nieuwe artikel verwerkt, zodat de uitleg volledig up-to-date is.
 
-Op deze manier bouwt de AI een lopende samenvatting op die steeds wordt aangevuld met nieuwe informatie.
+Op deze manier bouwt de AI een lopende samenvatting op die steeds wordt aangevuld met nieuwe informatie die is bepaald door de nieuwsredactie. 
 
 ### Output
-Het model geeft twee outputs:
+Het model geeft twee soorten output:
 
 1. **Beredenering**: Een uitleg van welke nieuwe informatie uit het artikel belangrijk is.
 2. **Uitleg**: Een korte, begrijpelijke samenvatting van maximaal 150 woorden.
@@ -31,7 +33,7 @@ Het model geeft twee outputs:
 ## 2. Totstandkoming
 
 ### Data
-We maken gebruik van een dossier van Omroep Brabant. Dit gaf ons een reeks samenhangende artikelen over de verdwijning van Moerdijk om het concept mee te weergeven.
+We maken in dit prototype voor de data gebruik van een dossier van Omroep Brabant over de verdwijning van het dorp Moerdijk. Dit dossier gaf ons een relevante reeks samenhangende artikelen om het prototype mee te weergeven. 
 
 ### Tests
 De prompt is iteratief verbeterd door:
@@ -66,12 +68,12 @@ De prompt is iteratief verbeterd door:
 
 ## 3. Zelf maken
 
-1. **Bouw een dossiersysteem** - Groepeer artikelen per onderwerp, zodat je weet welke artikelen bij elkaar horen.
+1. **Bouw een dossiersysteem** - Groepeer nieuwsartikelen per onderwerp, zodat je weet welke artikelen bij elkaar horen. 
 
 2. **Kies een aanpak voor het samenvattingsmodel:**
    - *Optie A*: Schrijf een prompt en geef een taalmodel instructies om samenvattingen te genereren.
    - *Optie B*: Verzamel handmatig geschreven samenvattingen als traindata en train een eigen samenvattingsmodel.
 
-3. **Verwerk incrementeel** - Bouw de samenvatting stapsgewijs op per artikel, zodat nieuwe informatie wordt toegevoegd.
-4. **Integreer** - Voeg een "Leg het me uit" knop toe aan je artikelpagina's die de samenvatting toont.
-5. **Verzamel feedback** - Laat lezers aangeven of de uitleg duidelijk was, om het systeem te blijven verbeteren.
+3. **Verwerk incrementeel** - Bouw de samenvatting stapsgewijs op per nieuwsartikel, zodat nieuwe informatie wordt toegevoegd.
+4. **Integreer** - Voeg een "Uitlegknop" toe aan de pagina waar de samenvatting van het nieuwsartikel wordt getoond.
+5. **Verzamel feedback** - Vraag nieuwsgebruikers of de uitleg duidelijk is, om het systeem te blijven verbeteren.

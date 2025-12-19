@@ -1,6 +1,6 @@
 # Voor Ontwikkelaars
 
-Deze pagina bevat technische informatie voor ontwikkelaars die meer willen weten over de AI-implementaties achter deze prototypes.
+Deze pagina bevat technische informatie voor ontwikkelaars die meer willen weten over de AI-implementaties achter deze prototypes. 
 
 ---
 

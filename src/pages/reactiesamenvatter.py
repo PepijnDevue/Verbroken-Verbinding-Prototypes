@@ -66,14 +66,14 @@ BEREDENEER
 
 
 # ---------- Constants & Data ----------
-with open("src/data/dgf.json", "r", encoding="utf-8") as f:
+with open("src/data/reactiesamenvatter.json", "r", encoding="utf-8") as f:
     ARTICLE: dict = json.load(f)
 
 ARTICLE_TEXT = ARTICLE.get("text", "")
 COMMENT_SECTION = ARTICLE.get("comment_section", {})
 COMMENTS = COMMENT_SECTION.get("comments", [])
 
-OUTPUT_FILE = Path("src/data/dgf_outputs.json")
+OUTPUT_FILE = Path("src/data/reactiesamenvatter_outputs.json")
 
 PAGE_EXPLANATION = """Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt. Hier komt nog een uitleg over wat deze pagina doet en hoe het werkt."""
 
@@ -178,7 +178,7 @@ def process_article_feedback() -> None:
 
 # ---------- Main Page ----------
 def main() -> None:
-    st_utils.render_page_header("Data-geïnformeerde Feedback", PAGE_EXPLANATION)
+    st_utils.render_page_header("Reactiesamenvatter", PAGE_EXPLANATION)
 
     st_utils.render_article(**ARTICLE)
 
@@ -189,7 +189,7 @@ def main() -> None:
 
     st.divider()
 
-    st_utils.render_page_link("doc_data_geïnformeerde_feedback.py")
+    st_utils.render_page_link("doc_reactiesamenvatter.py")
 
 
 if __name__ == "__main__":

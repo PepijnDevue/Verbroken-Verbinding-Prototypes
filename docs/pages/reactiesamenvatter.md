@@ -1,6 +1,8 @@
-# Data-Geïnformeerde Feedback
+# Reactiesamenvatter
 
-Data-Geïnformeerde Feedback haalt bruikbare redactionele feedback uit lezersreacties onder een nieuwsartikel. Het filtert ruis en klachten, en bundelt alleen de punten die de redactie kan gebruiken om het artikel te verbeteren.
+De Reactiesamenvatter haalt bruikbare redactionele feedback uit lezersreacties onder een nieuwsartikel. Het filtert ruis en klachten, en bundelt alleen de punten die de redactie kan gebruiken om het artikel te verbeteren. 
+
+De Reactiesamenvatter helpt nieuwsredacties snel de kern van lezersreacties te zien: wat is de kritiek, welke vragen en zorgen zijn er? Haat en harde toon worden teruggebracht tot de inhoudelijke kern, zodat redacties veilig en efficiënt luisteren naar hun publiek zonder nuances of belangrijke inzichten te missen. **Zie ook idee-kaart X**.
 
 ---
 
@@ -8,36 +10,36 @@ Data-Geïnformeerde Feedback haalt bruikbare redactionele feedback uit lezersrea
 
 ### Input
 De AI krijgt twee dingen:
-1. **Het nieuwsartikel** - De volledige tekst van het artikel. Alleen de tekstuele inhoud wordt meegenomen; afbeeldingen, video's en andere media worden niet geanalyseerd.
-2. **De reacties** - Alle commentaren onder het artikel, inclusief replies.
+1. **Het nieuwsartikel** - De volledige tekst van het nieuwsartikel. Alleen de tekst wordt meegenomen; afbeeldingen, video's en andere media worden niet geanalyseerd.
+2. **De reacties** - Alle commentaren onder het artikel, inclusief replies, op de nieuwswebsite of op sociale media.
 
 ### Verwerking
 Het systeem werkt in twee stappen:
 
 **Stap 1: Per reactie filteren**
-Voor elke reactie-thread bepaalt de AI: staat hier expliciete feedback voor de redactie in? Alleen reacties die direct verwijzen naar het artikel of redactionele keuzes (titel, feiten, bronnen, ontbrekende context) worden meegenomen. Algemene klachten of meningen zonder verwijzing naar het artikel worden genegeerd.
+Voor elke reactie-thread bepaalt de AI: staat hier expliciete feedback voor de redactie in? Alleen reacties die direct verwijzen naar het artikel of redactionele keuzes (titel, feiten, bronnen, ontbrekende context) worden meegenomen. Reacties over de nieuwsgebeurtenis zelf, zonder reflectie op de verslaggeving, worden genegeerd. 
 
 **Stap 2: Samenvoegen tot rapport**
 Alle gevonden feedbackpunten worden gebundeld tot één rapport. Dubbele punten worden samengevoegd, de toon wordt geneutraliseerd, en het resultaat is een professioneel overzicht voor de redactie.
 
 ### Output
-Het model geeft twee outputs:
+Het model geeft twee soorten output: 
 
-1. **Beredenering**: Een uitleg van hoe de AI tot het rapport is gekomen.
-2. **Feedbackrapport**: Een gestructureerd overzicht van alle feedbackpunten, gegroepeerd per onderwerp.
+1. **Beredenering**: Een uitleg over hoe de AI tot het rapport is gekomen.
+2. **Feedbackrapport**: Een gestructureerd overzicht van alle feedbackpunten op basis van de reacties voor de nieuwsredactie, gegroepeerd per onderwerp.
 
 ---
 
 ## 2. Totstandkoming
 
 ### Data
-We hebben gekozen voor een artikel van Omroep Venlo, omdat zij een publieke reactiesectie hebben via Facebook. Dit gaf ons toegang tot echte lezersreacties om te bepalen wat wel en geen bruikbare feedback is.
+Voor de ontwikkeling van dit prototype hebben we gekozen voor een nieuwsartikel van Omroep Venlo, omdat zij een publieke reactiesectie hebben via Facebook. Dit gaf ons toegang tot echte lezersreacties om te onderzoeker wat wel en geen bruikbare feedback is voor de redactie. 
 
 ### Tests
 De prompts zijn iteratief verbeterd door:
 - Vergelijking van AI-output met handmatige analyse
 - Aanscherpen van regels om ruis te verminderen
-- Testen met verschillende soorten reactiesecties
+- Testen met verschillende soorten reacties
 
 ### De huidige prompts
 
@@ -99,7 +101,7 @@ Het systeem gebruikt twee prompts: één voor het filteren per thread, en één 
 ## 3. Zelf maken
 
 1. **Definieer wat feedback is** - Bepaal welke soorten reacties bruikbaar zijn voor jouw redactie.
-2. **Verzamel voorbeelden** - Analyseer handmatig reacties om traindata te verzamelen.
+2. **Verzamel voorbeelden** - Analyseer handmatig reacties op nieuwsartikelen op de website of sociale media om traindata te verzamelen.
 3. **Train een classificatiemodel** - Train een model dat per reactie bepaalt of het bruikbare feedback bevat.
 4. **Aggregeer met een taalmodel** - Gebruik een taalmodel met scherpgestelde instructies om alle gevonden feedbackpunten te bundelen tot een rapport.
 5. **Integreer** - Koppel het systeem aan je CMS of redactietools.

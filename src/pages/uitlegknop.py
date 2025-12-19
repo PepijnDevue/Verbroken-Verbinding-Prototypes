@@ -33,7 +33,7 @@ BEREDENEER
 
 
 # ---------- Constants & Data ----------
-with open("src/data/lhmu.json", "r", encoding="utf-8") as f:
+with open("src/data/uitlegknop.json", "r", encoding="utf-8") as f:
     DATA: dict = json.load(f)
 
 ARTICLE = DATA["article"]
@@ -69,13 +69,13 @@ def process_article_explanation() -> None:
 
     # Save explanation data
     DATA["article"]["explanation"] = explanation_data
-    with open("src/data/lhmu.json", "w", encoding="utf-8") as f:
+    with open("src/data/uitlegknop.json", "w", encoding="utf-8") as f:
         json.dump(DATA, f, ensure_ascii=False, indent=4)
 
 
 def display_explanation() -> None:
     if st.button("Leg Het Me Uit"):
-        with open("src/data/lhmu.json", "r", encoding="utf-8") as f:
+        with open("src/data/uitlegknop.json", "r", encoding="utf-8") as f:
             data = json.load(f)
             explanations = data.get("article", {}).get("explanation", [{}])
 
@@ -93,7 +93,7 @@ def display_explanation() -> None:
 
 # ---------- Main Page Logic ----------
 def main() -> None:
-    st_utils.render_page_header("Leg Het Me Uit Knop", PAGE_EXPLANATION)
+    st_utils.render_page_header("Uitlegknop", PAGE_EXPLANATION)
 
     st_utils.render_article(**ARTICLE)
 
@@ -103,7 +103,7 @@ def main() -> None:
 
     st.divider()
 
-    st_utils.render_page_link("doc_leg_het_me_uit_knop.py")
+    st_utils.render_page_link("doc_uitlegknop.py")
 
 
 if __name__ == "__main__":

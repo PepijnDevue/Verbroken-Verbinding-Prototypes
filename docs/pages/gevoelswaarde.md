@@ -1,6 +1,6 @@
-# Veertjes
+# Gevoelswaarde
 
-Veertjes meet hoe emotioneel beladen een nieuwsartikel is voor de lezer. Hoe meer veertjes, hoe zwaarder het artikel.
+De gevoelswaarde van een nieuwsbegint is een score die weergeefd in hoeverre een nieuwsartikel emotioneel beladen is. Nieuwsgebruikers zien de score bij het nieuws die helpt bepalen of ze het bericht willen lezen, terwijl redacties inzicht krijgen in de emotionele impact van hun verhalen. **Zie idee-kaart X**.  
 
 ## De schaal
 
@@ -13,17 +13,17 @@ Veertjes meet hoe emotioneel beladen een nieuwsartikel is voor de lezer. Hoe mee
 | 4 | Zwaar | Ernstige tragedies, schokkende details |
 | 5 | Extreem | Extreme gebeurtenissen, overweldigend leed |
 
-De AI kan ook halve punten geven (bijvoorbeeld 2.5 of 3.5) voor artikelen die tussen twee categorieen in vallen. Dit zorgt voor meer precisie wanneer een artikel niet duidelijk in een enkele categorie past.
+De AI kan ook halve punten geven (bijvoorbeeld 2.5 of 3.5) voor artikelen die tussen twee categorieen in vallen. Dit zorgt voor meer precisie wanneer een artikel niet duidelijk in een enkele categorie past. 
 
 ---
 
 ## 1. Hoe werkt het
 
 ### Input
-De AI krijgt het volledige nieuwsartikel als tekst: de titel en de volledige artikeltekst. Afbeeldingen, video's en andere media worden niet meegenomen in de analyse. De score is dus puur gebaseerd op de geschreven inhoud van het artikel.
+De AI krijgt het volledige nieuwsartikel als tekst: de titel en de volledige artikeltekst. Afbeeldingen, video's en andere media worden niet meegenomen in de analyse. De score is dus puur gebaseerd op de geschreven inhoud van het artikel. 
 
 ### Verwerking
-We gebruiken een taalmodel dat instructies kan volgen. Het model krijgt een prompt met daarin de schaal, de factoren, en het artikel. Het model analyseert het artikel op vier factoren:
+We gebruiken een taalmodel dat instructies kan volgen. Het model krijgt een prompt met daarin de schaal, de factoren, en het artikel. Het model analyseert het artikel op vier factoren: 
 
 - **Inhoud**: Hoe ernstig is de gebeurtenis objectief gezien?
 - **Type**: Kinderen, geweld tegen groepen, en misbruik wegen zwaarder. Politiek en economie wegen lichter.
@@ -89,7 +89,8 @@ De prompt bestaat uit de volgende onderdelen:
 
 ## 3. Zelf maken
 
-1. **Definieer je schaal** - Bepaal wat de scores betekenen voor jouw context.
+1. **Praat met je publiek** - Wanneer wordt nieuws door hen ervaren als zwaar?.
+2. **Definieer je schaal** - Bepaal wat de scores betekenen voor jouw context, en verbind textuele kenmerken aan de score.
 2. **Verzamel voorbeelden** - Score handmatig een set artikelen als traindata.
 3. **Train een model** - Train je eigen sentiment-analyse model op basis van je gelabelde data.
 4. **Test en verbeter** - Vergelijk model-output met je handmatige scores en pas aan.

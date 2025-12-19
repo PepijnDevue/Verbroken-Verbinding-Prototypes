@@ -9,21 +9,21 @@ def main():
 
     # Interactive pages
     welkom = st.Page(str(pages_dir / "welkom.py"), title="Welkom", icon="👋")
-    veertjes = st.Page(str(pages_dir / "veertjes.py"), title="Veertjes", icon="🪶")
-    dgf = st.Page(str(pages_dir / "data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="💬")
-    lhmu = st.Page(str(pages_dir / "leg_het_me_uit_knop.py"), title="Leg Het Me Uit Knop", icon="📰")
+    gw = st.Page(str(pages_dir / "gevoelswaarde.py"), title="Gevoelswaarde", icon="🪶")
+    rs = st.Page(str(pages_dir / "reactiesamenvatter.py"), title="Reactiesamenvatter", icon="💬")
+    uk = st.Page(str(pages_dir / "uitlegknop.py"), title="Uitlegknop", icon="📰")
     
     # Documentation pages
-    doc_veertjes = st.Page(str(pages_dir / "docs" / "doc_veertjes.py"), title="Veertjes", icon="📄")
-    doc_dgf = st.Page(str(pages_dir / "docs" / "doc_data_geïnformeerde_feedback.py"), title="Data Geïnformeerde Feedback", icon="📄")
-    doc_lhmu = st.Page(str(pages_dir / "docs" / "doc_leg_het_me_uit_knop.py"), title="Leg Het Me Uit Knop", icon="📄")
+    doc_gevoelswaarde = st.Page(str(pages_dir / "docs" / "doc_gevoelswaarde.py"), title="Gevoelswaarde", icon="📄")
+    doc_rs = st.Page(str(pages_dir / "docs" / "doc_reactiesamenvatter.py"), title="Reactiesamenvatter", icon="📄")
+    doc_uk = st.Page(str(pages_dir / "docs" / "doc_uitlegknop.py"), title="Uitlegknop", icon="📄")
     doc_vo = st.Page(str(pages_dir / "docs" / "doc_voor_ontwikkelaars.py"), title="Voor Ontwikkelaars", icon="⚙️")
 
     pg = st.navigation(
         pages = {
             "Paginas": [welkom],
-            "Prototypes": [veertjes, dgf, lhmu],
-            "Documentatie": [doc_veertjes, doc_dgf, doc_lhmu, doc_vo],
+            "Prototypes": [gw, rs, uk],
+            "Documentatie": [doc_gevoelswaarde, doc_rs, doc_uk, doc_vo],
         }, 
         expanded=True)
 

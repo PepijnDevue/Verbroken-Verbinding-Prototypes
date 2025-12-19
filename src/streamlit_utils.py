@@ -77,7 +77,7 @@ def render_article(title: str,
             with right:
                 x = int(score)
                 y = int((score - x) * 10)
-                svg_path = f"src/assets/veertjes_icons/{x}{y}.png"
+                svg_path = f"src/assets/gevoelswaarde_icons/{x}{y}.png"
                 match x:
                     case 0:
                         s_value = "Licht"
