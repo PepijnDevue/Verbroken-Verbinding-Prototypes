@@ -97,7 +97,8 @@ def render_score_metric(score: float,
 
     st.space("medium")
     st.markdown(
-        body=f"**{score_label}:**<br>{score:.1f}/5 - {s_value}",
+        # Code below shows score value, disabled for cleaner look
+        body=f"**{score_label}:**", # <br>{score:.1f}/5 - {s_value}",
         help=score_help,
         unsafe_allow_html=True
     )
