@@ -48,7 +48,3 @@ uv sync
 ```bash
 uv run streamlit run streamlit_app.py
 ```
-
-## License
-
-TODO: Add license information here.
