@@ -11,7 +11,3 @@ Onder ‘Documentatie’ vind je voor elk prototype een toelichting over de tots
 De prototypes zijn bedoeld om de oplossingen die zijn voortgekomen uit het onderzoek te demonstreren, niet om de technologische mogelijkheden van AI te laten zien. Daarom hebben we ervoor gekozen om de prototypes simpel en statisch te houden. Statisch betekent dat de AI eenmalig is gebruikt om de resultaten te genereren. Er is geen live verbinding met een AI-model. Wat je ziet, is vooraf gegenereerde output. Dit houdt de prototypes snel, goedkoop en energiezuinig.
 
 Voor meer informatie over hoe de prototypes werken, verwijzen we je graag naar ‘Documentatie'.
-
-## Links en Doorverwijzingen
-> Eventueel ander digitaal materiaal van ons?
-<!-- TODO: Afhandelen -->
